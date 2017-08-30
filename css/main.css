@@ -68,8 +68,8 @@ p {
 }
 
 body.dragging section {
-    -webkit-transform: scale(0.5);
-    transform: scale(0.5);
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
     -webkit-transform-origin: center center;
     transform-origin: center center;
 }
@@ -158,12 +158,17 @@ body.dragging .nav-pointer {
 }
 
 .bg-source-code {
-	position: fixed;
-	z-index: -1;
+	position: relative;
+	z-index: -5;
 }
 
 .parallax-window {
     min-height: 200px;
+    background: transparent;
+}
+
+.parallax-window-half {
+    min-height: 100px;
     background: transparent;
 }
 

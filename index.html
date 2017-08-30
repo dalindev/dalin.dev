@@ -10,29 +10,6 @@
 </head>
 
 <body>
-<div class="bg-source-code">
-<!-- 	<pre>
-	<code class="html">
-		<title>Hi</title>
-		<section class='intro'>
-			<div class='wrap'>
-				<div class='content'>
-					<h1>Hello.</h1>
-					<h2>My name is XXXX</h2>
-					<h5>I create amazing front end interfaces</h5>
-				</div>
-			</div>
-		</section>
-	</code>
-	<code class="javascript">
-	$(document).ready(function() {
-	  $('pre code').each(function(i, block) {
-		hljs.highlightBlock(block);
-	  });
-	});
-	</code>
-	</pre> -->
-</div>
 	<header>
 		<div class='slider-navigation'>
 			<div class='nav-pointer draggable'>
@@ -54,7 +31,7 @@
 		<section>
 			<div class='wrap'>
 				<div class='content'>
-					<section class="profile section-padding">
+
 		        <div class="resumecontainer">
 		          <div class="clearfix"></div>
 		          <div class="contact-info clearfix">
@@ -86,10 +63,10 @@
 		            <a class="btn btn-icon btn-linkedin" href="https://ca.linkedin.com/in/dalinhuang" target="_blank"><i class="fa fa-linkedin"></i><span>LinkedIn</span></a>
 		          </div>
 		        </div>
-		      </section>
 				</div>
 			</div>
 		</section>
+		<div class="parallax-window-half" data-parallax="scroll" data-image-src="img/test.png"></div>
 		<section>
 			<div class='wrap'>
 				<div class='content'>
@@ -160,16 +137,79 @@
 				</div>
 			</div>
 		</section>
-		<div class="parallax-window" data-parallax="scroll" data-image-src="img/Ottawa_1920x1080.jpg"></div>
-		<section>
+		<div class="parallax-window-half" data-parallax="scroll" data-image-src="img/test.png"></div>
+<section>
 			<div class='wrap'>
 				<div class='content'>
-					<h1>Section 5</h1>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo necessitatibus fuga deserunt beatae ut minima, nobis voluptates dolore suscipit corporis temporibus quaerat, vel amet magnam voluptas, aliquid nostrum ipsa fugiat. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo necessitatibus fuga deserunt beatae ut minima, nobis voluptates dolore suscipit corporis temporibus quaerat, vel amet magnam voluptas, aliquid nostrum ipsa fugiat. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo necessitatibus fuga deserunt beatae ut minima, nobis voluptates dolore suscipit corporis temporibus quaerat, vel amet magnam voluptas, aliquid nostrum ipsa fugiat.</p>
+
+		        <div class="resumecontainer">
+		          <h3 class="experience-title">Experience</h3>
+		          <div class="experience-wrapper">
+
+		            <div class="company-wrapper clearfix">
+		              <div class="experience-title">FarmLead</div>
+		              <div class="time">Ottawa, ON<br />Feb 2017 - Present</div>
+		            </div>
+
+		            <div class="job-wrapper clearfix">
+		              <div class="experience-title">Full Stack Developer</div>
+		              <div class="company-description">
+		                <li>Full-stack</li>
+		                <li>php7, MySQL</li>
+		                <li>server admin</li>
+		                <li>AWS</li>
+		              </div>
+		            </div>
+
+		            <div class="company-wrapper clearfix">
+		              <div class="experience-title">i-Sight Software</div>
+		              <div class="time">Ottawa, ON<br />Mar 2016 - Feb 2017</div>
+		            </div>
+
+		            <div class="job-wrapper clearfix">
+		              <div class="experience-title">Software Application Developer</div>
+		              <div class="company-description">
+		                <li>Full-stack / Pair programing / Agile Development</li>
+		                <li>Backbone.js, Node.js, Seneca.js, PostgreSQL</li>
+		                <li>Lead developer for Michigan and Wipro</li>
+		                <li>Core developer for GSK</li>
+		              </div>
+		            </div>
+
+		            <div class="company-wrapper clearfix">
+		              <div class="experience-title">FarmLead</div>
+		              <div class="time">Ottawa, ON<br />Jun 2016 - Oct 2016</div>
+		            </div>
+
+		            <div class="job-wrapper clearfix">
+		              <div class="experience-title">Front End Developer (Part-time)</div>
+		              <div class="company-description">
+		                <li>Remote (Vue.js, CoffeeScript, ectjs, Python)</li>
+		                <li>Develop an online market place for grain seller and buyer.</li>
+		                <li>No bootstrap, No jQuery, everything build from scratch.</li>
+		              </div>
+		            </div>
+
+		            <div class="company-wrapper clearfix">
+		              <div class="experience-title">Events.com</div>
+		              <div class="time">Ottawa, ON<br />Mar 2015 - Feb 2016</div>
+		            </div>
+
+		            <div class="job-wrapper clearfix">
+		              <div class="experience-title">Web Developer</div>
+		              <div class="company-description">
+		                <li>Agile Web Development (LAMP)</li>
+		                <li>Building and maintaining online event registration forms</li>
+		                <li>Responsible for weekend emergency support</li>
+		              </div>
+		            </div>
+
+		          </div><!--skill experience-->
 				</div>
 			</div>
 		</section>
-	</div>
+		<div class="parallax-window" data-parallax="scroll" data-image-src="img/test.png"></div>
+
 	<!-- <div class="container"> -->
 	<!-- <h2>Datamaps Playground</h2>
 		<p><a>DataMaps Project Homepage</a></p>
@@ -264,7 +304,7 @@
 
 	$(window).resize(function() {
 		waitForFinalEvent(function() {
-			bodyHeight = $('body').height() + 400;
+			bodyHeight = $('body').height();
 			sliderHeight = $('.slider-navigation').height();
 			elementHeight = $('section').height();
 			sectionAmount = $('section').length;
@@ -293,15 +333,6 @@
 			$('body').removeClass('dragging');
 		}
 	});
-
-
-
-
-
-
-
-
-
 
 
 
