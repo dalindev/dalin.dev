@@ -3,10 +3,11 @@
 
 <head>
 	<title>Hi</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- link to main stylesheet -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" href="lib/highlight/styles/tomorrow-night-eighties.css">
 </head>
 
 <body>
@@ -19,11 +20,49 @@
 	</header>
 	<div class='site-container'>
 		<section class='intro'>
+			<div id="particles-js"></div>
 			<div class='wrap'>
 				<div class='content'>
-					<h1>Hello.</h1>
-					<h2>My name is XXXX</h2>
-					<h5>I create amazing front end interfaces</h5>
+					<div class="profile-card">
+						<header>
+							<!-- avatar -->
+							<a target="_blank" href="#">
+								<img src="img/hd.jpg">
+							</a>
+							<!-- name -->
+							<h1>Dalin Huang</h1>
+						  	<!-- role -->
+							<h2>Full Stack Developer</h2>
+						</header>
+						<div class="profile-bio">
+							<p>
+								Passionate about technology<br>Hacker + Ninjia
+							</p>
+						</div>
+						<!-- social links -->
+						<ul class="profile-social-links">
+							<li>
+								<a target="_blank" href="https://ca.linkedin.com/in/dalinhuang">
+									<i class="fa fa-lg fa-linkedin"></i>
+								</a>
+							</li>
+							<li>
+								<a target="_blank" href="https://stackoverflow.com/users/4739018/daniel-h?tab=profile">
+									<i class="fa fa-lg fa-stack-overflow"></i>
+								</a>
+							</li>
+							<li>
+								<a target="_blank" href="https://github.com/dalinhuang99">
+									<i class="fa fa-lg fa-github-alt"></i>
+								</a>
+							</li>
+							<li>
+								<a target="_blank" href="https://www.facebook.com/dalin.huang.39">
+									<i class="fa fa-lg fa-facebook"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -31,38 +70,35 @@
 		<section>
 			<div class='wrap'>
 				<div class='content'>
+					<div class="resumecontainer">
+						<div class="clearfix"></div>
+						<div class="contact-info clearfix">
+							<ul class="list-titles">
+								<li>Cell</li>
+								<li>Email</li>
+								<li>Web</li>
+								<li>Address</li>
+							</ul>
+							<ul class="list-content ">
+								<li>(647)-927-2292</li>
+								<li>dhuan023@gmail.com</li>
+								<li>appmean.heroku.com</li>
+								<li>Ottawa, ON</li>
+							</ul>
+						</div>
+						<div class="education-presentation">
+							<!-- education presentation -->
+							<strong><span>University of Ottawa • 2009 - 2014</span><br></strong>
+							<span>BSc: <i>Specialization in Computer Science;<br> Minor in Economics</i></span>
+							<br>
+							<br>
+							<strong><span>I'm a Permanent Resident of Canada since 2006</span><br></strong>
+						</div>
+						<!-- social buttons -->
+						<div id="social-platforms">
 
-		        <div class="resumecontainer">
-		          <div class="clearfix"></div>
-		          <div class="contact-info clearfix">
-		            <ul class="list-titles">
-		              <li>Cell</li>
-		              <li>Email</li>
-		              <li>Web</li>
-		              <li>Address</li>
-		            </ul>
-		            <ul class="list-content ">
-		              <li>(647)-927-2292</li>
-		              <li>dhuan023@gmail.com</li>
-		              <li>appmean.heroku.com</li>
-		              <li>Ottawa, ON</li>
-		            </ul>
-		          </div>
-		          <div class="education-presentation"> <!-- education presentation -->
-		            <strong><span>University of Ottawa • 2009 - 2014</span><br></strong>
-		            <span>BSc: <i>Specialization in Computer Science;<br> Minor in Economics</i></span>
-		            <br><br>
-		            <strong><span>I'm a Permanent Resident of Canada since 2006</span><br></strong>
-		          </div>
-
-		          <!-- social buttons -->
-		          <div id="social-platforms">
-		            <a class="btn btn-icon btn-facebook" href="https://www.facebook.com/dalin.huang.39" target="_blank"><i class="fa fa-facebook"></i><span>Facebook</span></a>
-		            <a class="btn btn-icon btn-googleplus" href="https://stackoverflow.com/users/4739018/daniel-h?tab=profile" target="_blank"><i class="fa fa-stack-overflow"></i><span><small>StackOverflow</small></span></a>
-		            <a class="btn btn-icon btn-github" href="https://github.com/dalinhuang99" target="_blank"><i class="fa fa-github-alt"></i><span>GitHub</span></a>
-		            <a class="btn btn-icon btn-linkedin" href="https://ca.linkedin.com/in/dalinhuang" target="_blank"><i class="fa fa-linkedin"></i><span>LinkedIn</span></a>
-		          </div>
-		        </div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -70,269 +106,177 @@
 		<section>
 			<div class='wrap'>
 				<div class='content'>
-
-		        <div class="resumecontainer">
-		          <h3 class="experience-title">Experience</h3>
-		          <div class="experience-wrapper">
-
-		            <div class="company-wrapper clearfix">
-		              <div class="experience-title">FarmLead</div>
-		              <div class="time">Ottawa, ON<br />Feb 2017 - Present</div>
-		            </div>
-
-		            <div class="job-wrapper clearfix">
-		              <div class="experience-title">Full Stack Developer</div>
-		              <div class="company-description">
-		                <li>Full-stack</li>
-		                <li>php7, MySQL</li>
-		                <li>server admin</li>
-		                <li>AWS</li>
-		              </div>
-		            </div>
-
-		            <div class="company-wrapper clearfix">
-		              <div class="experience-title">i-Sight Software</div>
-		              <div class="time">Ottawa, ON<br />Mar 2016 - Feb 2017</div>
-		            </div>
-
-		            <div class="job-wrapper clearfix">
-		              <div class="experience-title">Software Application Developer</div>
-		              <div class="company-description">
-		                <li>Full-stack / Pair programing / Agile Development</li>
-		                <li>Backbone.js, Node.js, Seneca.js, PostgreSQL</li>
-		                <li>Lead developer for Michigan and Wipro</li>
-		                <li>Core developer for GSK</li>
-		              </div>
-		            </div>
-
-		            <div class="company-wrapper clearfix">
-		              <div class="experience-title">FarmLead</div>
-		              <div class="time">Ottawa, ON<br />Jun 2016 - Oct 2016</div>
-		            </div>
-
-		            <div class="job-wrapper clearfix">
-		              <div class="experience-title">Front End Developer (Part-time)</div>
-		              <div class="company-description">
-		                <li>Remote (Vue.js, CoffeeScript, ectjs, Python)</li>
-		                <li>Develop an online market place for grain seller and buyer.</li>
-		                <li>No bootstrap, No jQuery, everything build from scratch.</li>
-		              </div>
-		            </div>
-
-		            <div class="company-wrapper clearfix">
-		              <div class="experience-title">Events.com</div>
-		              <div class="time">Ottawa, ON<br />Mar 2015 - Feb 2016</div>
-		            </div>
-
-		            <div class="job-wrapper clearfix">
-		              <div class="experience-title">Web Developer</div>
-		              <div class="company-description">
-		                <li>Agile Web Development (LAMP)</li>
-		                <li>Building and maintaining online event registration forms</li>
-		                <li>Responsible for weekend emergency support</li>
-		              </div>
-		            </div>
-
-		          </div><!--skill experience-->
+					<div class="resumecontainer">
+						<h3 class="experience-title">Experience</h3>
+						<div class="experience-wrapper">
+							<div class="company-wrapper clearfix">
+								<div class="experience-title">FarmLead</div>
+								<div class="time">Ottawa, ON
+									<br />Feb 2017 - Present</div>
+							</div>
+							<div class="job-wrapper clearfix">
+								<div class="experience-title">Full Stack Developer</div>
+								<div class="company-description">
+									<li>Full-stack</li>
+									<li>php7, MySQL</li>
+									<li>server admin</li>
+									<li>AWS</li>
+								</div>
+							</div>
+							<div class="company-wrapper clearfix">
+								<div class="experience-title">i-Sight Software</div>
+								<div class="time">Ottawa, ON
+									<br />Mar 2016 - Feb 2017</div>
+							</div>
+							<div class="job-wrapper clearfix">
+								<div class="experience-title">Software Application Developer</div>
+								<div class="company-description">
+									<li>Full-stack / Pair programing / Agile Development</li>
+									<li>Backbone.js, Node.js, Seneca.js, PostgreSQL</li>
+									<li>Lead developer for Michigan and Wipro</li>
+									<li>Core developer for GSK</li>
+								</div>
+							</div>
+							<div class="company-wrapper clearfix">
+								<div class="experience-title">FarmLead</div>
+								<div class="time">Ottawa, ON
+									<br />Jun 2016 - Oct 2016</div>
+							</div>
+							<div class="job-wrapper clearfix">
+								<div class="experience-title">Front End Developer (Part-time)</div>
+								<div class="company-description">
+									<li>Remote (Vue.js, CoffeeScript, ectjs, Python)</li>
+									<li>Develop an online market place for grain seller and buyer.</li>
+									<li>No bootstrap, No jQuery, everything build from scratch.</li>
+								</div>
+							</div>
+							<div class="company-wrapper clearfix">
+								<div class="experience-title">Events.com</div>
+								<div class="time">Ottawa, ON
+									<br />Mar 2015 - Feb 2016</div>
+							</div>
+							<div class="job-wrapper clearfix">
+								<div class="experience-title">Web Developer</div>
+								<div class="company-description">
+									<li>Agile Web Development (LAMP)</li>
+									<li>Building and maintaining online event registration forms</li>
+									<li>Responsible for weekend emergency support</li>
+								</div>
+							</div>
+						</div>
+						<!--skill experience-->
+					</div>
 				</div>
-			</div>
-		</section>
-		<div class="parallax-window-half" data-parallax="scroll" data-image-src="img/test.png"></div>
-<section>
-			<div class='wrap'>
-				<div class='content'>
-
-		        <div class="resumecontainer">
-		          <h3 class="experience-title">Experience</h3>
-		          <div class="experience-wrapper">
-
-		            <div class="company-wrapper clearfix">
-		              <div class="experience-title">FarmLead</div>
-		              <div class="time">Ottawa, ON<br />Feb 2017 - Present</div>
-		            </div>
-
-		            <div class="job-wrapper clearfix">
-		              <div class="experience-title">Full Stack Developer</div>
-		              <div class="company-description">
-		                <li>Full-stack</li>
-		                <li>php7, MySQL</li>
-		                <li>server admin</li>
-		                <li>AWS</li>
-		              </div>
-		            </div>
-
-		            <div class="company-wrapper clearfix">
-		              <div class="experience-title">i-Sight Software</div>
-		              <div class="time">Ottawa, ON<br />Mar 2016 - Feb 2017</div>
-		            </div>
-
-		            <div class="job-wrapper clearfix">
-		              <div class="experience-title">Software Application Developer</div>
-		              <div class="company-description">
-		                <li>Full-stack / Pair programing / Agile Development</li>
-		                <li>Backbone.js, Node.js, Seneca.js, PostgreSQL</li>
-		                <li>Lead developer for Michigan and Wipro</li>
-		                <li>Core developer for GSK</li>
-		              </div>
-		            </div>
-
-		            <div class="company-wrapper clearfix">
-		              <div class="experience-title">FarmLead</div>
-		              <div class="time">Ottawa, ON<br />Jun 2016 - Oct 2016</div>
-		            </div>
-
-		            <div class="job-wrapper clearfix">
-		              <div class="experience-title">Front End Developer (Part-time)</div>
-		              <div class="company-description">
-		                <li>Remote (Vue.js, CoffeeScript, ectjs, Python)</li>
-		                <li>Develop an online market place for grain seller and buyer.</li>
-		                <li>No bootstrap, No jQuery, everything build from scratch.</li>
-		              </div>
-		            </div>
-
-		            <div class="company-wrapper clearfix">
-		              <div class="experience-title">Events.com</div>
-		              <div class="time">Ottawa, ON<br />Mar 2015 - Feb 2016</div>
-		            </div>
-
-		            <div class="job-wrapper clearfix">
-		              <div class="experience-title">Web Developer</div>
-		              <div class="company-description">
-		                <li>Agile Web Development (LAMP)</li>
-		                <li>Building and maintaining online event registration forms</li>
-		                <li>Responsible for weekend emergency support</li>
-		              </div>
-		            </div>
-
-		          </div><!--skill experience-->
-				</div>
-			</div>
 		</section>
 		<div class="parallax-window" data-parallax="scroll" data-image-src="img/test.png"></div>
 
-	<!-- <div class="container"> -->
-	<!-- <h2>Datamaps Playground</h2>
-		<p><a>DataMaps Project Homepage</a></p>
-		<div class="worldmap-container row">
-			<div id="container1" style="position: relative; width: 100%;"></div>
-		</div>-->
-	<!-- </div> -->
-	<!-- =================== script =================== -->
-	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<!-- =================== script =================== -->
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script> -->
-	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script> -->
-	<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
-	<!-- <script src="http://d3js.org/topojson.v1.min.js"></script> -->
-	<!-- <script src="scripts/datamaps.world.hires.min.js?v=1"></script> -->
-	<!-- <script src="scripts/datamaps.world.min.js?v=1"></script> -->
-
-	<script src="lib/parallax.js-1.4.2/parallax.min.js"></script>
-	<script src="lib/highlight/highlight.pack.js"></script>
-
-	<script>
-	$(document).ready(function() {
-
-		$('code').each(function() {
-		  var that = $(this);
-		  // cache the content of 'code'
-		  var html = that.html();
-		  that.empty();
-		  // escape the content
-		  that.text(html);
-		});
-		hljs.initHighlightingOnLoad();
-
-		$('section').each(function() {
-			$('.slider-navigation').prepend('<div class="tick"></div>');
-		});
-
-		$('.tick').on('click', function() {
-			var tickIndex = $(this).index();
-			$('body').scrollTop($(window).height() * tickIndex);
-		});
-
-		updatePos();
-
-	}); // end document ready
+		<script src="lib/parallax.js-1.4.2/parallax.min.js"></script>
+		<script>
+		$(document).ready(function() {
 
 
-	var isDragging = false;
-	var sliderTop, pointerPos, currentSection;
+			// $('code').each(function() {
+			//     var that = $(this);
+			//     // cache the content of 'code'
+			//     var html = that.html();
+			//     that.empty();
+			//     // escape the content
+			//     that.text(html);
+			// });
+			// hljs.initHighlightingOnLoad();
 
-	var bodyHeight = $('body').height();
-	var sliderHeight = $('.slider-navigation').height();
-	var elementHeight = $('section').height();
-	var sectionAmount = $('section').length;
-	var scale = (bodyHeight - (elementHeight)) / (sliderHeight - $('.nav-pointer').outerHeight());
+			$('section').each(function() {
+				$('.slider-navigation').prepend('<div class="tick"></div>');
+			});
 
+			$('.tick').on('click', function() {
+				var tickIndex = $(this).index();
+				$('body').scrollTop($(window).height() * tickIndex);
+			});
 
-	var waitForFinalEvent = (function() {
-		var timers = {};
-		return function(callback, ms, uniqueId) {
-			if (!uniqueId) {
-				uniqueId = "resize";
-			}
-			if (timers[uniqueId]) {
-				clearTimeout(timers[uniqueId]);
-			}
-			timers[uniqueId] = setTimeout(callback, ms);
-		};
-	})();
-
-
-	function updatePos() {
-		currentSection = $(window).scrollTop() / elementHeight;
-		currentSectionNum = Math.ceil(currentSection + 0.01);
-		sliderTop = $(window).scrollTop() / scale;
-		$('.nav-pointer').css('top', sliderTop).text(currentSectionNum + '/' + sectionAmount);
-	}
-
-	function sliderMove(e) {
-		$('body').scrollTop(parseInt(e) * scale);
-	}
-
-	$(window).scroll(function() {
-		if (!isDragging) {
 			updatePos();
+
+		}); // end document ready
+
+
+		var isDragging = false;
+		var sliderTop, pointerPos, currentSection;
+
+		var bodyHeight = $('body').height();
+		var sliderHeight = $('.slider-navigation').height();
+		var elementHeight = $('section').height();
+		var sectionAmount = $('section').length;
+		var scale = (bodyHeight - (elementHeight)) / (sliderHeight - $('.nav-pointer').outerHeight());
+
+
+		var waitForFinalEvent = (function() {
+			var timers = {};
+			return function(callback, ms, uniqueId) {
+				if (!uniqueId) {
+					uniqueId = "resize";
+				}
+				if (timers[uniqueId]) {
+					clearTimeout(timers[uniqueId]);
+				}
+				timers[uniqueId] = setTimeout(callback, ms);
+			};
+		})();
+
+
+		function updatePos() {
+			currentSection = $(window).scrollTop() / elementHeight;
+			currentSectionNum = Math.ceil(currentSection + 0.01);
+			sliderTop = $(window).scrollTop() / scale;
+			$('.nav-pointer').css('top', sliderTop).text(currentSectionNum + '/' + sectionAmount);
 		}
-	});
 
-
-	$(window).resize(function() {
-		waitForFinalEvent(function() {
-			bodyHeight = $('body').height();
-			sliderHeight = $('.slider-navigation').height();
-			elementHeight = $('section').height();
-			sectionAmount = $('section').length;
-			scale = (bodyHeight - (elementHeight)) / (sliderHeight - $('.nav-pointer').outerHeight());
-
-			updatePos();
-		}, 500, "resizing");
-	});
-
-
-
-	$(".draggable").draggable({
-		axis: "y",
-		containment: "parent",
-		start: function() {
-			isDragging = true;
-			$('body').addClass('dragging');
-		},
-		drag: function() {
-			pointerPos = $(this).css('top');
-			sliderMove(pointerPos);
-			updatePos();
-		},
-		stop: function() {
-			isDragging = false;
-			$('body').removeClass('dragging');
+		function sliderMove(e) {
+			$('body').scrollTop(parseInt(e) * scale);
 		}
-	});
+
+		$(window).scroll(function() {
+			if (!isDragging) {
+				updatePos();
+			}
+		});
+
+
+		$(window).resize(function() {
+			waitForFinalEvent(function() {
+				bodyHeight = $('body').height();
+				sliderHeight = $('.slider-navigation').height();
+				elementHeight = $('section').height();
+				sectionAmount = $('section').length;
+				scale = (bodyHeight - (elementHeight)) / (sliderHeight - $('.nav-pointer').outerHeight());
+
+				updatePos();
+			}, 500, "resizing");
+		});
+
+
+
+		$(".draggable").draggable({
+			axis: "y",
+			containment: "parent",
+			start: function() {
+				isDragging = true;
+				$('body').addClass('dragging');
+			},
+			drag: function() {
+				pointerPos = $(this).css('top');
+				sliderMove(pointerPos);
+				updatePos();
+			},
+			stop: function() {
+				isDragging = false;
+				$('body').removeClass('dragging');
+			}
+		});
 
 
 
@@ -340,128 +284,128 @@
 
 
 
-	/*
-		//basic map config with custom fills, mercator projection
+		/*
+			//basic map config with custom fills, mercator projection
 
-			// $('#container1').empty();
+				// $('#container1').empty();
 
-			var map = new Datamap({
-				responsive: true,
-				scope: 'world',
-				element: document.getElementById('container1'),
-				projection: 'mercator',
-				height: 400,
-				geographyConfig: {
+				var map = new Datamap({
+					responsive: true,
+					scope: 'world',
+					element: document.getElementById('container1'),
+					projection: 'mercator',
+					height: 400,
+					geographyConfig: {
 
-					hideAntarctica: true,
-					borderWidth: 1,
-					borderColor: '#FDFDFD',
-					popupTemplate: function(geography, data) { //this function should just return a string
-					  return '<div class="hoverinfo"><strong>' + geography.properties.name + '</strong></div>';
+						hideAntarctica: true,
+						borderWidth: 1,
+						borderColor: '#FDFDFD',
+						popupTemplate: function(geography, data) { //this function should just return a string
+						  return '<div class="hoverinfo"><strong>' + geography.properties.name + '</strong></div>';
+						},
+						popupOnHover: false, //disable the popup while hovering
+						// highlightOnHover: false,
+						highlightFillColor: '#FC8D59',
+						highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
+						highlightBorderWidth: 2
 					},
-					popupOnHover: false, //disable the popup while hovering
-					// highlightOnHover: false,
-					highlightFillColor: '#FC8D59',
-					highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
-					highlightBorderWidth: 2
-				},
 
-				fills: {
-					defaultFill: '#e6e6e6',
-					born: 'orange',
-					born_circle: 'orange',
-					resident: 'orange',
-					visited: 'lightgreen'
-				},
+					fills: {
+						defaultFill: '#e6e6e6',
+						born: 'orange',
+						born_circle: 'orange',
+						resident: 'orange',
+						visited: 'lightgreen'
+					},
 
-				data: {
-					CHN: {
-						fillKey: 'born'
-					},
-					CAN: {
-						fillKey: 'resident'
-					},
-					USA: {
-						fillKey: 'visited'
-					},
-					USA: {
-						fillKey: 'visited'
-					},
-					THA: {
-						fillKey: 'visited'
-					},
-					MEX: {
-						fillKey: 'visited'
-					},
-					ITA: {
-						fillKey: 'visited'
-					},
-					FRA: {
-						fillKey: 'visited'
-					},
-					ESP: {
-						fillKey: 'visited'
+					data: {
+						CHN: {
+							fillKey: 'born'
+						},
+						CAN: {
+							fillKey: 'resident'
+						},
+						USA: {
+							fillKey: 'visited'
+						},
+						USA: {
+							fillKey: 'visited'
+						},
+						THA: {
+							fillKey: 'visited'
+						},
+						MEX: {
+							fillKey: 'visited'
+						},
+						ITA: {
+							fillKey: 'visited'
+						},
+						FRA: {
+							fillKey: 'visited'
+						},
+						ESP: {
+							fillKey: 'visited'
+						}
 					}
-				}
-			})
+				})
 
 
 
-			//sample of the arc plugin
-			map.arc([
-			{
-				origin: {
+				//sample of the arc plugin
+				map.arc([
+				{
+					origin: {
+						latitude: 27.657341,
+						longitude: 112.005615
+					},
+					destination: {
+						latitude: 39.891266,
+						longitude: 116.411133
+					}
+				}, {
+					origin: {
+						latitude: 39.891266,
+						longitude: 116.411133
+					},
+					destination: {
+						latitude: 43.759425,
+						longitude: -79.409180
+					}
+				}, {
+					origin: {
+						latitude: 43.759425,
+						longitude: -79.409180
+					},
+					destination: {
+						latitude: 45.411210,
+						longitude: -75.687561
+					}
+				}], {
+					strokeWidth: 1,
+					arcSharpness: 0,
+					animationSpeed: 3000
+				});
+
+				//bubbles, custom popup on hover template
+				map.bubbles([{
+					name: 'Hot',
 					latitude: 27.657341,
-					longitude: 112.005615
-				},
-				destination: {
-					latitude: 39.891266,
-					longitude: 116.411133
-				}
-			}, {
-				origin: {
-					latitude: 39.891266,
-					longitude: 116.411133
-				},
-				destination: {
-					latitude: 43.759425,
-					longitude: -79.409180
-				}
-			}, {
-				origin: {
-					latitude: 43.759425,
-					longitude: -79.409180
-				},
-				destination: {
-					latitude: 45.411210,
-					longitude: -75.687561
-				}
-			}], {
-				strokeWidth: 1,
-				arcSharpness: 0,
-				animationSpeed: 3000
-			});
-
-			//bubbles, custom popup on hover template
-			map.bubbles([{
-				name: 'Hot',
-				latitude: 27.657341,
-				longitude: 112.005615,
-				radius: 10,
-				fillKey: 'born_circle'
-			}, ], {
-				popupTemplate: function(geo, data) {
-					return "<div class='hoverinfo'>It is " + data.name + "</div>";
-				}
-			});
+					longitude: 112.005615,
+					radius: 10,
+					fillKey: 'born_circle'
+				}, ], {
+					popupTemplate: function(geo, data) {
+						return "<div class='hoverinfo'>It is " + data.name + "</div>";
+					}
+				});
 
 
-			$(window).resize(function() {
-				 map.resize();
-			});
+				$(window).resize(function() {
+					 map.resize();
+				});
 
-	*/
-	</script>
+		*/
+		</script>
 </body>
 
 </html>
