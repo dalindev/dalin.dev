@@ -2,4 +2,4 @@
 https://dalinhuang99.github.io/
 
 
-don't really have time to work on this project... hope got some time before 2018. LOL
+I don't really have time to work on this project... maybe before 2018. LOL
