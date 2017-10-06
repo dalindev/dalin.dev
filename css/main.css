@@ -26,9 +26,9 @@ section {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    padding-right: 100px;
     -webkit-transition: .5s ease;
     transition: .5s ease;
+    box-sizing: border-box;
 }
 
 section.intro {
@@ -152,6 +152,24 @@ body.dragging .nav-pointer {
     transition: none;
 }
 
+/* ----------------------
+  Section about-me
+------------------------*/
+.about-me {
+    background-color: black;
+    padding: 25px;
+    border: 2px solid lime;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+
+.about-me * {
+    background-color: black;
+    color: lime;
+    font-family: Courier New;
+    box-sizing: border-box;
+}
 
 /* ----------------------
   parallax-window
