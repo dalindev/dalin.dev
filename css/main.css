@@ -159,6 +159,8 @@ body.dragging .nav-pointer {
     font-family: "Courier New", Monospace;
     white-space: pre;
     line-height: 11pt;
+    display: inline-block;
+  text-align: left;
 }
 
 /* ----------------------
