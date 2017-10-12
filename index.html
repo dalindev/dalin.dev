@@ -7,7 +7,7 @@
 	<!-- link to main stylesheet -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="css/main.css?v=0.0.2">
+	<link rel="stylesheet" type="text/css" href="css/main.css?v=2017.10.12">
 	<!-- Global Site Tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107490980-1"></script>
 	<script>
@@ -92,30 +92,34 @@
 </pre>
                 </div>
                 <div class="clearfix"></div>
-                <div class="contact-info clearfix">
-                    <ul class="list-titles">
-                        <li>Cell</li>
-                        <li>Email</li>
-                        <li>Web</li>
-                        <li>Address</li>
-                    </ul>
-                    <ul class="list-content ">
-                        <li>(647)-927-2292</li>
-                        <li>dhuan023@gmail.com</li>
-                        <li>appmean.heroku.com</li>
-                        <li>Ottawa, ON</li>
-                    </ul>
-                </div>
-                <div class="education-presentation">
-                    <!-- education presentation -->
-                    <strong><span>University of Ottawa • 2009 - 2014</span><br></strong>
-                    <span>BSc: <i>Specialization in Computer Science;<br> Minor in Economics</i></span>
-                    <br>
-                    <br>
-                    <strong><span>I'm a Permanent Resident of Canada since 2006</span><br></strong>
-                </div>
-                <!-- social buttons -->
-                <div id="social-platforms">
+                <div class="about-me__content" id="terminal-start">
+                    <p>Last login: Thu Oct 12 00:28:38 2017 from cpe44d9e79bd14b-cma84e3fd1a7d0.cpe.net.cable.rogers.com</p>
+<pre>
+       __|  __|_  )
+       _|  (     /   Amazon Linux AMI
+      ___|\___|___|
+
+Amazon Linux version 2017.09 is available.
+</pre>
+                    <br><br>
+                    <div class="command">
+                        <!-- email -->
+                        <p>echo $email</p>
+                        <span class="hideme">email: dhuan023@gmail.com</span>
+                        <!-- phone -->
+                        <p>echo $phone</p>
+                        <span class="hideme">phone: (647)-927-2292</span>
+                        <!-- address -->
+                        <p>echo $address</p>
+                        <span class="hideme">address: Ottawa, ON, Canada</span>
+                        <!-- education -->
+                        <p>echo $education</p>
+                        <span class="hideme">University of Ottawa • 2009 - 2014<br>
+                        BSc: Specialization in Computer Science; Minor in Economics;</span>
+                        <!-- eligible_to_work -->
+                        <p>echo $eligible_to_work</p>
+                        <span class="hideme">I'm Permanent Resident of Canada since 2006</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -193,16 +197,69 @@
         <script>
         $(document).ready(function() {
 
+            /*-------------------------------
+                terminal linux style
+            -------------------------------*/
+            var about_me_content_displayed = false;
+            var $lines = $('.command p');
+            $lines.hide();
 
-            // $('code').each(function() {
-            //     var that = $(this);
-            //     // cache the content of 'code'
-            //     var html = that.html();
-            //     that.empty();
-            //     // escape the content
-            //     that.text(html);
-            // });
-            // hljs.initHighlightingOnLoad();
+            var lineContents = [];
+            var output = [];
+
+            var terminal = function() {
+              var skip = 0;
+              typeLine = function(idx) {
+                idx == null && (idx = 0);
+                var element = $lines.eq(idx);
+                var content = lineContents[idx];
+                if(typeof content == "undefined") {
+                  $('.skip').hide();
+                  return;
+                }
+                var charIdx = 0;
+
+                console.log(idx);
+
+                var typeChar = function() {
+                  var rand = Math.round(Math.random() * 250) + 20;
+
+                  setTimeout(function() {
+                    var char = content[charIdx++];
+                    element.append(char);
+                    if(typeof char !== "undefined")
+                      typeChar();
+                    else {
+                      element.append('<br/><span class="output">' + output[idx] + '</span>');
+                      element.removeClass('active');
+                      typeLine(++idx);
+                    }
+                  }, skip ? 0 : rand);
+                }
+                element.append('[ec2-user@ip-127-0-0-1 ~]$ ').addClass('active');
+                typeChar();
+              }
+
+              $lines.each(function(i) {
+                lineContents[i] = $(this).text();
+                output[i] = $(this).next('span').html();
+                $(this).text('').show();
+              });
+              typeLine();
+            }
+
+            $(window).scroll(function() {
+               var hT = $('#terminal-start').offset().top,
+                   hH = $('#terminal-start').outerHeight(),
+                   wH = $(window).height(),
+                   wS = $(this).scrollTop() - 250;
+               if (wS > (hT+hH-wH) && !about_me_content_displayed){
+                about_me_content_displayed = true;
+                terminal();
+               }
+            });
+            // end terminal style ------------------------------------
+
 
             $('section').each(function() {
                 $('.slider-navigation').prepend('<div class="tick"></div>');
