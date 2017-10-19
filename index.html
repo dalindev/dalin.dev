@@ -82,14 +82,8 @@
         <section>
             <div class="about-me">
                 <div class="text-center">
-<pre class="fig-ansi">
- █████╗ ██████╗  ██████╗ ██╗   ██╗████████╗    ███╗   ███╗███████╗
-██╔══██╗██╔══██╗██╔═══██╗██║   ██║╚══██╔══╝    ████╗ ████║██╔════╝
-███████║██████╔╝██║   ██║██║   ██║   ██║       ██╔████╔██║█████╗
-██╔══██║██╔══██╗██║   ██║██║   ██║   ██║       ██║╚██╔╝██║██╔══╝
-██║  ██║██████╔╝╚██████╔╝╚██████╔╝   ██║       ██║ ╚═╝ ██║███████╗
-╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═════╝    ╚═╝       ╚═╝     ╚═╝╚══════╝
-</pre>
+                <img src="img/about-me.png" height="100" width="550">
+                <br><br>
                 </div>
                 <div class="clearfix"></div>
                 <div class="about-me__content" id="terminal-start">
@@ -101,6 +95,7 @@
 
 Amazon Linux version 2017.09 is available.
 </pre>
+
                     <br><br>
                     <div class="command">
                         <!-- email -->
@@ -222,10 +217,10 @@ Amazon Linux version 2017.09 is available.
                 }
                 var charIdx = 0;
 
-                console.log(idx);
+                // console.log(idx);
 
                 var typeChar = function() {
-                  var rand = Math.round(Math.random() * 250) + 20;
+                  var rand = Math.round(Math.random() * 200) + 20;
 
                   setTimeout(function() {
                     var char = content[charIdx++];
