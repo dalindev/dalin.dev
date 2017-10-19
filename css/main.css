@@ -153,16 +153,6 @@ body.dragging .nav-pointer {
 }
 
 
-/* ASCII style */
-.fig-ansi {
-    font-size: 10pt;
-    font-family: "Courier New", Monospace;
-    white-space: pre;
-    line-height: 11pt;
-    display: inline-block;
-  text-align: left;
-}
-
 /* ----------------------
   Section about-me
 ------------------------*/
