@@ -29,6 +29,7 @@ section {
     -webkit-transition: .5s ease;
     transition: .5s ease;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 section.intro {
@@ -203,27 +204,27 @@ body.dragging .nav-pointer {
   experience (company)
 ------------------------*/
 
-.last-section {
-  position: relative;
-}
-
 /*.push-to-bottom {
   position: absolute;
   bottom: 5%;
 }*/
+.latest-block {
+  border-color: aqua;
+}
 
 .one-block {
-/*   width: 250px; */
+  /*   width: 250px; */
   font-family: "Maven Pro", sans-serif;
   border-style: dashed;
-  padding: 10px;
+  padding: 10px 10px 0;
   display: inline-block;
   font-size: 12px;
   margin: 5px 0;
   box-sizing: border-box;
-  /*max-width: 600px;*/
+  line-height: 1;
+  min-width: 500px;
+  text-align: left;
 }
-
 
 .truncate {
   white-space: nowrap;
@@ -235,9 +236,22 @@ body.dragging .nav-pointer {
   font-size: 14px;
 }
 
-.one-block p {
-  margin-bottom: 0;
+.one-block label {
+  width: 90px;
+  padding-right: 15px;
+  text-align: right;
 }
+
+.one-block p {
+  margin: 0;
+}
+
+.block-data {
+  font-size: 15px;
+  border: 1px solid gray;
+  padding: 5px 0 0;
+}
+
 
 /* ----------------------
   social-links color
