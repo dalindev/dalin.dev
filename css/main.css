@@ -199,7 +199,45 @@ body.dragging .nav-pointer {
     background: transparent;
 }
 
+/* ----------------------
+  experience (company)
+------------------------*/
 
+.last-section {
+  position: relative;
+}
+
+/*.push-to-bottom {
+  position: absolute;
+  bottom: 5%;
+}*/
+
+.one-block {
+/*   width: 250px; */
+  font-family: "Maven Pro", sans-serif;
+  border-style: dashed;
+  padding: 10px;
+  display: inline-block;
+  font-size: 12px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  /*max-width: 600px;*/
+}
+
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.one-block pre {
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.one-block p {
+  margin-bottom: 0;
+}
 
 /* ----------------------
   social-links color
