@@ -314,7 +314,7 @@ body.dragging .nav-pointer {
   animation: init 0.5s 0.2s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards, moveDown 1s 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards, moveUp 1s 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, materia 0.5s 2.7s cubic-bezier(0.86, 0, 0.07, 1) forwards;
 }
 
-.profile-card header {
+/*.profile-card header {
   width: 160px;
   height: 260px;
   padding: 40px 20px 30px 20px;
@@ -328,7 +328,7 @@ body.dragging .nav-pointer {
   text-align: center;
   -webkit-animation: moveIn 1s 3.1s ease forwards;
   animation: moveIn 1s 3.1s ease forwards;
-}
+}*/
 
 .profile-card header h1 {
   color: #FF5722;
@@ -683,54 +683,52 @@ body.dragging .nav-pointer {
   }
 }
 
-@media screen and (min-height: 480px) {
-  .profile-card header {
-    width: auto;
-    height: 260px;
-    top: 20px;
-    padding: 20px 20px;
-    display: block;
-    float: none;
-    border-right: none;
+.profile-card header {
+  width: auto;
+  height: 260px;
+  top: 20px;
+  padding: 20px 20px;
+  display: block;
+  float: none;
+  border-right: none;
+}
+.profile-card .profile-bio {
+  width: auto;
+  height: auto;
+  padding: 55px 20px 35px;
+  display: block;
+  float: none;
+}
+.profile-social-links {
+  width: 100%;
+  display: block;
+  float: none;
+}
+@-webkit-keyframes materia {
+  0% {
+    background: #E0E0E0;
   }
-  .profile-card .profile-bio {
-    width: auto;
-    height: auto;
-    padding: 55px 20px 35px;
-    display: block;
-    float: none;
+  50% {
+    -webkit-border-radius: 4px;
   }
-  .profile-social-links {
-    width: 100%;
-    display: block;
-    float: none;
+  100% {
+    width: 260px;
+    height: 420px;
+    background: #FFFFFF;
+    -webkit-border-radius: 4px;
   }
-  @ -webkit-keyframes materia {
-    0% {
-      background: #E0E0E0;
-    }
-    50% {
-      -webkit-border-radius: 4px;
-    }
-    100% {
-      width: 260px;
-      height: 420px;
-      background: #FFFFFF;
-      -webkit-border-radius: 4px;
-    }
+}
+@keyframes materia {
+  0% {
+    background: #E0E0E0;
   }
-  @keyframes materia {
-    0% {
-      background: #E0E0E0;
-    }
-    50% {
-      border-radius: 4px;
-    }
-    100% {
-      width: 260px;
-      height: 420px;
-      background: #FFFFFF;
-      border-radius: 4px;
-    }
+  50% {
+    border-radius: 4px;
+  }
+  100% {
+    width: 260px;
+    height: 420px;
+    background: #FFFFFF;
+    border-radius: 4px;
   }
 }
