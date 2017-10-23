@@ -6,12 +6,15 @@ LINK: https://dalinhuang99.github.io/
 
 
 ## TODO: 
+* re-design page 1
+* social links
 * mobile responsive
-* page 1
 
 
 ## Overall progress... (65% complete)
 
+#### Oct 22, 2017
+* minor update
 
 #### Oct 19 - Oct 20, 2017
 * Page 3 update, Blockchain (SHA-256) style for working experience section
