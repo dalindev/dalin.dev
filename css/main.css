@@ -233,7 +233,7 @@ body.dragging .nav-pointer {
 }
 
 .truncate small {
-  font-size: 0.75em;
+  font-weight: 300;
   text-overflow: ellipsis;
 }
 
