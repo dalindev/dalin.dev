@@ -229,6 +229,11 @@ body.dragging .nav-pointer {
 .truncate {
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncate small {
+  text-overflow: ellipsis;
 }
 
 .one-block pre {
