@@ -4,7 +4,7 @@
 
 ---
 
-## TODO: 
+## TO-DO: 
 * ~~redesign page 1~~
 * more social links (add codepen, jsfiddle etc...)
 * mobile responsive
