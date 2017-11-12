@@ -187,6 +187,30 @@ body.dragging .nav-pointer {
 .about-me__content {
     font-size: 16px;
 }
+
+/* ----------------------
+  particales js
+------------------------*/
+#changestyle {
+    position: absolute;
+    top: 45px;
+    right: 125px;
+    z-index: 9999;
+}
+/* ----------------------
+  particales js
+------------------------*/
+#particles-js {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(35,39,65);
+  background-image: url("");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
 /* ----------------------
   parallax-window
 ------------------------*/
