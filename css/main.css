@@ -197,9 +197,6 @@ body.dragging .nav-pointer {
     right: 125px;
     z-index: 9999;
 }
-/* ----------------------
-  particales js
-------------------------*/
 #particles-js {
   position: absolute;
   width: 100vw;
@@ -232,6 +229,13 @@ body.dragging .nav-pointer {
   position: absolute;
   bottom: 5%;
 }*/
+
+.flx-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .latest-block {
   border-color: aqua;
 }
@@ -247,6 +251,7 @@ body.dragging .nav-pointer {
   box-sizing: border-box;
   line-height: 1;
   min-width: 500px;
+  max-width: 50%;
   text-align: left;
 }
 
