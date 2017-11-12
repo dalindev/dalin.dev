@@ -5,13 +5,16 @@
 	<title>DALIN H</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- link to main stylesheet -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <!-- bootstrap 4.0.0-beta.2 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="css/main.css?v=2017.10.30_2">
+
+    <!-- main style -->
+    <link rel="stylesheet" type="text/css" href="css/main.css?v=2017.11.11">
+
 	<!-- Global Site Tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107490980-1"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 	<script>
 	  window.dataLayer = window.dataLayer || [];
@@ -37,8 +40,8 @@
             <span id="selstyle">Style Default</span>
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#" data-val="defaultspace">Style Default</a></li>
-            <li><a class="dropdown-item" href="#" data-val="link">Style Links</a></li>
+            <li><a class="dropdown-item" href="#" data-val="default">Style Default</a></li>
+            <li><a class="dropdown-item" href="#" data-val="space">Style Space</a></li>
             <li><a class="dropdown-item" href="#" data-val="snow">Style Snow</a></li>
           </ul>
         </div>
@@ -49,16 +52,16 @@
                     <div class="profile-card">
                         <header>
                             <!-- avatar -->
-                            <a target="_blank" href="#">
-                                <img src="img/hd.jpg">
+                            <a>
+                                <img src="img/hd.jpg" class="unselectable">
                             </a>
                             <!-- name -->
-                            <h1>Dalin Huang</h1>
+                            <h1 class="unselectable">Dalin Huang</h1>
                             <!-- role -->
-                            <h2>Full Stack Developer</h2>
+                            <h2 class="unselectable">Full Stack Developer</h2>
                         </header>
                         <div class="profile-bio">
-                            <p>
+                            <p class="unselectable">
                                 Passionate about technology
                                 <br>Hacker + Ninjia
                             </p>
@@ -94,7 +97,7 @@
         <section>
             <div class="about-me">
                 <div class="text-center">
-                <img src="img/about-me.png" height="100" width="550">
+                <img class="unselectable" src="img/about-me.png" height="100" width="550">
                 <br><br>
                 </div>
                 <div class="clearfix"></div>
@@ -244,9 +247,14 @@ Amazon Linux version 2017.09 is available.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
         <script src="lib/parallax.js-1.4.2/parallax.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
         <!-- particles js -->
         <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+        <!-- bootstrap 4.0.0-beta.2 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
 
         <script>
         $(document).ready(function() {
@@ -256,10 +264,10 @@ Amazon Linux version 2017.09 is available.
             $('#changestyle .dropdown-menu a').click(function(){
                 var style = $(this).data('val');
                 switch(style) {
-                    case 'defaultspace':
+                    case 'default':
                         styleDefault();
                          break;
-                    case 'link':
+                    case 'space':
                         styleSpace();
                         break;
                     case 'snow':
@@ -296,7 +304,7 @@ Amazon Linux version 2017.09 is available.
                 // console.log(idx);
 
                 var typeChar = function() {
-                  var rand = Math.round(Math.random() * 200) + 20;
+                  var rand = Math.round(Math.random() * 150) + 20;
 
                   setTimeout(function() {
                     var char = content[charIdx++];
