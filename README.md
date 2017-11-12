@@ -6,7 +6,7 @@
 
 
 ## TODO: 
-* ~~re-design page 1~~
+* ~~redesign page 1~~
 * more social links (add codepen, jsfiddle etc...)
 * mobile responsive
 
