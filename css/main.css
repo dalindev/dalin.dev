@@ -261,6 +261,10 @@ body.dragging .nav-pointer {
   text-align: left;
 }
 
+.one-block:hover {
+  background: #cccccc;
+}
+
 .truncate {
   white-space: nowrap;
   overflow: hidden;
