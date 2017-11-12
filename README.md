@@ -6,12 +6,16 @@
 
 
 ## TODO: 
-* re-design page 1
-* social links
+* ~~re-design page 1~~
+* more social links (add codepen, jsfiddle etc...)
 * mobile responsive
 
 
-## Overall progress... (65% complete)
+## Overall progress... (75% complete)
+
+#### Nov 11, 2017
+* redesign/update page 1
+* style fixes, added particles-js, added btn to switch style (page 1)
 
 #### Oct 22, 2017
 * minor update
