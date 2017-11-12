@@ -1,5 +1,5 @@
 
-:sunglasses::sunglasses::sunglasses:
+:sunglasses::sunglasses::flushed::sunglasses::sunglasses:
 ### LINK: https://dalinhuang99.github.io/
 
 ---
