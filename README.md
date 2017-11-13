@@ -11,6 +11,7 @@
 ## To-Do: 
 * ~~redesign page 1~~
 * more social links (add codepen, jsfiddle etc...)
+* add page 4 (experience, interest, passion, projects...)
 * mobile responsive
 
 
