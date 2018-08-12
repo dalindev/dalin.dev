@@ -8,15 +8,6 @@
 
 ---
 
-## To-Do: 
-* ~~redesign page 1~~
-* more social links (add codepen, jsfiddle etc...)
-* add page 4 (experience, interest, passion, projects...)
-* mobile responsive
-
-
-## Overall progress... (75% complete)
-
 #### Nov 11, 2017
 * redesign/update page 1
 * style fixes, added particles-js, added btn to switch style (page 1)
