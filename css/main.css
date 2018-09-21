@@ -8,38 +8,38 @@
 	Timeline
 ------------------------*/
 .wrap {
-    margin: 0 auto;
-    max-width: 1140px;
-    padding: 0 20px;
+  margin: 0 auto;
+  max-width: 1140px;
+  padding: 0 20px;
 }
 
 header {
-    position: relative;
-    z-index: 999;
+  position: relative;
+  z-index: 999;
 }
 
 section {
-    height: 100vh;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-transition: .5s ease;
-    transition: .5s ease;
-    box-sizing: border-box;
-    overflow: hidden;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-transition: .5s ease;
+  transition: .5s ease;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 section.intro {
-    text-align: center;
+  text-align: center;
 }
 
 section.intro h2,
 section.intro h5 {
-    font-weight: 300;
-    margin-bottom: 10px;
+  font-weight: 300;
+  margin-bottom: 10px;
 }
 
 h1,
@@ -49,112 +49,112 @@ h4,
 h5,
 h6,
 p {
-    color: #222;
+  color: #222;
 }
 
 h1 {
-    font-size: 8vw;
-    font-family: serif;
-    font-weight: bold;
+  font-size: 8vw;
+  font-family: serif;
+  font-weight: bold;
 }
 
 p {
-    line-height: 1.4;
-    margin-bottom: 18px;
+  line-height: 1.4;
+  margin-bottom: 18px;
 }
 
 body.dragging section {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
-    -webkit-transform-origin: center center;
-    transform-origin: center center;
+  -webkit-transform: scale(0.8);
+  transform: scale(0.8);
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
 }
 
 .slider-navigation {
-    position: fixed;
-    top: 5%;
-    right: 1vw;
-    height: 90%;
-    width: 4px;
-    background: #222;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
+  position: fixed;
+  top: 5%;
+  right: 1vw;
+  height: 90%;
+  width: 4px;
+  background: #222;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
 .slider-navigation .tick {
-    display: none;
-    position: relative;
-    cursor: pointer;
-    height: 4px;
-    width: 20px;
-    background: #222;
+  display: none;
+  position: relative;
+  cursor: pointer;
+  height: 4px;
+  width: 20px;
+  background: #222;
 }
 
 .slider-navigation .tick:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-    height: 40px;
-    width: 100%;
-    z-index: -1;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: 40px;
+  width: 100%;
+  z-index: -1;
 }
 
 .slider-navigation .nav-pointer {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: #222;
-    color: white;
-    font-weight: 300;
-    font-size: 12px;
-    padding: 3px 8px;
-    cursor: pointer;
-    height: 22px;
-    width: 44px;
-    text-align: center;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #222;
+  color: white;
+  font-weight: 300;
+  font-size: 12px;
+  padding: 3px 8px;
+  cursor: pointer;
+  height: 22px;
+  width: 44px;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .slider-navigation .nav-pointer:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-    height: 40px;
-    width: 100%;
-    z-index: -1;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: 40px;
+  width: 100%;
+  z-index: -1;
 }
 
 body.dragging {
-    cursor: -webkit-grab;
-    cursor: grab;
+  cursor: -webkit-grab;
+  cursor: grab;
 }
 
 body.dragging .nav-pointer {
-    -webkit-transition: none;
-    transition: none;
+  -webkit-transition: none;
+  transition: none;
 }
 
 .unselectable{
-  -webkit-user-select: none; /* Safari */        
+  -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
@@ -164,44 +164,44 @@ body.dragging .nav-pointer {
   Section about-me
 ------------------------*/
 .about-me {
-    background-color: black;
-    padding: 25px;
-    border: 2px solid lime;
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
+  background-color: black;
+  padding: 25px;
+  border: 2px solid lime;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 }
 
 .about-me * {
-    background-color: black;
-    color: lime;
-    font-family: Courier New;
-    box-sizing: border-box;
+  background-color: black;
+  color: lime;
+  font-family: Courier New;
+  box-sizing: border-box;
 }
 
 .output {
-    color: white;
+  color: white;
 }
 .active:after {
-    content: '_';
+  content: '_';
 }
 
 .hideme {
-    display: none;
+  display: none;
 }
 
 .about-me__content {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 /* ----------------------
   particales js
 ------------------------*/
 #changestyle {
-    position: absolute;
-    top: 45px;
-    right: 125px;
-    z-index: 9999;
+  position: absolute;
+  top: 45px;
+  right: 125px;
+  z-index: 9999;
 }
 #particles-js {
   position: absolute;
@@ -301,21 +301,21 @@ body.dragging .nav-pointer {
 /* ----------------------
   social-links color
 ------------------------*/
-  .fa-facebook {
-    color: #3b5998
-  }
+.fa-facebook {
+  color: #3b5998
+}
 
-  .fa-stack-overflow {
-    color: #FF5722;
-  }
+.fa-stack-overflow {
+  color: #FF5722;
+}
 
-  .fa-github-alt {
-    color: black;
-  }
+.fa-github-alt {
+  color: black;
+}
 
-  .fa-linkedin {
-    color: #007bb6;
-  }
+.fa-linkedin {
+  color: #007bb6;
+}
 
 /* ----------------------
   name card
