@@ -8,6 +8,23 @@
 
 ---
 
+**Note: if you would like to clone this mini profolio page:**
+
+Remove the google anayltic at the head of `index.html` please 🙏(or setup one for yourself 😃)
+
+```
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107490980-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments)};
+        gtag('js', new Date());
+        gtag('config', 'UA-107490980-1');
+    </script>
+```
+
+---
+
 #### Nov 11, 2017
 * redesign/update page 1
 * style fixes, added particles-js, added btn to switch style (page 1)
