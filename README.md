@@ -8,9 +8,9 @@
 
 ---
 
-**Note: if you would like to clone this mini profolio page:**
+**Note: if you would like to clone this mini portfolio page:**
 
-Remove the google anayltic at the head of `index.html` please 🙏(or setup one for yourself 😃)
+Remove the google analytics code at the head of `index.html` please 🙏(or setup one for yourself 😃)
 
 ```
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
