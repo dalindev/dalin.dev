@@ -702,7 +702,7 @@ body.dragging .nav-pointer {
   body:before {
     width: 0px;
   }
-  @ -webkit-keyframes puff {
+  @-webkit-keyframes puff {
     0% {
       top: 100%;
       width: 0px;
