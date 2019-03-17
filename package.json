@@ -1,0 +1,43 @@
+{
+  "name": "dalinhuang99.github.io",
+  "version": "1.0.0",
+  "description": "### LINK: https://dalinhuang99.github.io/",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-custom-element-classes": "^0.1.0",
+    "document-register-element": "^1.13.1",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7",
+    "webpack": "^4.29.6"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.10",
+    "webpack-cli": "^3.3.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "build": "webpack -p",
+    "postinstall": "npm run build",
+    "server": "node ./server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbbatista/dalinhuang99.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mbbatista/dalinhuang99.github.io/issues"
+  },
+  "homepage": "https://github.com/mbbatista/dalinhuang99.github.io#readme"
+}
