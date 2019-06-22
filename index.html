@@ -40,7 +40,7 @@
                 <span id="selstyle">Style Space</span>
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" data-val="default">Style Default</a></li>
+                <li><a class="dropdown-item" href="#" data-val="default">Style Block</a></li>
                 <li><a class="dropdown-item" href="#" data-val="space">Style Space</a></li>
                 <li><a class="dropdown-item" href="#" data-val="snow">Style Snow</a></li>
             </ul>
@@ -277,7 +277,26 @@ Amazon Linux version 2017.09 is available.
         <script>
             $(document).ready(function () {
 
-                styleSpace();
+                // random style on page load
+                let display_text = ''
+                switch (Math.round(Math.random() * 2 + 1)) {
+                    case 1:
+                        styleDefault();
+                        display_text = 'Style Block'
+                        break;
+                    case 2:
+                        styleSpace();
+                        display_text = 'Style Space'
+                        break;
+                    case 3:
+                        styleSnow();
+                        display_text = 'Style Snow'
+                        break;
+                    default:
+                        styleSpace();
+                        display_text = 'Style Block'
+                }
+                $('#selstyle').text(display_text);
 
                 $('#changestyle .dropdown-menu a').click(function () {
                     var style = $(this).data('val');
