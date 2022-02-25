@@ -25,6 +25,9 @@ Remove the google analytics code at the head of `index.html` please 🙏(or setu
 
 ---
 
+#### Feb 25, 2022
+* update, remove facebook link and add twitter link, new block #6
+
 #### Nov 11, 2017
 * redesign/update page 1
 * style fixes, added particles-js, added btn to switch style (page 1)
