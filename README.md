@@ -24,6 +24,9 @@ Remove the google analytics code at the head of `index.html` please 🙏(or setu
 ```
 
 ---
+#### May 4, 2022
+* domain update: dalin.dev
+
 
 #### Feb 25, 2022
 * update, remove facebook link and add twitter link, new block #6
