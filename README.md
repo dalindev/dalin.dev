@@ -1,6 +1,6 @@
 ## Portfolio site 2017
 
-### LINK: https://dalinhuang99.github.io/
+### LINK: https://dalin.dev
 
 :sunglasses::sunglasses::sunglasses: <br>
 :sunglasses::flushed::sunglasses: <br>
