@@ -175,7 +175,6 @@ body.dragging .nav-pointer {
 .about-me * {
   background-color: black;
   color: lime;
-  font-family: Courier New;
   box-sizing: border-box;
 }
 
@@ -248,7 +247,7 @@ body.dragging .nav-pointer {
 
 .one-block {
   /*   width: 250px; */
-  font-family: "Maven Pro", sans-serif;
+  font-family: 'Open Sans', monospace;
   border-style: dashed;
   padding: 10px 10px 0;
   display: inline-block;
@@ -704,7 +703,8 @@ body.dragging .nav-pointer {
 @media screen and (min-aspect-ratio: 4/3) {
   body {
     background-size: cover;
-  }
+    font-family: 'Gemunu Libre', sans-serif;
+}
   body:before {
     width: 0px;
   }
