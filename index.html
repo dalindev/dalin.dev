@@ -3,162 +3,287 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dalin Huang - Portfolio</title>
+    <title>Dalin Huang's Portfolio</title>
+    <!-- Add the latest CSS and JavaScript packages here -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
     />
-    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.9.2/cdn.min.js"></script>
   </head>
-  <body>
-    <header class="bg-dark text-white py-4">
-      <div class="container">
-        <h1 class="display-4">Dalin Huang</h1>
-        <p>Senior Product Developer | Co-Founder | Full Stack Developer</p>
-        <div class="d-flex">
-          <a href="https://www.linkedin.com/in/dalinhuang" class="me-3"
-            >LinkedIn</a
-          >
-          <a href="https://github.com/dalindev" class="me-3">GitHub</a>
-          <a href="mailto:dhuan023@gmail.com" class="me-3">Email</a>
-          <p class="me-3">(647) 927-2292</p>
+  <body class="bg-gray-100 text-gray-800">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+      <div class="container mx-auto px-4 py-6">
+        <div class="flex items-center justify-between">
+          <div class="text-2xl font-bold">Dalin Huang</div>
+          <nav>
+            <a
+              href="https://www.linkedin.com/in/dalin-huang"
+              target="_blank"
+              rel="noopener"
+              class="mx-2"
+              >LinkedIn</a
+            >
+            <a
+              href="https://github.com/dalinhuang"
+              target="_blank"
+              rel="noopener"
+              class="mx-2"
+              >GitHub</a
+            >
+            <a href="mailto:dhuan023@gmail.com" class="mx-2">Email</a>
+          </nav>
         </div>
       </div>
     </header>
 
-    <main class="container my-5">
-      <section id="about" class="mb-5">
-        <h2>About</h2>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+      <!-- Introduction -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-4">Professional Summary</h2>
         <p>
-          Dalin Huang is a versatile developer with experience in multiple
-          languages and frameworks, such as Typescript, JavaScript, HTML5, CSS3,
-          Node.js, Python, Ruby, PHP, Perl, and more. Fluent in English and
-          native in Mandarin, Dalin has co-founded HiNature Ltd and worked as a
-          Senior Product Developer at Orium.com, a Full Stack Developer at
-          FarmLead, and a Developer at Shopify.
+          Experienced software developer with a strong background in full-stack
+          development, team leadership, and project management. Proficient in
+          multiple programming languages, frameworks, and cloud technologies,
+          with a track record of delivering high-quality, efficient, and
+          innovative solutions.
         </p>
       </section>
 
-      <section id="experience" class="mb-5">
-        <h2>Experience</h2>
-        <div class="timeline">
-          <div class="timeline-item">
-            <h5>
-              Senior Product Developer (Orium.com)
-              <span>May 2022 – Present</span>
-            </h5>
-            <p>
-              Product team, building high-performance headless commerce starter
-              kit, maintaining NPM packages, collaborating on open-source
-              projects and tools, managing and mentoring devs, and more.
-            </p>
+      <!-- Skills -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-4">Relevant Skills & Abilities</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="bg-white shadow p-4">
+            <h3 class="text-xl font-semibold mb-2">Languages & Frameworks</h3>
+            <ul>
+              <li>Front-End: Typescript, JavaScript, HTML5, CSS3</li>
+              <li>Back-End: Node.js, Python, Ruby, PHP, Perl</li>
+              <li>
+                Frameworks: Next.js, Ruby on Rails, Django, Flask, Vue.js,
+                Express, Backbone.js, CodeIgniter
+              </li>
+            </ul>
           </div>
-          <div class="timeline-item">
-            <h5>
-              Co-Founder & Developer (HiNature Ltd)
-              <span>June 2019 – Apr 2022</span>
-            </h5>
-            <p>
-              Co-founded to create microbiome-friendly, eco-friendly, natural
-              cosmetics. Developed a scanner app, collaborated with marketing
-              teams, built and trained a small IT admin team in China.
-            </p>
+          <div class="bg-white shadow p-4">
+            <h3 class="text-xl font-semibold mb-2">Cloud & Data</h3>
+            <ul>
+              <li>AWS (EC2, RDS, S3, SQS, ELB, Lambda)</li>
+              <li>TenCent Cloud</li>
+              <li>MySQL, PostgreSQL, Redis, Elasticsearch</li>
+            </ul>
           </div>
-          <div class="timeline-item">
-            <h5>Developer (Shopify) <span>May 2019 – Feb 2020</span></h5>
-            <p>
-              Worked on Shopify Money/Capital team, contributed to design and
-              implementation of projects, pair programming, and refactoring the
-              capital offer decision tree.
-            </p>
-          </div>
-          <div class="timeline-item">
-            <h5>
-              Full Stack Developer (FarmLead) <span>Feb 2017 – May 2019</span>
-            </h5>
-            <p>
-              Designed, built, and maintained backend servers and admin systems,
-              learned Salesforce, and worked with AWS technologies.
-            </p>
-          </div>
-          <div class="timeline-item">
-            <h5>
-              Software Application Developer (i-sight.com)
-              <span>March 2016 – Feb 2017</span>
-            </h5>
-            <p>
-              Full-stack developer, lead/core developer for three major
-              projects, worked with various technologies such as Node.js,
-              Backbone.js, PostgreSQL, JavaScript, HTML5, CSS3, Bootstrap,
-              Elasticsearch, Git, and Redis.
-            </p>
-          </div>
-          <div class="timeline-item">
-            <h5>
-              Web Developer (Events.com) <span>March 2015 – March 2016</span>
-            </h5>
-            <p>
-              Full-stack developer at Events.com Ottawa office, built and
-              maintained online event registration services, worked with PHP5,
-              JavaScript, Perl, MySQL, CodeIgniter, Angularjs, and Bootstrap3.
-            </p>
+          <div class="bg-white shadow p-4">
+            <h3 class="text-xl font-semibold mb-2">Languages</h3>
+            <ul>
+              <li>Fluent in English</li>
+              <li>Native in Mandarin</li>
+            </ul>
           </div>
         </div>
       </section>
+      <!-- Experience -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-4">Relevant Work Experience</h2>
+        <div class="bg-white shadow p-4 mb-8">
+          <h3 class="text-xl font-semibold mb-2">
+            Senior Product Developer (Orium.com)
+            <span class="text-sm font-normal">May 2022 – Present</span>
+          </h3>
+          <ul>
+            <li>
+              Building high-performance, fully accessible e-commerce starter kit
+              using Typescript, Next.js, and React.
+            </li>
+            <li>
+              Developed and maintained NPM packages for project teams, including
+              tools, hooks, services, integrations, utils, CLI, and UI
+              components.
+            </li>
+            <li>
+              Collaborated with external partners to provide feedback and
+              suggestions on headless API and services.
+            </li>
+            <li>Mentored and managed developers during special projects.</li>
+            <li>
+              Researched and experimented with open-source projects and new
+              technologies.
+            </li>
+          </ul>
+        </div>
+        <div class="bg-white shadow p-4 mb-8">
+          <h3 class="text-xl font-semibold mb-2">
+            Co-Founder & Developer (HiNature Ltd)
+            <span class="text-sm font-normal">Jun 2019 – Apr 2022</span>
+          </h3>
+          <ul>
+            <li>
+              Co-founded eco-friendly cosmetics company with a focus on
+              microbiome-friendly products.
+            </li>
+            <li>
+              Developed a WeChat scanner app that analyzes 35,000 ingredients
+              with 95% accuracy.
+            </li>
+            <li>
+              Collaborated with marketing teams to promote products both online
+              and offline.
+            </li>
+            <li>Built and trained a small IT admin team in China.</li>
+            <li>Transitioned to a part-time role in 2022.</li>
+          </ul>
+        </div>
+        <div class="bg-white shadow p-4 mb-8">
+          <h3 class="text-xl font-semibold mb-2">
+            Developer (Shopify)
+            <span class="text-sm font-normal">May 2019 – Feb 2020</span>
+          </h3>
+          <ul>
+            <li>Shopify Money/Capital team.</li>
+            <li>
+              Collaborated closely with project managers to contribute to the
+              design and implementation of new projects, leveraging strong
+              programming skills and technical expertise to develop high-quality
+              and reliable software solutions.
+            </li>
+            <li>
+              Engaged in pair programming with team members, fostering a
+              collaborative and supportive team environment and actively
+              contributing to code review and feedback.
+            </li>
+            <li>
+              Successfully refactored the capital offer decision tree, which
+              generated a significant number of loan offers for eligible shops
+              every day. The refactoring significantly improved the decision
+              tree's efficiency, making it more convenient to run, update, and
+              test, resulting in streamlined development processes and improved
+              developer productivity for the Capital team.
+            </li>
+          </ul>
+        </div>
 
-      <section id="projects" class="mb-5">
-        <h2>Projects</h2>
-        <div class="row">
-          <div class="col-md-6 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">PayPaw</h5>
-                <p class="card-text">A payment service for Bytom Blockchain.</p>
-                <a
-                  href="https://github.com/satoshi-s-vision/PayPaw-Server"
-                  class="card-link"
-                  >GitHub Repo</a
-                >
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Mining Software Optimization</h5>
-                <p class="card-text">
-                  Optimizing GPU mining software, improving overall efficiency
-                  by 30%.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">BytomDice</h5>
-                <p class="card-text">
-                  A cryptocurrency betting site for Bytom Blockchain.
-                </p>
-                <a
-                  href="https://github.com/satoshi-s-vision/blockchain-random-number-algorithm"
-                  class="card-link"
-                  >GitHub Repo</a
-                >
-              </div>
-            </div>
-          </div>
+        <!-- Add more work experiences here -->
+      </section>
+
+      <!-- Education -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-4">Education</h2>
+        <div class="bg-white shadow p-4">
+          <h3 class="text-xl font-semibold mb-2">
+            BSc: Specialization in Computer Science; Minor in Economics
+            <span class="text-sm font-normal">2009 - 2014</span>
+          </h3>
+          <p>University of Ottawa, ON</p>
+        </div>
+      </section>
+
+      <!-- Other Projects -->
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-4">Other Project Experience</h2>
+        <div class="bg-white shadow p-4 mb-8">
+          <h3 class="text-xl font-semibold mb-2">
+            PayPaw (A payment service for Bytom Blockchain)
+            <span class="text-sm font-normal">Jul 2019 – 2021</span>
+          </h3>
+          <ul>
+            <li>
+              Competed with over 50 teams to win 1st place in a dev challenge.
+            </li>
+            <li>
+              Built a Node.js server (Payment logic, Public API, and Auth API)
+              and website front end.
+            </li>
+            <li>
+              Configured AWS services including EC2, RDS, ELB, and Route 53.
+            </li>
+            <li>
+              Collaborated with a teammate who developed a Go Server for
+              handling on-chain transactions.
+            </li>
+            <li>
+              <a
+                href="https://www.youtube.com/watch?v=demo_video"
+                target="_blank"
+                rel="noopener"
+                >Demo video on YouTube</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="bg-white shadow p-4 mb-8">
+          <h3 class="text-xl font-semibold mb-2">
+            Mining Software Optimization
+            <span class="text-sm font-normal">2020</span>
+          </h3>
+          <ul>
+            <li>
+              Invited to optimize a mining company's GPU mining software,
+              written in C++.
+            </li>
+            <li>
+              Improved overall efficiency by 30% through precalculating work and
+              caching results for seed groups.
+            </li>
+          </ul>
+        </div>
+        <div class="bg-white shadow p-4 mb-8">
+          <h3 class="text-xl font-semibold mb-2">
+            BytomDice (A cryptocurrency betting site for Bytom Blockchain)
+            <span class="text-sm font-normal">Jan 2019 – 2020</span>
+          </h3>
+          <ul>
+            <li>
+              Developed a cryptocurrency on-chain betting site with no
+              registration required.
+            </li>
+            <li>
+              Built the backend, frontend, and UI of the site, while a partner
+              worked on RPC calls and handled on-chain transactions.
+            </li>
+            <li>
+              Reached 1,000 daily active users at peak, but the service was
+              sunsetted after two years due to lack of growth and high cost.
+            </li>
+            <li>
+              <a
+                href="https://github.com/dalinhuang/bytomdice"
+                target="_blank"
+                rel="noopener"
+                >GitHub repository</a
+              >
+            </li>
+          </ul>
         </div>
       </section>
     </main>
-
-    <footer class="bg-dark text-white py-3">
-      <div class="container">
-        <p>&copy; Dalin Huang. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-white shadow-md">
+      <div class="container mx-auto px-4 py-6">
+        <div class="flex items-center justify-between">
+          <div class="text-gray-500">
+            &copy; Dalin Huang. All rights reserved.
+          </div>
+          <nav>
+            <a
+              href="https://www.linkedin.com/in/dalin-huang"
+              target="_blank"
+              rel="noopener"
+              class="mx-2"
+              >LinkedIn</a
+            >
+            <a
+              href="https://github.com/dalinhuang"
+              target="_blank"
+              rel="noopener"
+              class="mx-2"
+              >GitHub</a
+            >
+            <a href="mailto:dhuan023@gmail.com" class="mx-2">Email</a>
+          </nav>
+        </div>
       </div>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
   </body>
 </html>
