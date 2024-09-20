@@ -496,14 +496,12 @@
         const block = document.createElement("div")
         block.className = "block"
         const hash = generateHash()
-        const timestamp = generateTimestamp(job.date)
 
         block.innerHTML = `
           <div class="block-header">
             <span class="block-height">Block #${height}</span>
             <span class="block-hash">${hash}</span>
           </div>
-          <div class="block-timestamp">${timestamp}</div>
           <div class="block-content">
             <div class="title">${job.title}</div>
             <div class="company">${job.company}</div>
@@ -512,14 +510,6 @@
           </div>
         `
         return block
-      }
-
-      function generateTimestamp(dateString) {
-        const [startDate, endDate] = dateString.split(" – ")
-        const [month, year] = startDate.split(" ")
-        const isCurrent = endDate === "Present"
-        const date = isCurrent ? new Date() : new Date(`${year}-${month}-01`)
-        return date.toISOString()
       }
 
       function renderBlockchain() {
