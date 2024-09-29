@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dalin Huang - Senior Full Stack Developer Portfolio</title>
+    <meta
+      name="description"
+      content="Dalin Huang's portfolio showcasing experience as a Senior Full Stack Developer, projects, and skills in web development and blockchain technology."
+    />
+    <meta
+      name="keywords"
+      content="Dalin Huang, Full Stack Developer, Web Development, Blockchain, React, Node.js, JavaScript"
+    />
+    <link rel="canonical" href="https://dalin.dev" />
+    <!-- Replace 'https://your-domain.com' with your actual domain -->
+    <!-- <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    /> -->
+    <style>
+      body,
+      html {
+        font-family: "Roboto Mono", monospace;
+        background-color: #000011;
+        color: #00ff00;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: 1;
+      }
+      h1 {
+        text-align: center;
+        color: #00ff00;
+        text-shadow: 0 0 10px #00ff00;
+      }
+      .block {
+        background-color: rgba(26, 31, 44, 0.8);
+        border: 1px solid #2a3040;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 40px;
+        position: relative;
+        transition: all 0.3s ease;
+        transform-style: preserve-3d;
+      }
+
+      .block::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -30px;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 20px;
+        background-color: #00ff00;
+        animation: pulseConnector 2s infinite;
+      }
+
+      .block:last-child::after {
+        display: none;
+      }
+
+      @keyframes pulseConnector {
+        0%,
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .block-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #00ff00;
+      }
+      .block-height {
+        font-size: 1.2em;
+        color: #00ff00;
+        font-weight: bold;
+      }
+      .block-hash {
+        font-size: 0.8em;
+        color: #888;
+        word-break: break-all;
+      }
+
+      @media (max-width: 600px) {
+        .block-hash {
+          display: none;
+        }
+      }
+
+      .block-content {
+        background-color: rgba(0, 255, 0, 0.05);
+        border-radius: 3px;
+        padding: 10px;
+      }
+      .title {
+        font-weight: bold;
+        color: #00ff00;
+        margin-bottom: 5px;
+      }
+      .company {
+        color: #0099ff;
+      }
+      .date {
+        color: #ff9900;
+      }
+      .description {
+        margin-top: 10px;
+      }
+      @media (max-width: 600px) {
+        .container {
+          padding: 10px;
+        }
+        .block {
+          padding: 15px;
+        }
+      }
+      .glow {
+        animation: glow 1.5s ease-in-out infinite alternate;
+      }
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+        }
+        to {
+          text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+        }
+      }
+      #space-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .star {
+        position: absolute;
+        background-color: #ffffff;
+        border-radius: 50%;
+        animation: twinkle 1s infinite alternate;
+      }
+      @keyframes twinkle {
+        0% {
+          opacity: 0.3;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .tabs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+        padding: 0px;
+      }
+
+      .tab {
+        background-color: rgba(26, 31, 44, 0.8);
+        border: 1px solid #2a3040;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      .tab:hover,
+      .tab.active {
+        background-color: rgba(0, 255, 0, 0.2);
+      }
+
+      @media (max-width: 600px) {
+        .tabs {
+          grid-template-columns: 1fr;
+          padding: 0;
+        }
+
+        .tab {
+          padding: 10px 5px;
+        }
+
+        .container {
+          padding: 10px 5px;
+        }
+      }
+
+      .content {
+        display: none;
+      }
+
+      .content.active {
+        display: block;
+      }
+
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .project-card {
+        background-color: rgba(26, 31, 44, 0.8);
+        border: 1px solid #2a3040;
+        border-radius: 5px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 255, 0, 0.1);
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 255, 0, 0.2);
+      }
+
+      .project-card h3 {
+        color: #00ff00;
+        margin-bottom: 15px;
+        font-size: 1.2em;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 1px solid #00ff00;
+        padding-bottom: 10px;
+      }
+
+      .project-card .date {
+        color: #ff9900;
+        font-size: 0.9em;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .project-card p {
+        margin-bottom: 0;
+      }
+
+      .project-card a {
+        color: #00ff00;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .project-card a:hover {
+        text-shadow: 0 0 5px #00ff00;
+      }
+
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+
+      .skill-category {
+        background-color: rgba(26, 31, 44, 0.8);
+        border: 1px solid #2a3040;
+        border-radius: 5px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 255, 0, 0.1);
+      }
+
+      .skill-category:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 255, 0, 0.2);
+      }
+
+      .skill-category h3 {
+        color: #00ff00;
+        margin-bottom: 15px;
+        font-size: 1.2em;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 1px solid #00ff00;
+        padding-bottom: 10px;
+      }
+
+      .skill-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .skill-list li {
+        margin-bottom: 8px;
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .skill-list li::before {
+        content: "▹";
+        position: absolute;
+        left: 0;
+        color: #00ff00;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="space-background"></div>
+    <div class="container">
+      <h1 class="glow">Dalin Huang</h1>
+
+      <div class="tabs">
+        <div class="tab active" data-tab="experience">Experience</div>
+        <div class="tab" data-tab="projects">Projects</div>
+        <div class="tab" data-tab="skills">Skills</div>
+      </div>
+
+      <div id="experience" class="content active">
+        <div id="blockchain"></div>
+      </div>
+
+      <div id="projects" class="content">
+        <div class="project-grid">
+          <!-- Project cards will be dynamically added here -->
+        </div>
+      </div>
+
+      <div id="skills" class="content">
+        <div class="skills-grid">
+          <!-- Skill categories will be dynamically added here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const career = [
+        {
+          title: "Senior Full Stack Developer",
+          company: "Real Simple Labs",
+          date: "Dec 2023 – Present",
+          description:
+            "Revolutionized web app performance, achieving 80% bundle size reduction and 5x faster loading times. Integrated advanced payment processing and rebuilt backend using Supabase and Next.js.",
+        },
+        {
+          title: "Senior Product Developer",
+          company: "Orium.com",
+          date: "May 2022 – Dec 2023",
+          description:
+            "Developed modular headless commerce starter kit with 90+ Lighthouse scores. Led security, accessibility, and performance enhancements. Created innovative theme system using Figma tokens and Chakra UI.",
+        },
+        {
+          title: "Developer",
+          company: "Shopify",
+          date: "May 2019 – Feb 2020",
+          description:
+            "Worked on Shopify Money/Capital team. Contributed to projects resulting in significant revenue increases. Refactored capital offer decision tree, improving efficiency and testability.",
+        },
+        {
+          title: "Founder & Developer",
+          company: "HiNature Ltd",
+          date: "Jun 2019 – Present",
+          description:
+            "Co-founded eco-friendly cosmetics company. Developed WeChat scanner app analyzing 35,000 ingredients with 95% accuracy. Built and trained IT admin team in China.",
+        },
+        {
+          title: "Full Stack Developer",
+          company: "Combyne Ag",
+          date: "Feb 2017 – May 2019",
+          description:
+            "Built and maintained backend servers, developed admin systems, and integrated Salesforce. Utilized AWS services including EC2, S3, RDS, SQS, ELB, and Lambda.",
+        },
+        {
+          title: "Software Application Developer",
+          company: "i-sight.com",
+          date: "Mar 2016 – Feb 2017",
+          description:
+            "Led major projects as full-stack developer using Backbone.js, Node.js, Seneca.js, and PostgreSQL. Utilized various technologies including Elasticsearch, Git, and Redis.",
+        },
+        {
+          title: "Web Developer",
+          company: "Events.com",
+          date: "Mar 2015 – Mar 2016",
+          description:
+            "Developed and maintained online event registration services using LAMP stack. Worked with technologies including PHP5, JavaScript, Perl, MySQL, CodeIgniter, AngularJS, and Bootstrap3.",
+        },
+      ]
+
+      const projects = [
+        {
+          title: "xnohub.com",
+          date: "2024",
+          description:
+            "Real-time visualizer for Nano currency network, showcasing live transactions and major nodes on a 3D globe with interactive effects.",
+          link: "https://xnohub.com",
+        },
+        {
+          title: "LocalXNO.com",
+          date: "2024",
+          description:
+            "Nano marketplace using Next.js, Supabase, PostgreSQL, and various Google APIs for enhanced functionality.",
+          link: "https://localxno.com",
+        },
+        {
+          title: "Composable UI",
+          date: "2022 – 2023",
+          description:
+            "Open-source React and Next.js tool for building custom commerce storefronts. Features a UI library, Figma Kit, and integrations with Algolia and Stripe.",
+          link: "https://composable.com/composable-ui",
+        },
+        {
+          title: "PayPaw",
+          date: "Jul 2019 – 2021",
+          description:
+            "A payment service for Bytom Blockchain. Won first place in a dev challenge project with a USD $30,000 prize.",
+        },
+        {
+          title: "Mining Software",
+          date: "2020",
+          description:
+            "Optimized C++ GPU mining software, boosting efficiency by 30% through caching.",
+        },
+        {
+          title: "Bytom Dice",
+          date: "Jan 2019 – 2020",
+          description:
+            "Developed a cryptocurrency on-chain betting site for Bytom Blockchain.",
+        },
+      ]
+
+      const skills = {
+        "Front-End": [
+          "React",
+          "Tailwind",
+          "Shadcn/UI",
+          "Chakra UI",
+          "Typescript",
+          "JavaScript",
+          "HTML5",
+          "CSS3",
+        ],
+        "Back-End": [
+          "Node.js",
+          "Typescript",
+          "Python",
+          "Ruby",
+          "PHP",
+          "Perl",
+          "Java",
+        ],
+        Cloud: [
+          "Supabase",
+          "GCP",
+          "Firebase",
+          "Vercel",
+          "Netlify",
+          "AWS (EC2, RDS, S3, SQS, ELB, Lambda)",
+          "TenCent Cloud",
+          "Google API",
+        ],
+        Data: [
+          "Supabase",
+          "Firebase",
+          "MySQL",
+          "PostgreSQL",
+          "Redis",
+          "Elasticsearch",
+        ],
+        Frameworks: [
+          "Next.js",
+          "Remix",
+          "Ruby on Rails",
+          "Django",
+          "Flask",
+          "Vue.js",
+          "Express",
+          "Backbone.js",
+          "CodeIgniter",
+        ],
+        "AI Tools": ["ChatGPT", "Claude", "Cursor", "Grok"],
+      }
+
+      function generateHash() {
+        return (
+          "0x" +
+          Array.from({ length: 64 }, () =>
+            Math.floor(Math.random() * 16).toString(16)
+          ).join("")
+        )
+      }
+
+      let blockHeight = 0
+
+      function createBlock(job, height) {
+        const block = document.createElement("div")
+        block.className = "block"
+        const hash = generateHash()
+
+        block.innerHTML = `
+          <div class="block-header">
+            <span class="block-height">Block #${height}</span>
+            <span class="block-hash">${hash}</span>
+          </div>
+          <div class="block-content">
+            <div class="title">${job.title}</div>
+            <div class="company">${job.company}</div>
+            <div class="date">${job.date}</div>
+            <div class="description">${job.description}</div>
+          </div>
+        `
+        return block
+      }
+
+      function renderBlockchain() {
+        const blockchain = document.getElementById("blockchain")
+        blockHeight = career.length
+
+        career.forEach((job, index) => {
+          const block = createBlock(job, blockHeight - index)
+          blockchain.appendChild(block)
+        })
+      }
+
+      function renderProjects() {
+        const projectGrid = document.querySelector(".project-grid")
+        projects.forEach((project) => {
+          const projectCard = document.createElement("div")
+          projectCard.className = "project-card"
+
+          let titleHTML = `<h3>${project.title}</h3>`
+          if (project.link) {
+            titleHTML = `<h3><a href="${project.link}" target="_blank" rel="noopener noreferrer">${project.title}</a></h3>`
+          }
+
+          projectCard.innerHTML = `
+            ${titleHTML}
+            <div class="date">${project.date}</div>
+            <p>${project.description}</p>
+          `
+          projectGrid.appendChild(projectCard)
+        })
+      }
+
+      function renderSkills() {
+        const skillsGrid = document.querySelector(".skills-grid")
+        for (const [category, skillList] of Object.entries(skills)) {
+          const skillCategory = document.createElement("div")
+          skillCategory.className = "skill-category"
+          skillCategory.innerHTML = `
+            <h3>${category}</h3>
+            <ul class="skill-list">
+              ${skillList.map((skill) => `<li>${skill}</li>`).join("")}
+            </ul>
+          `
+          skillsGrid.appendChild(skillCategory)
+        }
+      }
+
+      function updateBlockOrientation(event) {
+        const blocks = document.querySelectorAll(".block")
+        blocks.forEach((block) => {
+          const rect = block.getBoundingClientRect()
+          const blockCenterX = rect.left + rect.width / 2
+          const blockCenterY = rect.top + rect.height / 2
+
+          const angleX = -(event.clientY - blockCenterY) / 100
+          const angleY = (event.clientX - blockCenterX) / 100
+
+          block.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg)`
+        })
+      }
+
+      function createStars() {
+        const spaceBackground = document.getElementById("space-background")
+        const starCount = 200
+
+        for (let i = 0; i < starCount; i++) {
+          const star = document.createElement("div")
+          star.className = "star"
+          star.style.width = `${Math.random() * 2}px`
+          star.style.height = star.style.width
+          star.style.left = `${Math.random() * 100}%`
+          star.style.top = `${Math.random() * 100}%`
+          star.style.animationDuration = `${Math.random() * 3 + 1}s`
+          star.style.animationDelay = `${Math.random() * 3}s`
+
+          spaceBackground.appendChild(star)
+        }
+      }
+
+      function switchTab(tabName) {
+        document
+          .querySelectorAll(".tab")
+          .forEach((tab) => tab.classList.remove("active"))
+        document
+          .querySelectorAll(".content")
+          .forEach((content) => content.classList.remove("active"))
+        document
+          .querySelector(`.tab[data-tab="${tabName}"]`)
+          .classList.add("active")
+        document.getElementById(tabName).classList.add("active")
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderBlockchain()
+        renderProjects()
+        renderSkills()
+        createStars()
+        document.addEventListener("mousemove", updateBlockOrientation)
+
+        document.querySelectorAll(".tab").forEach((tab) => {
+          tab.addEventListener("click", () => switchTab(tab.dataset.tab))
+        })
+      })
+    </script>
+
+    <!-- Add this just before the closing </body> tag -->
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name": "Dalin Huang",
+        "jobTitle": "Senior Full Stack Developer",
+        "url": "https://dalin.dev",
+        "sameAs": [
+          "https://www.linkedin.com/in/dalinhuang/",
+          "https://github.com/dalindev"
+        ]
+      }
+    </script>
+  </body>
+</html>
