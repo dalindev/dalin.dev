@@ -3,6 +3,10 @@
 Thanks to Claude 3.5 Sonnet for a complete rewrite of the portfolio site.
 And achieve 100% for both lighthouse scores for both mobile and desktop. (Well it is just a static html though LOL)
 
+![Screenshot 2024-09-29 at 12 46 27 PM](https://github.com/user-attachments/assets/e9038fd1-990c-42d5-af5c-49158399e942)
+
+![Screenshot 2024-09-29 at 12 44 22 PM](https://github.com/user-attachments/assets/4ff4eec7-dc07-4f42-b352-058429449010)
+
 
 ### LINK: https://dalin.dev
 
@@ -11,23 +15,14 @@ And achieve 100% for both lighthouse scores for both mobile and desktop. (Well i
 :sunglasses::sunglasses::sunglasses: <br>
 
 ---
+#### 2024
+* Claude 3.5 Sonnet for a complete rewrite of the portfolio site!
+* 100% lighthouse scores (Well it is just a static html though LOL)
 
-**Note: if you would like to clone this mini portfolio page:**
+#### 2023
+* rewrite with GPT4
 
-Remove the google analytics code at the head of `index.html` please 🙏(or setup one for yourself 😃)
 
-```
-    <!-- Global Site Tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107490980-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments)};
-        gtag('js', new Date());
-        gtag('config', 'UA-107490980-1');
-    </script>
-```
-
----
 #### May 4, 2022
 * domain update: dalin.dev
 
