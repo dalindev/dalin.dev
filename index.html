@@ -494,13 +494,13 @@
       88%, 92%      { opacity: 0.45; }
     }
 
-    /* ─── White desk with 4 visible legs (subtle perspective) ─── */
-    /* z-index 2: behind bot/chair but in front of monitor in depth */
+    /* ─── White desk — BIG, behind everything, extends under chair+bot ─── */
+    /* z-index 2: bot+chair sit IN FRONT of the desk; chair appears to be AT the desk */
     .desk-top {
       position: absolute;
-      top: 62%;
+      top: 42%;
       left: 4%; right: 4%;
-      height: 12%;
+      height: 30%;
       background:
         linear-gradient(180deg, #ffffff 0%, #f5f3e8 55%, #c8c5b6 100%);
       border-radius: 5px 5px 10px 10px;
@@ -529,11 +529,11 @@
       box-shadow: 1px 0 2px rgba(0,0,0,0.20);
       border-radius: 0 0 1px 1px;
     }
-    .desk-leg.fl, .desk-leg.fr { top: 74%; width: 5px; height: 21%; }
+    .desk-leg.fl, .desk-leg.fr { top: 72%; width: 5px; height: 23%; }
     .desk-leg.fl { left: 6%; }
     .desk-leg.fr { right: 6%; }
     .desk-leg.bl, .desk-leg.br {
-      top: 70%; width: 4px; height: 18%;
+      top: 68%; width: 4px; height: 20%;
       background: linear-gradient(180deg, #9c9889 0%, #56544a 100%);
       box-shadow: none;
     }
@@ -543,7 +543,7 @@
     /* ─── Apple Magic Keyboard on desk ─── */
     .desk-keyboard {
       position: absolute;
-      top: 66%;
+      top: 64%;
       left: 26%; right: 26%;
       height: 9px;
       background:
@@ -582,7 +582,7 @@
     /* ─── Magic Trackpad next to keyboard ─── */
     .desk-trackpad {
       position: absolute;
-      top: 66%;
+      top: 64%;
       right: 17%;
       width: 7%;
       height: 9px;
@@ -598,7 +598,7 @@
     /* ─── Items on the desk, positioned to LEFT/RIGHT past the chair ─── */
     .desk-items {
       position: absolute;
-      top: 58%;
+      top: 47%;
       left: 0; right: 0;
       display: flex; justify-content: space-between;
       padding: 0 7%;
@@ -633,28 +633,25 @@
     }
 
     /* ─── Bot: head + shoulders + arms reaching to keyboard ─── */
-    /* z-index 4: behind the chair (which is foreground) */
+    /* z-index 4: in front of desk, behind chair back */
     .desk-bot {
       position: absolute;
-      top: 28%;
+      top: 30%;
       left: 50%; transform: translateX(-50%);
-      width: 90px; height: 100px;
+      width: 86px; height: 96px;
       z-index: 4;
       color: var(--bot-color, var(--accent-warn));
     }
     .desk-bot svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
     .desk-bot .led-glow { animation: pulseDot 1.8s ease-in-out infinite; transform-origin: center; }
     .desk.offline .desk-bot { display: none; }
-    /* Idle bots droop forward (sleeping at desk) */
-    .desk.idle .desk-bot svg { transform: translateY(4px) rotate(-3deg); }
-
     /* ─── Short white chair back — FOREGROUND, covers bot's mid-body ─── */
     /* z-index 5: closest to viewer (you stand BEHIND the chair) */
     .desk-chair-back {
       position: absolute;
-      top: 50%;
+      top: 53%;
       left: 50%; transform: translateX(-50%);
-      width: 20%; height: 12%;
+      width: 22%; height: 11%;
       background: linear-gradient(180deg, #f5f5f0 0%, #d8d4c4 100%);
       border-radius: 6px 6px 4px 4px;
       z-index: 5;
@@ -665,9 +662,9 @@
     /* z-index 5: same foreground level as the chair back */
     .desk-chair {
       position: absolute;
-      bottom: 0;
+      bottom: 2%;
       left: 50%; transform: translateX(-50%);
-      width: 28%; height: 24%;
+      width: 28%; height: 22%;
       z-index: 5;
     }
     .desk-chair svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.20)); }
@@ -1694,15 +1691,15 @@
       </svg>
     `;
 
-    /* Bot: head + shoulders + two arms reaching forward toward keyboard.
-       From back view we see back-of-head, neck, shoulders, and the arms angling down/forward. */
+    /* Wall-E inspired bot — boxy/square head, big eye-modules, two arms typing.
+       Back view: we see the back of the squarish head + back of body + arms reaching forward. */
     const SVG_BOT = (uid) => `
-      <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <svg viewBox="0 0 80 96" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="bh-${uid}" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#4a5160"/>
-            <stop offset="55%"  stop-color="#262c38"/>
-            <stop offset="100%" stop-color="#11141b"/>
+            <stop offset="0%"   stop-color="#5a6273"/>
+            <stop offset="55%"  stop-color="#2e3340"/>
+            <stop offset="100%" stop-color="#161b25"/>
           </linearGradient>
           <linearGradient id="bb-${uid}" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%"   stop-color="#2a3040"/>
@@ -1710,39 +1707,84 @@
           </linearGradient>
         </defs>
         <!-- Antenna with brand-colored LED -->
-        <line x1="40" y1="2" x2="40" y2="10" stroke="#1a1f2b" stroke-width="1.6" stroke-linecap="round"/>
-        <circle cx="40" cy="2" r="4.2" fill="currentColor" opacity="0.32" class="led-glow"/>
-        <circle cx="40" cy="2" r="2.3" fill="currentColor"/>
-        <!-- Head: ovoid, back view -->
-        <path d="M 22 28 Q 22 12 40 12 Q 58 12 58 28 L 58 40 Q 58 48 40 48 Q 22 48 22 40 Z"
-              fill="url(#bh-${uid})"/>
-        <!-- Top highlight -->
-        <path d="M 27 19 Q 40 12 53 19" stroke="rgba(255,255,255,0.12)" stroke-width="0.6" fill="none"/>
-        <!-- Centerline seam -->
-        <line x1="40" y1="14" x2="40" y2="46" stroke="rgba(255,255,255,0.06)" stroke-width="0.4"/>
-        <!-- Ear modules -->
-        <rect x="19" y="28" width="3" height="8" rx="1" fill="#1a1f2b"/>
-        <rect x="58" y="28" width="3" height="8" rx="1" fill="#1a1f2b"/>
-        <circle cx="20.5" cy="32" r="0.9" fill="currentColor" opacity="0.85"/>
-        <circle cx="59.5" cy="32" r="0.9" fill="currentColor" opacity="0.85"/>
-        <!-- Brand-colored patch on back of head -->
-        <rect x="31" y="36" width="18" height="5.5" rx="1.8" fill="currentColor" opacity="0.85"/>
-        <!-- Neck -->
-        <rect x="35" y="48" width="10" height="5" fill="#1a1f2b"/>
-        <!-- Shoulders + upper torso -->
-        <path d="M 12 90 Q 16 60 28 56 Q 40 58 52 56 Q 64 60 68 90 Z"
+        <line x1="40" y1="2" x2="40" y2="11" stroke="#1a1f2b" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="40" cy="2" r="4.5" fill="currentColor" opacity="0.32" class="led-glow"/>
+        <circle cx="40" cy="2" r="2.5" fill="currentColor"/>
+        <!-- Wall-E SQUARE-ish head with rounded corners -->
+        <rect x="20" y="13" width="40" height="36" rx="7" fill="url(#bh-${uid})"/>
+        <!-- Top edge highlight ridge -->
+        <path d="M 24 17 L 56 17" stroke="rgba(255,255,255,0.15)" stroke-width="0.8" stroke-linecap="round"/>
+        <!-- Centerline seam down back of head -->
+        <line x1="40" y1="15" x2="40" y2="47" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <!-- Big chunky ear modules (Wall-E-style binocular ears) -->
+        <rect x="15" y="22" width="6" height="14" rx="2" fill="#1a1f2b"/>
+        <rect x="59" y="22" width="6" height="14" rx="2" fill="#1a1f2b"/>
+        <circle cx="18" cy="29" r="1.4" fill="currentColor"/>
+        <circle cx="62" cy="29" r="1.4" fill="currentColor"/>
+        <!-- Brand-colored ID patch on back -->
+        <rect x="29" y="34" width="22" height="7" rx="2" fill="currentColor" opacity="0.85"/>
+        <!-- Small bolts on corners (Wall-E construction style) -->
+        <circle cx="23" cy="16" r="0.8" fill="rgba(255,255,255,0.20)"/>
+        <circle cx="57" cy="16" r="0.8" fill="rgba(255,255,255,0.20)"/>
+        <circle cx="23" cy="46" r="0.8" fill="rgba(255,255,255,0.20)"/>
+        <circle cx="57" cy="46" r="0.8" fill="rgba(255,255,255,0.20)"/>
+        <!-- Neck (short rectangular) -->
+        <rect x="34" y="49" width="12" height="5" rx="1" fill="#1a1f2b"/>
+        <!-- Shoulders + body -->
+        <path d="M 11 96 Q 15 60 28 56 Q 40 58 52 56 Q 65 60 69 96 Z"
               fill="url(#bb-${uid})"/>
-        <!-- Centerline body seam -->
-        <line x1="40" y1="58" x2="40" y2="86" stroke="rgba(255,255,255,0.05)" stroke-width="0.4"/>
-        <!-- Left arm reaching forward (toward keyboard, going down and slightly inward) -->
-        <path d="M 17 70 Q 13 80 18 88 L 26 90 L 30 88 Q 28 80 26 72 Z"
+        <line x1="40" y1="58" x2="40" y2="90" stroke="rgba(255,255,255,0.05)" stroke-width="0.4"/>
+        <!-- Left arm reaching forward (toward keyboard) -->
+        <path d="M 16 70 Q 12 82 18 92 L 26 94 L 30 92 Q 28 82 26 72 Z"
               fill="url(#bb-${uid})"/>
         <!-- Right arm reaching forward -->
-        <path d="M 63 70 Q 67 80 62 88 L 54 90 L 50 88 Q 52 80 54 72 Z"
+        <path d="M 64 70 Q 68 82 62 92 L 54 94 L 50 92 Q 52 82 54 72 Z"
               fill="url(#bb-${uid})"/>
-        <!-- Hands (small ovals at end of arms) -->
-        <ellipse cx="26" cy="89" rx="4" ry="2.5" fill="#3a4150"/>
-        <ellipse cx="54" cy="89" rx="4" ry="2.5" fill="#3a4150"/>
+        <!-- Hands -->
+        <ellipse cx="26" cy="93" rx="4.5" ry="3" fill="#3a4150"/>
+        <ellipse cx="54" cy="93" rx="4.5" ry="3" fill="#3a4150"/>
+      </svg>
+    `;
+
+    /* Sleeping bot — side view, head tilted forward, eye closed, peaceful smile.
+       Used for idle agents (GPT 5.5 backup, Whisper v4 audio). */
+    const SVG_BOT_SLEEP = (uid) => `
+      <svg viewBox="0 0 80 96" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="bhs-${uid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#5a6273"/>
+            <stop offset="55%"  stop-color="#2e3340"/>
+            <stop offset="100%" stop-color="#161b25"/>
+          </linearGradient>
+          <linearGradient id="bbs-${uid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#2a3040"/>
+            <stop offset="100%" stop-color="#11141b"/>
+          </linearGradient>
+        </defs>
+        <!-- Head tilted forward + to the side; rendered as a group with rotation -->
+        <g transform="rotate(-22 40 32)">
+          <!-- Antenna -->
+          <line x1="40" y1="6" x2="40" y2="14" stroke="#1a1f2b" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="40" cy="6" r="3.5" fill="currentColor" opacity="0.30" class="led-glow"/>
+          <circle cx="40" cy="6" r="2" fill="currentColor"/>
+          <!-- Square Wall-E head -->
+          <rect x="20" y="16" width="40" height="36" rx="7" fill="url(#bhs-${uid})"/>
+          <!-- Side ear visible -->
+          <rect x="56" y="26" width="7" height="14" rx="2" fill="#1a1f2b"/>
+          <circle cx="59.5" cy="33" r="1.5" fill="currentColor" opacity="0.55"/>
+          <!-- CLOSED EYE on visible side of face (smile curve) -->
+          <path d="M 30 32 Q 36 35 42 32" stroke="#ffffff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.85"/>
+          <!-- Tiny peaceful smile -->
+          <path d="M 36 42 Q 39 44 42 42" stroke="rgba(255,255,255,0.5)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+          <!-- Brand patch on visible side of head -->
+          <rect x="24" y="42" width="12" height="5" rx="1.6" fill="currentColor" opacity="0.7"/>
+        </g>
+        <!-- Slumped shoulders + body (relaxed) -->
+        <path d="M 13 96 Q 17 64 28 58 Q 40 60 52 58 Q 63 64 67 96 Z"
+              fill="url(#bbs-${uid})"/>
+        <!-- Arms relaxed at sides (NOT reaching forward) -->
+        <ellipse cx="18" cy="82" rx="4.5" ry="11" fill="url(#bbs-${uid})" transform="rotate(-8 18 82)"/>
+        <ellipse cx="62" cy="82" rx="4.5" ry="11" fill="url(#bbs-${uid})" transform="rotate(8 62 82)"/>
       </svg>
     `;
 
@@ -1817,7 +1859,7 @@
               <div class="left">${(a.items.left||[]).map(item).join('')}</div>
               <div class="right">${(a.items.right||[]).map(item).join('')}</div>
             </div>
-            <div class="desk-bot">${SVG_BOT(a.id)}</div>
+            <div class="desk-bot">${a.status === 'idle' ? SVG_BOT_SLEEP(a.id) : SVG_BOT(a.id)}</div>
             <div class="desk-chair-back"></div>
             <div class="desk-chair">${SVG_CHAIR(a.id)}</div>
             ${a.status === 'idle'    ? '<div class="desk-fx zzz">z<sub>Z</sub>z</div>' : ''}
