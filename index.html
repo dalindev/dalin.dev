@@ -493,24 +493,42 @@
       position: absolute; top: 0; left: 0;
       transform-origin: 0 0;
       font-family: var(--mono);
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.10em;
-      padding: 3px 7px;
-      background: rgba(4, 6, 12, 0.78);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 4px 8px;
+      background: rgba(4, 6, 12, 0.82);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
       border-radius: 2px;
       white-space: nowrap;
-      margin-top: 14px;
-      margin-left: 10px;
-      will-change: transform;
-      transition: opacity 200ms ease-out;
+      margin-top: 10px;
+      margin-left: 8px;
+      will-change: transform, font-size, opacity;
+      transition: opacity 220ms ease-out, font-size 220ms ease-out, padding 220ms ease-out, color 220ms ease-out, border-color 220ms ease-out, box-shadow 220ms ease-out;
     }
     .sm-label .name { display: inline-block; }
-    .sm-label .sub { color: var(--ink-faint); margin-left: 6px; font-weight: 400; font-size: 8px; }
-    .sm-label-role    { color: var(--accent-live); border: 1px solid rgba(74, 222, 128, 0.45); }
-    .sm-label-project { color: var(--accent-link); border: 1px solid rgba(96, 165, 250, 0.40); font-size: 8px; }
-    .sm-label-skill   { color: var(--accent-warn); font-size: 8px; padding: 1px 5px; background: rgba(4, 6, 12, 0.6); }
+    .sm-label .sub  { color: var(--ink-faint); margin-left: 6px; font-weight: 400; font-size: 9px; }
+
+    .sm-label-role    { color: var(--accent-live); border: 1px solid rgba(74, 222, 128, 0.50); font-size: 11px; }
+    .sm-label-project { color: var(--accent-link); border: 1px solid rgba(96, 165, 250, 0.45); font-size: 10px; }
+    .sm-label-skill   { color: var(--accent-warn); font-size: 9px; padding: 2px 6px; background: rgba(4, 6, 12, 0.68); }
+
+    /* When a node is selected, related labels grow + pop; others shrink + dim */
+    .sm-label.highlighted {
+      z-index: 20;
+      padding: 6px 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+    }
+    .sm-label-role.highlighted    { font-size: 14px; color: var(--ink-strong); background: rgba(74,222,128,0.18); border-color: var(--accent-live); box-shadow: 0 4px 16px rgba(0,0,0,0.45), var(--glow-live); }
+    .sm-label-project.highlighted { font-size: 12px; color: var(--ink-strong); background: rgba(96,165,250,0.18); border-color: var(--accent-link); box-shadow: 0 4px 16px rgba(0,0,0,0.45), var(--glow-link); }
+    .sm-label-skill.highlighted   { font-size: 11px; color: var(--ink-strong); background: rgba(251,191,36,0.20); border: 1px solid var(--accent-warn); box-shadow: 0 0 10px rgba(251,191,36,0.45); }
+
+    .sm-label.dimmed {
+      opacity: 0.22 !important;
+      font-size: 8px !important;
+      padding: 2px 5px !important;
+      filter: saturate(0.4);
+    }
 
     /* ─── Boot sequence ─── */
     .boot {
@@ -1131,33 +1149,46 @@
       SM.group.add(ring);
       SM._hubRing = ring;
 
-      // ============ ROLES: spheres at custom positions ============
+      // ============ ROLES: tiny anchor dots — labels are the visual ============
       ROLES.forEach(r => {
         const pos = ROLE_POSITIONS[r.id] || [0, 0, 0];
-        const radius = 0.28 + Math.min(r.tenure / 6, 0.12);
-        const geo = new THREE.SphereGeometry(radius, 24, 24);
+        const radius = 0.11 + Math.min(r.tenure / 12, 0.05);
+        const geo = new THREE.SphereGeometry(radius, 18, 18);
         const mat = new THREE.MeshBasicMaterial({ color: 0x4ade80, transparent: true, opacity: 1 });
         const mesh = new THREE.Mesh(geo, mat);
         mesh.position.set(...pos);
         mesh.userData = { type: 'role', id: r.id, name: r.name, period: r.period, payload: r, color: 0x4ade80, baseRadius: radius };
         SM.group.add(mesh);
-        SM.nodes.push({ mesh, type: 'role', id: r.id, name: r.name, period: r.period, payload: r, baseScale: 1 });
+        // Larger invisible hit sphere for easier clicking
+        const hitGeo = new THREE.SphereGeometry(0.4, 8, 8);
+        const hitMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
+        const hit = new THREE.Mesh(hitGeo, hitMat);
+        hit.position.copy(mesh.position);
+        hit.userData = { ...mesh.userData, isHitProxy: true };
+        SM.group.add(hit);
+        SM.nodes.push({ mesh, hit, type: 'role', id: r.id, name: r.name, period: r.period, payload: r, baseScale: 1 });
       });
 
-      // ============ PROJECTS: small spheres near parent role ============
+      // ============ PROJECTS: tiny dots near parent role ============
       const projAnchors = {};
       PROJECTS.forEach((p, i) => {
         const parentPos = ROLE_POSITIONS[p.at] || PERSONAL_ANCHOR;
         const a = i * 1.7;
         const offset = [Math.cos(a) * 0.75, Math.sin(a * 1.3) * 0.35, Math.sin(a) * 0.75];
         const pos = parentPos.map((c, idx) => c + offset[idx]);
-        const geo = new THREE.SphereGeometry(0.17, 18, 18);
+        const geo = new THREE.SphereGeometry(0.07, 14, 14);
         const mat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 1 });
         const mesh = new THREE.Mesh(geo, mat);
         mesh.position.set(...pos);
-        mesh.userData = { type: 'project', id: p.id, name: p.name, period: p.year, payload: p, color: 0x60a5fa, baseRadius: 0.17 };
+        mesh.userData = { type: 'project', id: p.id, name: p.name, period: p.year, payload: p, color: 0x60a5fa, baseRadius: 0.07 };
         SM.group.add(mesh);
-        SM.nodes.push({ mesh, type: 'project', id: p.id, name: p.name, period: p.year, payload: p, baseScale: 1 });
+        const hitGeo = new THREE.SphereGeometry(0.28, 8, 8);
+        const hitMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
+        const hit = new THREE.Mesh(hitGeo, hitMat);
+        hit.position.copy(mesh.position);
+        hit.userData = { ...mesh.userData, isHitProxy: true };
+        SM.group.add(hit);
+        SM.nodes.push({ mesh, hit, type: 'project', id: p.id, name: p.name, period: p.year, payload: p, baseScale: 1 });
         projAnchors[p.id] = pos;
       });
 
@@ -1443,15 +1474,77 @@
       return SM.edges.some(e => (e.a === a && e.b === b) || (e.a === b && e.b === a));
     }
 
+    /* Build the set of nodes related to a clicked/hovered node.
+       Click a role  → role + its skills + projects done there + those projects' skills + hub
+       Click a project → project + parent role + its skills + hub
+       Click a skill → skill + every role and project that uses it + hub */
+    function getRelatedNodes(node) {
+      const set = new Set();
+      if (!node) return set;
+      set.add(node);
+      const hub = SM.nodes.find(n => n.type === 'hub');
+      if (hub) set.add(hub);
+
+      if (node.type === 'role') {
+        const r = node.payload;
+        (r.skills || []).forEach(s => {
+          const sn = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+          if (sn) set.add(sn);
+        });
+        PROJECTS.filter(p => p.at === r.id).forEach(p => {
+          const pn = SM.nodes.find(n => n.type === 'project' && n.id === p.id);
+          if (pn) {
+            set.add(pn);
+            (p.skills || []).forEach(s => {
+              const sn = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+              if (sn) set.add(sn);
+            });
+          }
+        });
+      } else if (node.type === 'project') {
+        const p = node.payload;
+        if (p.at && p.at !== 'personal') {
+          const rn = SM.nodes.find(n => n.type === 'role' && n.id === p.at);
+          if (rn) set.add(rn);
+        }
+        (p.skills || []).forEach(s => {
+          const sn = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+          if (sn) set.add(sn);
+        });
+      } else if (node.type === 'skill') {
+        ROLES.filter(r => (r.skills || []).includes(node.id)).forEach(r => {
+          const rn = SM.nodes.find(n => n.type === 'role' && n.id === r.id);
+          if (rn) set.add(rn);
+        });
+        PROJECTS.filter(p => (p.skills || []).includes(node.id)).forEach(p => {
+          const pn = SM.nodes.find(n => n.type === 'project' && n.id === p.id);
+          if (pn) set.add(pn);
+        });
+      }
+      return set;
+    }
+
     function setHighlight(node) {
+      const related = node ? getRelatedNodes(node) : null;
+
       SM.nodes.forEach(n => {
-        const isHi = !node || n === node || (node.type !== 'hub' && isConnected(node, n));
+        const isHi = !related || related.has(n);
         n.mesh.material.opacity = isHi ? 1 : 0.18;
+        const label = SM.labels?.[n.id];
+        if (label) {
+          label.classList.toggle('highlighted', !!(related && related.has(n) && n.type !== 'hub'));
+          label.classList.toggle('dimmed',      !!(related && !related.has(n)));
+        }
       });
+
       SM.edges.forEach(e => {
-        const isHi = !node || e.a === node || e.b === node;
-        e.line.material.opacity = isHi ? Math.max(e.baseOpacity, 0.7) : 0.04;
+        const isHi = !related || (related.has(e.a) && related.has(e.b));
+        e.line.material.opacity = isHi ? Math.max(e.baseOpacity, 0.75) : 0.03;
       });
+
+      // Dim the ghost network too so the path really pops
+      if (SM.ghostPoints) SM.ghostPoints.material.opacity = node ? 0.35 : 0.85;
+      if (SM.ghostLines)  SM.ghostLines.material.opacity  = node ? 0.04 : 0.10;
     }
 
     function flyTo(node) {
@@ -1499,9 +1592,18 @@
         SM.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
         SM.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
         SM.raycaster.setFromCamera(SM.mouse, SM.camera);
-        const meshes = SM.nodes.map(n => n.mesh).filter(m => m.visible !== false);
-        const hits = SM.raycaster.intersectObjects(meshes);
-        return hits.length ? SM.nodes.find(n => n.mesh === hits[0].object) : null;
+        // Use big hit-proxies for roles/projects (small visible dots are hard to click);
+        // skill sprites are big enough on their own.
+        const targets = [];
+        SM.nodes.forEach(n => {
+          if (!n.mesh.visible) return;
+          if (n.hit) targets.push(n.hit);
+          else       targets.push(n.mesh);
+        });
+        const hits = SM.raycaster.intersectObjects(targets);
+        if (!hits.length) return null;
+        const hitObj = hits[0].object;
+        return SM.nodes.find(n => n.mesh === hitObj || n.hit === hitObj);
       }
 
       function showTip(node, e) {
@@ -1518,23 +1620,43 @@
 
       canvas.addEventListener('mousemove', e => {
         const node = pickNode(e);
+        canvas.style.cursor = (node && node.type !== 'hub') ? 'pointer' : 'grab';
+        // If something is locked-selected, keep its highlight; only update tooltip
+        if (SM.selected) {
+          if (node && node.type !== 'hub') showTip(node, e); else hideTip();
+          return;
+        }
         if (node && node.type !== 'hub') {
           if (SM.hovered !== node) { SM.hovered = node; setHighlight(node); }
           showTip(node, e);
-          canvas.style.cursor = 'pointer';
         } else {
           if (SM.hovered) { SM.hovered = null; setHighlight(null); }
           hideTip();
-          canvas.style.cursor = 'grab';
         }
       });
       canvas.addEventListener('mouseleave', () => {
-        SM.hovered = null; setHighlight(null); hideTip();
+        SM.hovered = null;
+        if (!SM.selected) setHighlight(null);
+        hideTip();
       });
 
       canvas.addEventListener('click', e => {
         const node = pickNode(e);
-        if (!node || node.type === 'hub') { setHighlight(null); SM.selected = null; return; }
+        if (!node || node.type === 'hub') {
+          // Click empty space or hub → clear selection
+          SM.selected = null;
+          SM.hovered = null;
+          setHighlight(null);
+          return;
+        }
+        // Toggle: clicking already-selected node clears it
+        if (SM.selected === node) {
+          SM.selected = null;
+          setHighlight(null);
+          return;
+        }
+        SM.selected = node;
+        setHighlight(node);
         flyTo(node);
         flashCardFor(node);
       });
@@ -1542,9 +1664,19 @@
       canvas.addEventListener('dblclick', e => {
         const node = pickNode(e);
         if (!node || node.type === 'hub') return;
+        SM.selected = node;
+        setHighlight(node);
         flyTo(node);
         setTimeout(() => dolly(0.7), 100);
         flashCardFor(node);
+      });
+
+      // ESC clears selection globally
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && SM.selected) {
+          SM.selected = null;
+          setHighlight(null);
+        }
       });
     }
 
@@ -1627,7 +1759,7 @@
           }
           if (q === 'reset') { setSearchHighlight(null); search.value = ''; return; }
           const match = SM.nodes.find(n => n.name && n.name.toLowerCase().includes(q));
-          if (match) { flyTo(match); flashCardFor(match); }
+          if (match) { SM.selected = match; setHighlight(match); flyTo(match); flashCardFor(match); }
           search.blur();
         }
         if (e.key === 'Escape') { search.value = ''; setSearchHighlight(null); search.blur(); }
