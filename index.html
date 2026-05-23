@@ -722,9 +722,9 @@
     <div class="v" id="version-bottom">BUILD · 2026.1</div>
   </footer>
 
-  <!-- Three.js (r148 — last UMD version with non-module OrbitControls) -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.148.0/build/three.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.148.0/examples/js/controls/OrbitControls.js" defer></script>
+  <!-- Three.js (r147 — last version with UMD examples/js/OrbitControls) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js" defer></script>
 
   <script>
     const ROLES = [
@@ -977,6 +977,12 @@
 
       const vp = document.getElementById('sm-viewport');
       const fallback = document.getElementById('sm-fallback');
+
+      // Guard: if viewport hasn't laid out yet, defer init
+      if (vp.clientWidth === 0 || vp.clientHeight === 0) {
+        return setTimeout(buildSystemMap, 100);
+      }
+
       fallback.style.display = 'none';
 
       const w = vp.clientWidth, h = vp.clientHeight;
@@ -989,7 +995,7 @@
       SM.camera.position.set(5, 2.5, 6.5);
       SM.camera.lookAt(0, 0, 0);
 
-      SM.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      SM.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
       SM.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       SM.renderer.setSize(w, h);
       SM.renderer.setClearColor(0x000000, 0);
@@ -1009,17 +1015,9 @@
         });
       }
 
-      SM.scene.add(new THREE.HemisphereLight(0xffffff, 0x223355, 0.7));
-      const point = new THREE.PointLight(0xaaccff, 1.0, 30);
-      point.position.set(0, 0, 0);
-      SM.scene.add(point);
-
-      // Hub
+      // Hub (flat-shaded BasicMaterial — works without lighting, looks crisp)
       const hubGeo = new THREE.IcosahedronGeometry(0.42, 1);
-      const hubMat = new THREE.MeshStandardMaterial({
-        color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.55,
-        roughness: 0.25, metalness: 0.4, transparent: true,
-      });
+      const hubMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 });
       const hub = new THREE.Mesh(hubGeo, hubMat);
       hub.userData = { type: 'hub', id: 'dalin', name: 'DALIN' };
       SM.group.add(hub);
@@ -1058,10 +1056,7 @@
 
       [...roleNodes, ...projNodes, ...skillNodes].forEach(n => {
         const geo = new THREE.SphereGeometry(n.radius, 18, 18);
-        const mat = new THREE.MeshStandardMaterial({
-          color: n.color, emissive: n.color, emissiveIntensity: 0.65,
-          roughness: 0.4, metalness: 0.3, transparent: true,
-        });
+        const mat = new THREE.MeshBasicMaterial({ color: n.color, transparent: true, opacity: 1 });
         const mesh = new THREE.Mesh(geo, mat);
         const [x, y, z] = placeNode(n);
         mesh.position.set(x, y, z);
@@ -1101,11 +1096,19 @@
 
       const onResize = () => {
         const nw = vp.clientWidth, nh = vp.clientHeight;
+        if (nw === 0 || nh === 0) return;
         SM.camera.aspect = nw / nh;
         SM.camera.updateProjectionMatrix();
         SM.renderer.setSize(nw, nh);
+        SM.renderer.render(SM.scene, SM.camera);
       };
       window.addEventListener('resize', onResize);
+
+      // ResizeObserver to catch layout changes beyond window resize
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver(onResize);
+        ro.observe(vp);
+      }
 
       animateSystemMap();
     }
