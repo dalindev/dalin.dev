@@ -491,20 +491,18 @@
     .sm-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
     .sm-label {
       position: absolute; top: 0; left: 0;
-      transform-origin: 0 0;
+      transform-origin: 50% 50%;
       font-family: var(--mono);
       font-weight: 700;
       letter-spacing: 0.08em;
-      padding: 4px 8px;
-      background: rgba(4, 6, 12, 0.82);
+      padding: 4px 9px;
+      background: rgba(4, 6, 12, 0.85);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
-      border-radius: 2px;
+      border-radius: 3px;
       white-space: nowrap;
-      margin-top: 10px;
-      margin-left: 8px;
       will-change: transform, font-size, opacity;
-      transition: opacity 220ms ease-out, font-size 220ms ease-out, padding 220ms ease-out, color 220ms ease-out, border-color 220ms ease-out, box-shadow 220ms ease-out;
+      transition: opacity 220ms ease-out, font-size 220ms ease-out, padding 220ms ease-out, color 220ms ease-out, border-color 220ms ease-out, box-shadow 220ms ease-out, background 220ms ease-out;
     }
     .sm-label .name { display: inline-block; }
     .sm-label .sub  { color: var(--ink-faint); margin-left: 6px; font-weight: 400; font-size: 9px; }
@@ -1131,64 +1129,95 @@
       const texLoader = new THREE.TextureLoader();
       texLoader.crossOrigin = 'anonymous';
 
-      // ============ HUB: Dalin's portrait as a camera-facing sprite ============
-      const photoTex = texLoader.load('img/hd.jpg');
+      // ============ HUB: Dalin's portrait, circular-masked w/ glow ring ============
+      const photoTex = (function makeCirclePhotoTexture(url, size, ringColor) {
+        const cnv = document.createElement('canvas');
+        cnv.width = size; cnv.height = size;
+        const t = new THREE.CanvasTexture(cnv);
+        const ctx = cnv.getContext('2d');
+        // Placeholder dark fill so we don't flash white
+        ctx.fillStyle = 'rgba(4,6,12,1)';
+        ctx.fillRect(0, 0, size, size);
+
+        const img = new Image();
+        img.onload = () => {
+          const cx = size/2, cy = size/2;
+          const r = size/2 - 18; // padding for glow
+
+          ctx.clearRect(0, 0, size, size);
+
+          // Outer glow (drawn first, behind)
+          for (let i = 0; i < 3; i++) {
+            ctx.save();
+            ctx.shadowColor = ringColor;
+            ctx.shadowBlur = 22 + i * 12;
+            ctx.strokeStyle = `rgba(96, 165, 250, ${0.55 - i * 0.18})`;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r + 4, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          // Photo cropped square → masked to circle
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.clip();
+          const minDim = Math.min(img.width, img.height);
+          const sx = (img.width - minDim) / 2;
+          const sy = (img.height - minDim) / 2;
+          ctx.drawImage(img, sx, sy, minDim, minDim, cx - r, cy - r, r * 2, r * 2);
+          ctx.restore();
+
+          // Crisp inner ring
+          ctx.strokeStyle = ringColor;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r + 1, 0, Math.PI * 2);
+          ctx.stroke();
+
+          t.needsUpdate = true;
+        };
+        img.onerror = e => console.warn('hd.jpg failed to load', e);
+        img.src = url;
+        return t;
+      })('img/hd.jpg', 512, '#60a5fa');
+
       const hubMat = new THREE.SpriteMaterial({ map: photoTex, transparent: true });
       const hub = new THREE.Sprite(hubMat);
-      hub.scale.set(0.95, 0.95, 1);
+      hub.scale.set(1.1, 1.1, 1);
       hub.position.set(0, 0, 0);
       hub.userData = { type: 'hub', id: 'dalin', name: 'Dalin Huang' };
       SM.group.add(hub);
-      SM.nodes.push({ mesh: hub, type: 'hub', id: 'dalin', name: 'Dalin Huang', baseScale: 0.95 });
+      SM.nodes.push({ mesh: hub, type: 'hub', id: 'dalin', name: 'Dalin Huang', baseScale: 1.1, baseOpacity: 1 });
 
-      // Small glow ring around portrait (a translucent torus for accent)
-      const ringGeo = new THREE.RingGeometry(0.52, 0.56, 64);
-      const ringMat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.5, side: THREE.DoubleSide });
-      const ring = new THREE.Mesh(ringGeo, ringMat);
-      ring.userData.isHubRing = true;
-      SM.group.add(ring);
-      SM._hubRing = ring;
-
-      // ============ ROLES: tiny anchor dots — labels are the visual ============
+      // ============ ROLES: invisible anchors only — the label IS the node ============
       ROLES.forEach(r => {
         const pos = ROLE_POSITIONS[r.id] || [0, 0, 0];
-        const radius = 0.11 + Math.min(r.tenure / 12, 0.05);
-        const geo = new THREE.SphereGeometry(radius, 18, 18);
-        const mat = new THREE.MeshBasicMaterial({ color: 0x4ade80, transparent: true, opacity: 1 });
+        const geo = new THREE.SphereGeometry(0.4, 8, 8); // hit radius
+        const mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
         const mesh = new THREE.Mesh(geo, mat);
         mesh.position.set(...pos);
-        mesh.userData = { type: 'role', id: r.id, name: r.name, period: r.period, payload: r, color: 0x4ade80, baseRadius: radius };
+        mesh.userData = { type: 'role', id: r.id, name: r.name, period: r.period, payload: r, color: 0x4ade80 };
         SM.group.add(mesh);
-        // Larger invisible hit sphere for easier clicking
-        const hitGeo = new THREE.SphereGeometry(0.4, 8, 8);
-        const hitMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
-        const hit = new THREE.Mesh(hitGeo, hitMat);
-        hit.position.copy(mesh.position);
-        hit.userData = { ...mesh.userData, isHitProxy: true };
-        SM.group.add(hit);
-        SM.nodes.push({ mesh, hit, type: 'role', id: r.id, name: r.name, period: r.period, payload: r, baseScale: 1 });
+        SM.nodes.push({ mesh, type: 'role', id: r.id, name: r.name, period: r.period, payload: r, baseScale: 1, baseOpacity: 0 });
       });
 
-      // ============ PROJECTS: tiny dots near parent role ============
+      // ============ PROJECTS: invisible anchors near parent role ============
       const projAnchors = {};
       PROJECTS.forEach((p, i) => {
         const parentPos = ROLE_POSITIONS[p.at] || PERSONAL_ANCHOR;
         const a = i * 1.7;
         const offset = [Math.cos(a) * 0.75, Math.sin(a * 1.3) * 0.35, Math.sin(a) * 0.75];
         const pos = parentPos.map((c, idx) => c + offset[idx]);
-        const geo = new THREE.SphereGeometry(0.07, 14, 14);
-        const mat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 1 });
+        const geo = new THREE.SphereGeometry(0.28, 8, 8); // hit radius
+        const mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
         const mesh = new THREE.Mesh(geo, mat);
         mesh.position.set(...pos);
-        mesh.userData = { type: 'project', id: p.id, name: p.name, period: p.year, payload: p, color: 0x60a5fa, baseRadius: 0.07 };
+        mesh.userData = { type: 'project', id: p.id, name: p.name, period: p.year, payload: p, color: 0x60a5fa };
         SM.group.add(mesh);
-        const hitGeo = new THREE.SphereGeometry(0.28, 8, 8);
-        const hitMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
-        const hit = new THREE.Mesh(hitGeo, hitMat);
-        hit.position.copy(mesh.position);
-        hit.userData = { ...mesh.userData, isHitProxy: true };
-        SM.group.add(hit);
-        SM.nodes.push({ mesh, hit, type: 'project', id: p.id, name: p.name, period: p.year, payload: p, baseScale: 1 });
+        SM.nodes.push({ mesh, type: 'project', id: p.id, name: p.name, period: p.year, payload: p, baseScale: 1, baseOpacity: 0 });
         projAnchors[p.id] = pos;
       });
 
@@ -1236,7 +1265,7 @@
         sprite.scale.set(0.36, 0.36, 1);
         sprite.userData = { type: 'skill', id: s, name: SKILL_ID[s] || s, color: 0xfbbf24, baseScale: 0.36 };
         SM.group.add(sprite);
-        SM.nodes.push({ mesh: sprite, type: 'skill', id: s, name: SKILL_ID[s] || s, baseScale: 0.36 });
+        SM.nodes.push({ mesh: sprite, type: 'skill', id: s, name: SKILL_ID[s] || s, baseScale: 0.36, baseOpacity: 1 });
       });
 
       // ============ EDGES: hub → roles, role → its projects (less spaghetti) ============
@@ -1414,7 +1443,6 @@
     }
 
     /* Project a node's world position to screen space and update its HTML label */
-    const _tmpV = { x: 0, y: 0, z: 0 };
     function updateLabels() {
       if (!SM.labels || !SM.renderer) return;
       const canvas = SM.renderer.domElement;
@@ -1431,9 +1459,14 @@
         if (v.z >= 1 || v.z <= -1) { label.style.display = 'none'; return; }
         const x = (v.x + 1) * 0.5 * w;
         const y = (1 - v.y) * 0.5 * h;
-        label.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
+        // Role/project labels CENTER on the anchor (label IS the node);
+        // skill labels sit BELOW the sprite icon
+        let offset;
+        if (n.type === 'role' || n.type === 'project') offset = ' translate(-50%, -50%)';
+        else if (n.type === 'skill')                   offset = ' translate(-50%, 22px)';
+        else                                           offset = '';
+        label.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)${offset}`;
         label.style.display = '';
-        // Depth-based opacity so labels in the back dim slightly
         const depthAlpha = Math.max(0.45, 1 - (v.z * 0.5 + 0.5));
         label.style.opacity = depthAlpha;
       });
@@ -1450,9 +1483,6 @@
       if (SM.autoRotate && !SM.reducedMotion) {
         SM.group.rotation.y += dt * (Math.PI / 36);  // ~5 deg/sec, calmer
       }
-
-      // Keep the hub ring billboarded toward the camera (always reads as a flat halo)
-      if (SM._hubRing) SM._hubRing.lookAt(SM.camera.position);
 
       if (!SM.reducedMotion) {
         SM.nodes.forEach((n, i) => {
@@ -1529,7 +1559,8 @@
 
       SM.nodes.forEach(n => {
         const isHi = !related || related.has(n);
-        n.mesh.material.opacity = isHi ? 1 : 0.18;
+        const base = n.baseOpacity ?? 1;
+        n.mesh.material.opacity = base * (isHi ? 1 : 0.18);
         const label = SM.labels?.[n.id];
         if (label) {
           label.classList.toggle('highlighted', !!(related && related.has(n) && n.type !== 'hub'));
@@ -1592,18 +1623,9 @@
         SM.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
         SM.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
         SM.raycaster.setFromCamera(SM.mouse, SM.camera);
-        // Use big hit-proxies for roles/projects (small visible dots are hard to click);
-        // skill sprites are big enough on their own.
-        const targets = [];
-        SM.nodes.forEach(n => {
-          if (!n.mesh.visible) return;
-          if (n.hit) targets.push(n.hit);
-          else       targets.push(n.mesh);
-        });
-        const hits = SM.raycaster.intersectObjects(targets);
-        if (!hits.length) return null;
-        const hitObj = hits[0].object;
-        return SM.nodes.find(n => n.mesh === hitObj || n.hit === hitObj);
+        const meshes = SM.nodes.map(n => n.mesh).filter(m => m.visible !== false);
+        const hits = SM.raycaster.intersectObjects(meshes);
+        return hits.length ? SM.nodes.find(n => n.mesh === hits[0].object) : null;
       }
 
       function showTip(node, e) {
@@ -1657,7 +1679,6 @@
         }
         SM.selected = node;
         setHighlight(node);
-        flyTo(node);
         flashCardFor(node);
       });
 
@@ -1666,8 +1687,6 @@
         if (!node || node.type === 'hub') return;
         SM.selected = node;
         setHighlight(node);
-        flyTo(node);
-        setTimeout(() => dolly(0.7), 100);
         flashCardFor(node);
       });
 
@@ -1688,7 +1707,7 @@
           const node = SM.nodes.find(n => n.id === id);
           if (!node) return;
           document.querySelector('.systemmap').scrollIntoView({ behavior: 'smooth', block: 'center' });
-          setTimeout(() => flyTo(node), 400);
+          setTimeout(() => { SM.selected = node; setHighlight(node); }, 350);
         });
       });
     }
@@ -1759,7 +1778,7 @@
           }
           if (q === 'reset') { setSearchHighlight(null); search.value = ''; return; }
           const match = SM.nodes.find(n => n.name && n.name.toLowerCase().includes(q));
-          if (match) { SM.selected = match; setHighlight(match); flyTo(match); flashCardFor(match); }
+          if (match) { SM.selected = match; setHighlight(match); flashCardFor(match); }
           search.blur();
         }
         if (e.key === 'Escape') { search.value = ''; setSearchHighlight(null); search.blur(); }
