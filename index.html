@@ -494,13 +494,13 @@
       88%, 92%      { opacity: 0.45; }
     }
 
-    /* ─── White desk — BIG, behind everything, extends under chair+bot ─── */
-    /* z-index 2: bot+chair sit IN FRONT of the desk; chair appears to be AT the desk */
+    /* ─── White desk — sits DIRECTLY under the monitor (monitor's stand rests on it) ─── */
+    /* z-index 2: bot+chair are IN FRONT of (lower in scene than) the desk */
     .desk-top {
       position: absolute;
-      top: 42%;
+      top: 30%;
       left: 4%; right: 4%;
-      height: 30%;
+      height: 20%;
       background:
         linear-gradient(180deg, #ffffff 0%, #f5f3e8 55%, #c8c5b6 100%);
       border-radius: 5px 5px 10px 10px;
@@ -529,21 +529,17 @@
       box-shadow: 1px 0 2px rgba(0,0,0,0.20);
       border-radius: 0 0 1px 1px;
     }
-    .desk-leg.fl, .desk-leg.fr { top: 72%; width: 5px; height: 23%; }
+    /* Only the 2 OUTER (front) legs are visible — back legs are hidden by the desk in perspective */
+    .desk-leg.fl, .desk-leg.fr { top: 50%; width: 5px; height: 44%; }
     .desk-leg.fl { left: 6%; }
     .desk-leg.fr { right: 6%; }
-    .desk-leg.bl, .desk-leg.br {
-      top: 68%; width: 4px; height: 20%;
-      background: linear-gradient(180deg, #9c9889 0%, #56544a 100%);
-      box-shadow: none;
-    }
-    .desk-leg.bl { left: 18%; }
-    .desk-leg.br { right: 18%; }
+    /* Back legs disabled */
+    .desk-leg.bl, .desk-leg.br { display: none; }
 
     /* ─── Apple Magic Keyboard on desk ─── */
     .desk-keyboard {
       position: absolute;
-      top: 64%;
+      top: 40%;
       left: 26%; right: 26%;
       height: 9px;
       background:
@@ -582,7 +578,7 @@
     /* ─── Magic Trackpad next to keyboard ─── */
     .desk-trackpad {
       position: absolute;
-      top: 64%;
+      top: 40%;
       right: 17%;
       width: 7%;
       height: 9px;
@@ -598,7 +594,7 @@
     /* ─── Items on the desk, positioned to LEFT/RIGHT past the chair ─── */
     .desk-items {
       position: absolute;
-      top: 47%;
+      top: 33%;
       left: 0; right: 0;
       display: flex; justify-content: space-between;
       padding: 0 7%;
@@ -636,7 +632,7 @@
     /* z-index 4: in front of desk, behind chair back */
     .desk-bot {
       position: absolute;
-      top: 30%;
+      top: 36%;
       left: 50%; transform: translateX(-50%);
       width: 86px; height: 96px;
       z-index: 4;
@@ -649,9 +645,9 @@
     /* z-index 5: closest to viewer (you stand BEHIND the chair) */
     .desk-chair-back {
       position: absolute;
-      top: 53%;
+      top: 60%;
       left: 50%; transform: translateX(-50%);
-      width: 22%; height: 11%;
+      width: 22%; height: 10%;
       background: linear-gradient(180deg, #f5f5f0 0%, #d8d4c4 100%);
       border-radius: 6px 6px 4px 4px;
       z-index: 5;
@@ -662,9 +658,9 @@
     /* z-index 5: same foreground level as the chair back */
     .desk-chair {
       position: absolute;
-      bottom: 2%;
+      bottom: 4%;
       left: 50%; transform: translateX(-50%);
-      width: 28%; height: 22%;
+      width: 28%; height: 26%;
       z-index: 5;
     }
     .desk-chair svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.20)); }
