@@ -487,6 +487,31 @@
       .sm-toolbar .title { display: none; }
     }
 
+    /* ─── System Map HTML labels (overlay positioned by JS) ─── */
+    .sm-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .sm-label {
+      position: absolute; top: 0; left: 0;
+      transform-origin: 0 0;
+      font-family: var(--mono);
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.10em;
+      padding: 3px 7px;
+      background: rgba(4, 6, 12, 0.78);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      border-radius: 2px;
+      white-space: nowrap;
+      margin-top: 14px;
+      margin-left: 10px;
+      will-change: transform;
+      transition: opacity 200ms ease-out;
+    }
+    .sm-label .name { display: inline-block; }
+    .sm-label .sub { color: var(--ink-faint); margin-left: 6px; font-weight: 400; font-size: 8px; }
+    .sm-label-role    { color: var(--accent-live); border: 1px solid rgba(74, 222, 128, 0.45); }
+    .sm-label-project { color: var(--accent-link); border: 1px solid rgba(96, 165, 250, 0.40); font-size: 8px; }
+    .sm-label-skill   { color: var(--accent-warn); font-size: 8px; padding: 1px 5px; background: rgba(4, 6, 12, 0.6); }
+
     /* ─── Boot sequence ─── */
     .boot {
       position: fixed; inset: 0; z-index: 1000;
@@ -810,28 +835,74 @@
     ];
 
     const PROJECTS = [
-      { id: 'xnohub', name: 'xnohub.com', year: '2024', status: 'live',
+      { id: 'xnohub', name: 'xnohub.com', year: '2024', status: 'live', at: 'personal',
         url: 'https://xnohub.com',
         desc: 'Real-time visualizer for the Nano currency network on a 3D globe.',
         skills: ['threejs', 'react', 'nextjs'] },
-      { id: 'localxno', name: 'LocalXNO.com', year: '2024', status: 'live',
+      { id: 'localxno', name: 'LocalXNO.com', year: '2024', status: 'live', at: 'personal',
         url: 'https://localxno.com',
         desc: 'Nano marketplace on Next.js + Supabase + PostgreSQL, with Google API integrations.',
         skills: ['nextjs', 'supabase', 'postgres'] },
-      { id: 'composable', name: 'Composable UI', year: '2022–23', status: 'oss',
+      { id: 'composable', name: 'Composable UI', year: '2022–23', status: 'oss', at: 'orium',
         url: 'https://composable.com/composable-ui',
         desc: 'Open-source headless-commerce starter kit (React/Next.js). UI library + Figma kit + Algolia/Stripe. MACH Alliance award.',
         skills: ['react', 'nextjs', 'chakra'] },
-      { id: 'paypaw', name: 'PayPaw', year: '2019–21', status: 'archived', url: null,
+      { id: 'paypaw', name: 'PayPaw', year: '2019–21', status: 'archived', at: 'personal', url: null,
         desc: 'Payment service for Bytom Blockchain. Won first place at a dev challenge — USD $30K prize.',
         skills: ['bytom'] },
-      { id: 'gpu-miner', name: 'GPU Miner Opt', year: '2020', status: 'archived', url: null,
+      { id: 'gpu-miner', name: 'GPU Miner Opt', year: '2020', status: 'archived', at: 'personal', url: null,
         desc: 'Optimized C++ GPU mining; +30% efficiency through caching.',
         skills: ['cpp', 'cuda'] },
-      { id: 'bytom-dice', name: 'Bytom Dice', year: '2019–20', status: 'archived', url: null,
+      { id: 'bytom-dice', name: 'Bytom Dice', year: '2019–20', status: 'archived', at: 'personal', url: null,
         desc: 'On-chain cryptocurrency betting site on Bytom.',
         skills: ['bytom'] },
     ];
+
+    /* Custom 3D positions — clusters around Dalin instead of concentric rings */
+    const ROLE_POSITIONS = {
+      'parker-ai': [-2.0,  0.3,  1.6],   // front-left, prominent
+      'hinature':  [ 2.2, -0.5,  1.0],   // front-right
+      'orium':     [ 1.9,  1.4, -1.4],   // upper back-right
+      'shopify':   [-2.6, -1.0, -1.7],   // lower back-left
+      'combyne':   [-3.1,  0.9, -0.4],   // far left
+      'isight':    [ 0.4,  1.9, -3.0],   // far back, high
+      'events':    [ 2.9, -1.6, -2.2],   // far back-right, low
+    };
+    const PERSONAL_ANCHOR = [0, -2.0, 2.6];  // for personal/OSS projects
+
+    /* Simple Icons slugs for tech logos (via cdn.simpleicons.org).
+       Non-brand techs (LoRA, eval loops, etc.) fall back to a text badge. */
+    const SKILL_ICONS = {
+      lora:          { text: 'LoRA' },
+      gemini:        { slug: 'googlegemini' },
+      embeddings:    { text: 'EMB' },
+      tanstack:      { slug: 'reactquery' },
+      supabase:      { slug: 'supabase' },
+      postgres:      { slug: 'postgresql' },
+      python:        { slug: 'python' },
+      react:         { slug: 'react' },
+      nextjs:        { slug: 'nextdotjs' },
+      typescript:    { slug: 'typescript' },
+      chakra:        { slug: 'chakraui' },
+      tailwind:      { slug: 'tailwindcss' },
+      threejs:       { slug: 'threedotjs' },
+      ruby:          { slug: 'ruby' },
+      rails:         { slug: 'rubyonrails' },
+      redis:         { slug: 'redis' },
+      elasticsearch: { slug: 'elasticsearch' },
+      aws:           { slug: 'amazonwebservices' },
+      nodejs:        { slug: 'nodedotjs' },
+      backbone:      { slug: 'backbonedotjs' },
+      php:           { slug: 'php' },
+      mysql:         { slug: 'mysql' },
+      angular:       { slug: 'angular' },
+      codeigniter:   { slug: 'codeigniter' },
+      firebase:      { slug: 'firebase' },
+      gcp:           { slug: 'googlecloud' },
+      cpp:           { slug: 'cplusplus' },
+      cuda:          { slug: 'nvidia' },
+      bytom:         { text: 'BTM' },
+    };
 
     const SKILLS = {
       'AI / LLM':   [
@@ -967,6 +1038,25 @@
       reducedMotion: false,
     };
 
+    /* Generate a small canvas texture with bold text — used as fallback for
+       skills without a brand logo (LoRA, embeddings, BTM, etc.) */
+    function makeTextBadge(text, hex) {
+      const c = document.createElement('canvas');
+      c.width = 128; c.height = 128;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = 'rgba(4,6,12,0.9)';
+      ctx.beginPath(); ctx.arc(64, 64, 60, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = hex; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(64, 64, 58, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = hex;
+      const size = text.length > 3 ? 22 : 28;
+      ctx.font = `800 ${size}px "JetBrains Mono", monospace`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(text, 64, 66);
+      const tex = new THREE.CanvasTexture(c);
+      return tex;
+    }
+
     function buildSystemMap() {
       if (typeof THREE === 'undefined') {
         console.warn('Three.js not loaded; SVG fallback stays.');
@@ -978,9 +1068,14 @@
       const vp = document.getElementById('sm-viewport');
       const fallback = document.getElementById('sm-fallback');
 
-      // Guard: if viewport hasn't laid out yet, defer init
-      if (vp.clientWidth === 0 || vp.clientHeight === 0) {
+      // Guard: if viewport hasn't laid out yet, defer init (give up after ~3s)
+      SM._initTries = (SM._initTries || 0) + 1;
+      if ((vp.clientWidth === 0 || vp.clientHeight === 0) && SM._initTries < 30) {
         return setTimeout(buildSystemMap, 100);
+      }
+      if (vp.clientWidth === 0 || vp.clientHeight === 0) {
+        console.warn('System Map: viewport has zero dimensions after 3s, keeping SVG fallback.');
+        return;
       }
 
       fallback.style.display = 'none';
@@ -1015,57 +1110,105 @@
         });
       }
 
-      // Hub (flat-shaded BasicMaterial — works without lighting, looks crisp)
-      const hubGeo = new THREE.IcosahedronGeometry(0.42, 1);
-      const hubMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 });
-      const hub = new THREE.Mesh(hubGeo, hubMat);
-      hub.userData = { type: 'hub', id: 'dalin', name: 'DALIN' };
+      const texLoader = new THREE.TextureLoader();
+      texLoader.crossOrigin = 'anonymous';
+
+      // ============ HUB: Dalin's portrait as a camera-facing sprite ============
+      const photoTex = texLoader.load('img/hd.jpg');
+      const hubMat = new THREE.SpriteMaterial({ map: photoTex, transparent: true });
+      const hub = new THREE.Sprite(hubMat);
+      hub.scale.set(0.95, 0.95, 1);
+      hub.position.set(0, 0, 0);
+      hub.userData = { type: 'hub', id: 'dalin', name: 'Dalin Huang' };
       SM.group.add(hub);
-      SM.nodes.push({ mesh: hub, type: 'hub', id: 'dalin', name: 'DALIN', baseScale: 1 });
+      SM.nodes.push({ mesh: hub, type: 'hub', id: 'dalin', name: 'Dalin Huang', baseScale: 0.95 });
 
-      // Build node list from data
-      const roleNodes = ROLES.map((r, i) => ({
-        type: 'role', id: r.id, name: r.name, period: r.period,
-        color: 0x4ade80, radius: 0.18 + Math.min(r.tenure / 4, 0.18),
-        ring: 1, slot: i, total: ROLES.length, payload: r,
-      }));
-      const projNodes = PROJECTS.map((p, i) => ({
-        type: 'project', id: p.id, name: p.name, period: p.year,
-        color: 0x60a5fa, radius: 0.17,
-        ring: 2, slot: i, total: PROJECTS.length, payload: p,
-      }));
-      const skillSet = new Set();
-      ROLES.forEach(r => r.skills.forEach(s => skillSet.add(s)));
-      PROJECTS.forEach(p => p.skills.forEach(s => skillSet.add(s)));
-      const skillIds = Array.from(skillSet);
-      const skillNodes = skillIds.map((s, i) => ({
-        type: 'skill', id: s, name: SKILL_ID[s] || s, period: '',
-        color: 0xfbbf24, radius: 0.11,
-        ring: 3, slot: i, total: skillIds.length, payload: { id: s, name: SKILL_ID[s] || s },
-      }));
+      // Small glow ring around portrait (a translucent torus for accent)
+      const ringGeo = new THREE.RingGeometry(0.52, 0.56, 64);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.5, side: THREE.DoubleSide });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.userData.isHubRing = true;
+      SM.group.add(ring);
+      SM._hubRing = ring;
 
-      function placeNode(n) {
-        const ringRadius = [0, 2.1, 2.8, 3.6][n.ring];
-        const slotAngle = (n.slot / n.total) * Math.PI * 2 + (n.ring * 0.6);
-        const tilt = (n.ring === 2) ? 0.45 : (n.ring === 3 ? -0.35 : 0.1);
-        const x = Math.cos(slotAngle) * ringRadius;
-        const z = Math.sin(slotAngle) * ringRadius;
-        const y = Math.sin(slotAngle * 1.3) * 0.7 + tilt;
-        return [x, y, z];
-      }
-
-      [...roleNodes, ...projNodes, ...skillNodes].forEach(n => {
-        const geo = new THREE.SphereGeometry(n.radius, 18, 18);
-        const mat = new THREE.MeshBasicMaterial({ color: n.color, transparent: true, opacity: 1 });
+      // ============ ROLES: spheres at custom positions ============
+      ROLES.forEach(r => {
+        const pos = ROLE_POSITIONS[r.id] || [0, 0, 0];
+        const radius = 0.28 + Math.min(r.tenure / 6, 0.12);
+        const geo = new THREE.SphereGeometry(radius, 24, 24);
+        const mat = new THREE.MeshBasicMaterial({ color: 0x4ade80, transparent: true, opacity: 1 });
         const mesh = new THREE.Mesh(geo, mat);
-        const [x, y, z] = placeNode(n);
-        mesh.position.set(x, y, z);
-        mesh.userData = { type: n.type, id: n.id, name: n.name, period: n.period, payload: n.payload, color: n.color, baseRadius: n.radius };
+        mesh.position.set(...pos);
+        mesh.userData = { type: 'role', id: r.id, name: r.name, period: r.period, payload: r, color: 0x4ade80, baseRadius: radius };
         SM.group.add(mesh);
-        SM.nodes.push({ mesh, type: n.type, id: n.id, name: n.name, period: n.period, payload: n.payload, baseScale: 1 });
+        SM.nodes.push({ mesh, type: 'role', id: r.id, name: r.name, period: r.period, payload: r, baseScale: 1 });
       });
 
-      // Edges
+      // ============ PROJECTS: small spheres near parent role ============
+      const projAnchors = {};
+      PROJECTS.forEach((p, i) => {
+        const parentPos = ROLE_POSITIONS[p.at] || PERSONAL_ANCHOR;
+        const a = i * 1.7;
+        const offset = [Math.cos(a) * 0.75, Math.sin(a * 1.3) * 0.35, Math.sin(a) * 0.75];
+        const pos = parentPos.map((c, idx) => c + offset[idx]);
+        const geo = new THREE.SphereGeometry(0.17, 18, 18);
+        const mat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 1 });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(...pos);
+        mesh.userData = { type: 'project', id: p.id, name: p.name, period: p.year, payload: p, color: 0x60a5fa, baseRadius: 0.17 };
+        SM.group.add(mesh);
+        SM.nodes.push({ mesh, type: 'project', id: p.id, name: p.name, period: p.year, payload: p, baseScale: 1 });
+        projAnchors[p.id] = pos;
+      });
+
+      // ============ SKILLS: tech logo sprites near roles/projects using them ============
+      const skillUsers = {};
+      ROLES.forEach(r => {
+        const pos = ROLE_POSITIONS[r.id]; if (!pos) return;
+        r.skills.forEach(s => (skillUsers[s] = skillUsers[s] || []).push(pos));
+      });
+      PROJECTS.forEach(p => {
+        const pos = projAnchors[p.id]; if (!pos) return;
+        p.skills.forEach(s => (skillUsers[s] = skillUsers[s] || []).push(pos));
+      });
+      const skillIds = Object.keys(skillUsers);
+
+      skillIds.forEach((s, i) => {
+        const positions = skillUsers[s];
+        const avg = [0, 0, 0];
+        positions.forEach(p => p.forEach((c, idx) => avg[idx] += c));
+        avg.forEach((_, idx) => avg[idx] /= positions.length);
+        // Push slightly outward so techs orbit OUTSIDE their parent roles
+        const dist = Math.hypot(avg[0], avg[1], avg[2]);
+        const push = 0.6;
+        if (dist > 0.4) {
+          const k = (dist + push) / dist;
+          avg[0] *= k; avg[1] *= k; avg[2] *= k;
+        }
+        // Deterministic jitter so co-located techs don't overlap
+        const j = i * 0.831;
+        avg[0] += Math.cos(j) * 0.32;
+        avg[1] += Math.sin(j * 1.7) * 0.32;
+        avg[2] += Math.sin(j) * 0.32;
+
+        const meta = SKILL_ICONS[s];
+        let material;
+        if (meta?.slug) {
+          const tex = texLoader.load(`https://cdn.simpleicons.org/${meta.slug}/fbbf24`);
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true, color: 0xffffff });
+        } else {
+          const tex = makeTextBadge(meta?.text || s.toUpperCase().slice(0, 4), '#fbbf24');
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true });
+        }
+        const sprite = new THREE.Sprite(material);
+        sprite.position.set(...avg);
+        sprite.scale.set(0.36, 0.36, 1);
+        sprite.userData = { type: 'skill', id: s, name: SKILL_ID[s] || s, color: 0xfbbf24, baseScale: 0.36 };
+        SM.group.add(sprite);
+        SM.nodes.push({ mesh: sprite, type: 'skill', id: s, name: SKILL_ID[s] || s, baseScale: 0.36 });
+      });
+
+      // ============ EDGES: hub → roles, role → its projects (less spaghetti) ============
       function addEdge(a, b, color, opacity) {
         const geo = new THREE.BufferGeometry().setFromPoints([a.mesh.position, b.mesh.position]);
         const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
@@ -1074,21 +1217,50 @@
         SM.edges.push({ line, a, b, baseOpacity: opacity });
       }
       const hubNode = SM.nodes.find(n => n.type === 'hub');
-      SM.nodes.filter(n => n.type === 'role').forEach(r => addEdge(hubNode, r, 0x4ade80, 0.45));
-      SM.nodes.filter(n => n.type === 'project').forEach(p => addEdge(hubNode, p, 0x60a5fa, 0.30));
+      SM.nodes.filter(n => n.type === 'role').forEach(r => {
+        const isLive = r.payload?.status === 'live';
+        addEdge(hubNode, r, 0x4ade80, isLive ? 0.55 : 0.22);
+      });
+      // role → its projects
+      PROJECTS.forEach(p => {
+        if (p.at === 'personal') return; // personal projects connect to hub instead
+        const role = SM.nodes.find(n => n.id === p.at);
+        const proj = SM.nodes.find(n => n.id === p.id);
+        if (role && proj) addEdge(role, proj, 0x60a5fa, 0.45);
+      });
+      // hub → personal projects (anchor cluster)
+      PROJECTS.filter(p => p.at === 'personal').forEach(p => {
+        const proj = SM.nodes.find(n => n.id === p.id);
+        if (proj) addEdge(hubNode, proj, 0x60a5fa, 0.30);
+      });
+      // role → its skills (faint — just for hover discovery)
       ROLES.forEach(r => {
-        const roleNode = SM.nodes.find(n => n.id === r.id);
+        const role = SM.nodes.find(n => n.id === r.id);
+        if (!role) return;
         r.skills.forEach(s => {
-          const skillNode = SM.nodes.find(n => n.type === 'skill' && n.id === s);
-          if (roleNode && skillNode) addEdge(roleNode, skillNode, 0x4ade80, 0.18);
+          const sk = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+          if (sk) addEdge(role, sk, 0x4ade80, 0.10);
         });
       });
-      PROJECTS.forEach(p => {
-        const projNode = SM.nodes.find(n => n.id === p.id);
-        p.skills.forEach(s => {
-          const skillNode = SM.nodes.find(n => n.type === 'skill' && n.id === s);
-          if (projNode && skillNode) addEdge(projNode, skillNode, 0x60a5fa, 0.18);
-        });
+
+      // ============ HTML LABEL OVERLAY ============
+      let labelLayer = document.getElementById('sm-labels');
+      if (!labelLayer) {
+        labelLayer = document.createElement('div');
+        labelLayer.id = 'sm-labels';
+        labelLayer.className = 'sm-labels';
+        vp.appendChild(labelLayer);
+      }
+      labelLayer.innerHTML = '';
+      SM.labels = {};
+      SM.nodes.forEach(n => {
+        if (n.type === 'hub') return;
+        const div = document.createElement('div');
+        div.className = `sm-label sm-label-${n.type}`;
+        const sub = n.type === 'role' ? `<span class="sub">${(n.period||'').split(' → ')[0]}</span>` : '';
+        div.innerHTML = `<span class="name">${n.name}</span>${sub}`;
+        labelLayer.appendChild(div);
+        SM.labels[n.id] = div;
       });
 
       SM.raycaster = new THREE.Raycaster();
@@ -1103,14 +1275,38 @@
         SM.renderer.render(SM.scene, SM.camera);
       };
       window.addEventListener('resize', onResize);
-
-      // ResizeObserver to catch layout changes beyond window resize
       if ('ResizeObserver' in window) {
         const ro = new ResizeObserver(onResize);
         ro.observe(vp);
       }
 
       animateSystemMap();
+    }
+
+    /* Project a node's world position to screen space and update its HTML label */
+    const _tmpV = { x: 0, y: 0, z: 0 };
+    function updateLabels() {
+      if (!SM.labels || !SM.renderer) return;
+      const canvas = SM.renderer.domElement;
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if (w === 0 || h === 0) return;
+      const v = new THREE.Vector3();
+      SM.nodes.forEach(n => {
+        if (n.type === 'hub') return;
+        const label = SM.labels[n.id];
+        if (!label) return;
+        if (!n.mesh.visible) { label.style.display = 'none'; return; }
+        v.setFromMatrixPosition(n.mesh.matrixWorld);
+        v.project(SM.camera);
+        if (v.z >= 1 || v.z <= -1) { label.style.display = 'none'; return; }
+        const x = (v.x + 1) * 0.5 * w;
+        const y = (1 - v.y) * 0.5 * h;
+        label.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
+        label.style.display = '';
+        // Depth-based opacity so labels in the back dim slightly
+        const depthAlpha = Math.max(0.45, 1 - (v.z * 0.5 + 0.5));
+        label.style.opacity = depthAlpha;
+      });
     }
 
     let _lastT = 0;
@@ -1122,20 +1318,26 @@
 
       if (!SM.autoRotate && t > SM.autoRotateResumeAt) SM.autoRotate = true;
       if (SM.autoRotate && !SM.reducedMotion) {
-        SM.group.rotation.y += dt * (Math.PI / 30);
+        SM.group.rotation.y += dt * (Math.PI / 36);  // ~5 deg/sec, calmer
       }
+
+      // Keep the hub ring billboarded toward the camera (always reads as a flat halo)
+      if (SM._hubRing) SM._hubRing.lookAt(SM.camera.position);
 
       if (!SM.reducedMotion) {
         SM.nodes.forEach((n, i) => {
           if (n.type === 'hub') return;
           const phase = (t / 1000 + i * 0.3) * (Math.PI * 2 / 3);
-          const k = n.baseScale * (1 + Math.sin(phase) * 0.08);
-          n.mesh.scale.set(k, k, k);
+          const baseS = n.baseScale || 1;
+          const k = baseS * (1 + Math.sin(phase) * 0.06);
+          if (n.mesh.isSprite) n.mesh.scale.set(k, k, 1);
+          else                 n.mesh.scale.set(k, k, k);
         });
       }
 
       if (SM.controls) SM.controls.update();
       SM.renderer.render(SM.scene, SM.camera);
+      updateLabels();
     }
 
     function isConnected(a, b) {
@@ -1263,7 +1465,10 @@
     function applyFilters() {
       SM.nodes.forEach(n => {
         if (n.type === 'hub') return;
-        n.mesh.visible = !!SM.filters[n.type];
+        const visible = !!SM.filters[n.type];
+        n.mesh.visible = visible;
+        const label = SM.labels?.[n.id];
+        if (label) label.style.visibility = visible ? '' : 'hidden';
       });
       SM.edges.forEach(e => {
         e.line.visible = e.a.mesh.visible && e.b.mesh.visible;
