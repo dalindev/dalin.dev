@@ -355,6 +355,48 @@
 
     @media (max-width: 900px) { .services { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px) { .services { grid-template-columns: 1fr; } }
+
+    /* ─── Capabilities ─── */
+    .capabilities { display: flex; flex-direction: column; gap: 4px; }
+    .cap-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+    .cap-row .cat {
+      color: var(--accent-link);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
+    }
+    .cap-row .cells { display: flex; flex-wrap: wrap; gap: 3px; }
+    .cap-cell {
+      padding: 5px 9px; border-radius: 2px;
+      font-size: 10px; color: var(--ink); white-space: nowrap;
+      background: rgba(74, 222, 128, 0.08);
+      border: 1px solid rgba(74, 222, 128, 0.10);
+      transition: all 180ms ease-out;
+      cursor: default;
+    }
+    .cap-cell.warm {
+      background: rgba(74, 222, 128, 0.22);
+      border-color: rgba(74, 222, 128, 0.30);
+      color: var(--ink-strong);
+    }
+    .cap-cell.hot {
+      background: rgba(74, 222, 128, 0.55);
+      border-color: rgba(74, 222, 128, 0.80);
+      color: #04220f;
+      font-weight: 700;
+    }
+    .cap-cell:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--glow-live);
+    }
+
+    @media (max-width: 640px) {
+      .cap-row { grid-template-columns: 1fr; gap: 4px; }
+      .cap-row .cat { font-size: 9px; }
+    }
   </style>
 </head>
 <body>
@@ -448,7 +490,8 @@
     <section class="agents" id="agents-list"></section>
     <h2 class="section-head">DEPLOYED SERVICES <span class="count" id="services-count"></span></h2>
     <section class="services" id="services-list"></section>
-    <section class="capabilities"><!-- Task 9 --></section>
+    <h2 class="section-head">SYSTEM CAPABILITIES <span class="count">· skill matrix</span></h2>
+    <section class="capabilities" id="cap-list"></section>
   </main>
 
   <footer class="footer">
@@ -677,9 +720,22 @@
       document.getElementById('services-count').textContent = `· ${PROJECTS.length} endpoints`;
     }
 
+    function renderCapabilities() {
+      const list = document.getElementById('cap-list');
+      list.innerHTML = Object.entries(SKILLS).map(([cat, items]) => `
+        <div class="cap-row">
+          <div class="cat">${cat}</div>
+          <div class="cells">
+            ${items.map(s => `<span class="cap-cell ${s.heat}" title="${s.name}">${s.name}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderAgents();
       renderServices();
+      renderCapabilities();
     });
   </script>
 
