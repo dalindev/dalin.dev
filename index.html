@@ -300,6 +300,256 @@
       .kpi .value { font-size: 24px; }
     }
 
+    /* ─── Office floor ─── */
+    .office {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .desk {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent-live);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease-out;
+    }
+    .desk:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
+    .desk.idle    { border-left-color: var(--accent-link); }
+    .desk.offline { border-left-color: #ef4444; opacity: 0.95; }
+    .desk.offline { animation: offlinePulse 2.4s ease-in-out infinite; }
+    @keyframes offlinePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+      50%      { box-shadow: 0 0 0 1px rgba(239,68,68,0.35), 0 0 12px rgba(239,68,68,0.15); }
+    }
+
+    .desk-scene {
+      position: relative;
+      height: 115px;
+      background:
+        linear-gradient(180deg, #06080e 0%, #06080e 72%, #161b27 72%, #1a1f2b 100%);
+      overflow: hidden;
+    }
+    /* Subtle floor seam */
+    .desk-scene::after {
+      content: ""; position: absolute; left: 0; right: 0; top: 72%;
+      height: 1px; background: rgba(255,255,255,0.04);
+    }
+    /* Bot peeks over the monitor top */
+    .desk-bot {
+      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      width: 26px; z-index: 1;
+    }
+    .desk-bot .antenna {
+      position: absolute; left: 50%; top: -8px; transform: translateX(-50%);
+      width: 1px; height: 8px; background: #5a6a82;
+    }
+    .desk-bot .antenna::after {
+      content: ""; position: absolute; left: -1.5px; top: -3px;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--accent-warn); box-shadow: 0 0 4px var(--accent-warn);
+      animation: pulseDot 1.6s ease-in-out infinite;
+    }
+    .desk-bot .head {
+      width: 26px; height: 26px;
+      background: linear-gradient(180deg, #5a6a82 0%, #2a3040 100%);
+      border: 1px solid #6a7a92;
+      border-radius: 50% 50% 30% 30%;
+      position: relative;
+    }
+    .desk-bot .head::before, .desk-bot .head::after {
+      content: ""; position: absolute;
+      width: 4px; height: 4px; border-radius: 50%;
+      top: 9px;
+    }
+    .desk-bot .head::before { left: 6px; }
+    .desk-bot .head::after  { right: 6px; }
+    .desk.busy .desk-bot .head::before,
+    .desk.busy .desk-bot .head::after {
+      background: var(--accent-live); box-shadow: 0 0 5px var(--accent-live);
+      animation: botBlink 4.5s steps(1) infinite;
+    }
+    .desk.idle .desk-bot .head::before,
+    .desk.idle .desk-bot .head::after {
+      background: var(--accent-link); box-shadow: 0 0 5px var(--accent-link);
+      top: 6px;  /* eyes look up at the entertainment */
+    }
+    .desk.offline .desk-bot { display: none; }
+    @keyframes botBlink {
+      0%, 92%, 100% { opacity: 1; }
+      94%, 96%      { opacity: 0; }
+    }
+
+    /* zZz emoji floats above idle bots */
+    .desk-zzz {
+      position: absolute; top: 4px; right: 18px;
+      font-size: 9px; color: var(--accent-link);
+      animation: floatZ 3.5s ease-in-out infinite;
+      z-index: 3;
+    }
+    @keyframes floatZ {
+      0%, 100% { transform: translateY(0); opacity: 0.5; }
+      50%      { transform: translateY(-4px); opacity: 1; }
+    }
+
+    /* Toolbox / wrench icon hovers over the offline desk */
+    .desk-tool {
+      position: absolute; top: 10px; right: 14px;
+      font-size: 14px; color: var(--accent-warn);
+      animation: wrenchWiggle 1.2s ease-in-out infinite;
+      z-index: 3;
+      text-shadow: 0 0 6px rgba(251,191,36,0.6);
+    }
+    .desk-tool .sys {
+      display: block; font-size: 7px; color: var(--accent-warn);
+      letter-spacing: 0.15em; margin-top: 2px;
+    }
+    @keyframes wrenchWiggle {
+      0%, 100% { transform: rotate(-12deg); }
+      50%      { transform: rotate(12deg); }
+    }
+
+    /* Monitor */
+    .desk-monitor {
+      position: absolute;
+      left: 50%; transform: translateX(-50%);
+      bottom: 28%;
+      width: 76%; height: 56px;
+      background: #02040a;
+      border: 2px solid #2a3040;
+      border-radius: 3px;
+      box-shadow: 0 0 10px rgba(96,165,250,0.15);
+      z-index: 2;
+      overflow: hidden;
+    }
+    .desk-monitor::after {
+      /* stand */
+      content: ""; position: absolute;
+      bottom: -7px; left: 50%; transform: translateX(-50%);
+      width: 22px; height: 5px;
+      background: #2a3040;
+      border-radius: 0 0 3px 3px;
+    }
+    .desk-monitor::before {
+      /* monitor base */
+      content: ""; position: absolute;
+      bottom: -11px; left: 50%; transform: translateX(-50%);
+      width: 40px; height: 2px;
+      background: #2a3040;
+      border-radius: 2px;
+    }
+
+    .screen {
+      width: 100%; height: 100%;
+      font-family: var(--mono);
+      font-size: 6px; line-height: 1.25;
+      padding: 4px 5px;
+      overflow: hidden;
+      color: var(--accent-live);
+      position: relative;
+    }
+    /* CRT scanlines for extra flavor */
+    .screen::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 1px, rgba(0,0,0,0.20) 2px, rgba(0,0,0,0) 3px);
+      mix-blend-mode: multiply;
+    }
+    /* Per-screen styles */
+    .scr-code .kw { color: var(--accent-warn); }
+    .scr-code .str { color: var(--accent-link); }
+    .scr-code .caret { animation: blink 1s steps(1) infinite; }
+
+    .scr-chart { color: var(--accent-live); font-size: 11px; line-height: 1.1; }
+    .scr-chart .row { animation: barShift 2.4s ease-in-out infinite; }
+    .scr-chart .row:nth-child(2) { animation-delay: 0.6s; opacity: 0.85; }
+    @keyframes barShift {
+      0%, 100% { transform: scaleX(1); }
+      50%      { transform: scaleX(0.92); }
+    }
+
+    .scr-prog .bar { color: var(--accent-live); text-shadow: 0 0 3px rgba(74,222,128,0.5); }
+    .scr-prog .pct { color: var(--accent-warn); }
+
+    .scr-logs { font-size: 5.5px; color: var(--ink-dim); }
+    .scr-logs .ok { color: var(--accent-live); }
+    .scr-logs .caret { color: var(--accent-live); animation: blink 1s steps(1) infinite; }
+
+    .scr-crawler { color: var(--accent-link); }
+    .scr-crawler .dots {
+      letter-spacing: 2px; display: inline-block;
+      animation: crawlDots 1.4s linear infinite;
+    }
+    @keyframes crawlDots {
+      0%   { transform: translateX(-6px); opacity: 0.3; }
+      50%  { opacity: 1; }
+      100% { transform: translateX(28px); opacity: 0.3; }
+    }
+
+    .scr-yt { background: #050912; color: #ef4444; padding: 4px 5px; }
+    .scr-yt .play { color: #ef4444; font-size: 13px; text-shadow: 0 0 6px rgba(239,68,68,0.5); }
+    .scr-yt .title { color: var(--ink); font-size: 6px; display: block; margin: 2px 0; }
+    .scr-yt .scrub {
+      position: relative; height: 1px; background: rgba(255,255,255,0.20);
+      margin: 3px 0;
+    }
+    .scr-yt .scrub::before {
+      content: ""; position: absolute; left: 0; top: -1.5px;
+      width: 30%; height: 3px; background: #ef4444;
+      box-shadow: 0 0 4px #ef4444;
+      animation: scrub 6s linear infinite;
+    }
+    @keyframes scrub {
+      0% { left: 0; width: 5%; }
+      100% { left: 0; width: 95%; }
+    }
+    .scr-yt .meta { color: var(--ink-faint); font-size: 5.5px; }
+
+    .scr-game { color: var(--accent-link); text-align: center; font-size: 7px; line-height: 1.05; }
+    .scr-game .board { letter-spacing: 1px; font-size: 9px; line-height: 1; }
+    .scr-game .snake-pos { animation: snakeShift 1.6s steps(4) infinite; }
+    @keyframes snakeShift {
+      0%   { transform: translateX(-4px); }
+      100% { transform: translateX(12px); }
+    }
+    .scr-game .score { color: var(--accent-warn); margin-top: 2px; }
+
+    .scr-error {
+      color: #ef4444; font-size: 6px;
+      animation: errShake 0.4s ease-in-out infinite;
+    }
+    .scr-error .blink { animation: blink 0.5s steps(1) infinite; }
+    @keyframes errShake {
+      0%, 100% { transform: translateX(0); }
+      30%      { transform: translateX(-1px); }
+      70%      { transform: translateX(1px); }
+    }
+
+    .desk-info {
+      padding: 9px 12px 10px;
+      font-size: 10px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .desk-info .row {
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .desk-info .name { color: var(--ink-strong); font-weight: 700; font-size: 11px; }
+    .desk-info .status {
+      font-size: 8px; letter-spacing: 0.12em; font-weight: 700;
+    }
+    .desk-info .status.busy    { color: var(--accent-live); }
+    .desk-info .status.idle    { color: var(--accent-link); }
+    .desk-info .status.offline { color: #ef4444; }
+    .desk-info .task {
+      color: var(--ink-dim); font-size: 9px; margin-top: 5px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .desk-info .id {
+      color: var(--ink-faint); font-size: 8px; letter-spacing: 0.10em;
+    }
+
+    @media (max-width: 900px) { .office { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .office { grid-template-columns: 1fr; } }
+
     /* ─── Section headers ─── */
     .section-head {
       margin: 32px 0 12px;
@@ -744,6 +994,9 @@
         </div>
       </div>
     </section>
+    <h2 class="section-head">OFFICE FLOOR <span class="count" id="office-count">· crew loading…</span></h2>
+    <section class="office" id="office-floor"></section>
+
     <h2 class="section-head">SYSTEM MAP <span class="count">· roles ↔ projects ↔ skills</span></h2>
     <section class="systemmap">
       <div class="sm-toolbar">
@@ -1028,6 +1281,96 @@
       mysql: 'MySQL', angular: 'Angular', codeigniter: 'CodeIgniter',
       firebase: 'Firebase', gcp: 'GCP', cpp: 'C++', cuda: 'CUDA', bytom: 'Bytom',
     };
+
+    /* ─── Office floor data + renderer ─── */
+    const OFFICE_AGENTS = [
+      { id: 'claude',  name: 'Claude-3', status: 'busy', task: 'Writing migration SQL',     screen: 'code' },
+      { id: 'gpt',     name: 'GPT-4',    status: 'busy', task: 'Classify 482 ads',          screen: 'chart' },
+      { id: 'llama',   name: 'Llama-3',  status: 'busy', task: 'Fine-tune LoRA v17',        screen: 'progress' },
+      { id: 'gemini',  name: 'Gemini',   status: 'busy', task: 'Embed 12.4M tokens',        screen: 'logs' },
+      { id: 'mistral', name: 'Mistral',  status: 'busy', task: 'Scrape 87 ad sources',      screen: 'crawler' },
+      { id: 'phi',     name: 'Phi-2',    status: 'idle', task: 'Watching cat compilation #423', screen: 'youtube' },
+      { id: 'gemma',   name: 'Gemma',    status: 'idle', task: 'Snake · score 042',         screen: 'game' },
+      { id: 'codex',   name: 'Codex',    status: 'offline', task: 'SYS debugging · reboot 14/∞', screen: 'error' },
+    ];
+
+    function screenHtml(type) {
+      switch (type) {
+        case 'code': return `
+          <span class="kw">const</span> result = <span class="kw">await</span><br>
+          embed(batch);<br>
+          <span class="kw">await</span> db.insert(<br>
+          &nbsp;&nbsp;result<br>
+          )<span class="caret">▍</span>`;
+        case 'chart': return `
+          <div class="row">▆▃▅▇▄▆▂▇</div>
+          <div class="row">▃▅▇▄▆▂▇▅</div>
+          <div class="row">▇▆▅▄▃▂▁</div>`;
+        case 'progress': return `
+          EPOCH 12/16<br>
+          STEP 1240<br>
+          <span class="bar">▓▓▓▓▓▓░░░░</span><br>
+          <span class="pct">loss 0.341</span>`;
+        case 'logs': return `
+          <span class="ok">[ok]</span> batch 482<br>
+          <span class="ok">[ok]</span> embed 12M<br>
+          <span class="ok">[ok]</span> index built<br>
+          <span class="ok">[ok]</span> commit<span class="caret">▍</span>`;
+        case 'crawler': return `
+          scrape://*.com<br>
+          87 sources<br>
+          <span class="dots">● ● ●</span><br>
+          fetching…`;
+        case 'youtube': return `
+          <span class="play">▶</span><br>
+          <span class="title">Cat Compilation</span>
+          <div class="scrub"></div>
+          <span class="meta">02:34 / 04:12 · 👍12K</span>`;
+        case 'game': return `
+          <div class="board"><span class="snake-pos">●○○○</span></div>
+          <div class="board">░░░░░░</div>
+          <div class="score">SCORE 042</div>`;
+        case 'error': return `
+          <span class="blink">FATAL SEGFAULT</span><br>
+          at agent::core<br>
+          line 1024<br>
+          retry 14/∞`;
+        default: return '';
+      }
+    }
+
+    function renderOffice() {
+      const root = document.getElementById('office-floor');
+      if (!root) return;
+      root.innerHTML = OFFICE_AGENTS.map((a, i) => `
+        <article class="desk ${a.status}" data-id="${a.id}">
+          <div class="desk-scene">
+            ${a.status === 'idle'    ? '<div class="desk-zzz">z<sub>z</sub>z</div>' : ''}
+            ${a.status === 'offline' ? '<div class="desk-tool">🔧<span class="sys">SYS</span></div>' : ''}
+            <div class="desk-bot">
+              <div class="antenna"></div>
+              <div class="head"></div>
+            </div>
+            <div class="desk-monitor">
+              <div class="screen scr-${a.screen}">${screenHtml(a.screen)}</div>
+            </div>
+          </div>
+          <div class="desk-info">
+            <div class="row">
+              <span class="name">${a.name}</span>
+              <span class="status ${a.status}">● ${a.status.toUpperCase()}</span>
+            </div>
+            <div class="task">${a.task}</div>
+            <div class="id">agent-${String(i + 1).padStart(2, '0')}</div>
+          </div>
+        </article>
+      `).join('');
+
+      const busy    = OFFICE_AGENTS.filter(a => a.status === 'busy').length;
+      const idle    = OFFICE_AGENTS.filter(a => a.status === 'idle').length;
+      const offline = OFFICE_AGENTS.filter(a => a.status === 'offline').length;
+      document.getElementById('office-count').textContent = `· crew of ${OFFICE_AGENTS.length} · ${busy} busy · ${idle} idle · ${offline} offline`;
+    }
 
     /* ─── Renderers ─── */
     function renderAgents() {
@@ -2130,6 +2473,7 @@
       renderAgents();
       renderServices();
       renderCapabilities();
+      renderOffice();
       startTerminalLoop();
       startFinetuneLoop();
       wireStatusDot();
