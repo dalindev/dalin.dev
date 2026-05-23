@@ -486,10 +486,79 @@
       .sm-search { width: 110px; }
       .sm-toolbar .title { display: none; }
     }
+
+    /* ─── Boot sequence ─── */
+    .boot {
+      position: fixed; inset: 0; z-index: 1000;
+      background: var(--bg-deep);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      transition: opacity 300ms ease-out;
+    }
+    .boot.hide { opacity: 0; pointer-events: none; }
+    .boot .term-boot {
+      width: min(560px, 90vw);
+      padding: 24px;
+      color: var(--accent-live);
+      font-size: 13px; line-height: 1.8;
+      text-shadow: 0 0 8px rgba(74,222,128,0.35);
+    }
+    .boot .term-boot .line { opacity: 0; }
+    .boot .term-boot .line.show { opacity: 1; transition: opacity 140ms ease-out; }
+    .boot .term-boot .caret::after { content: '▍'; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ─── Matrix rain ─── */
+    .matrix-rain {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.6);
+      pointer-events: none;
+      font-family: var(--mono); color: var(--accent-live);
+      overflow: hidden;
+      transition: opacity 400ms ease-out;
+    }
+    .matrix-rain.hide { opacity: 0; }
+    .matrix-rain .col {
+      position: absolute; top: -10%;
+      font-size: 14px;
+      white-space: pre;
+      animation: rain linear forwards;
+      text-shadow: 0 0 8px var(--accent-live);
+      line-height: 1.15;
+    }
+    @keyframes rain { to { top: 110%; } }
+    .matrix-rain .tag {
+      position: absolute; bottom: 24px; right: 24px;
+      color: var(--accent-live); font-size: 11px; letter-spacing: 0.18em;
+      text-shadow: 0 0 8px var(--accent-live);
+    }
+
+    /* ─── Version cycler popup ─── */
+    .vpop {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 200;
+      background: var(--bg); border: 1px solid var(--accent-link);
+      border-radius: 6px; padding: 10px 14px;
+      font-size: 11px; color: var(--ink);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6), var(--glow-link);
+      display: flex; gap: 14px; align-items: center;
+    }
+    .vpop .label { color: var(--accent-link); font-weight: 700; letter-spacing: 0.1em; font-size: 10px; }
+    .vpop a { color: var(--accent-live); }
+    .vpop .close { color: var(--ink-faint); cursor: pointer; font-size: 9px; letter-spacing: 0.12em; }
+    .vpop .close:hover { color: var(--ink-strong); }
   </style>
 </head>
 <body>
-  <!-- Boot overlay added in Task 15 -->
+  <div class="boot" id="boot" aria-hidden="true">
+    <div class="term-boot">
+      <div class="line">&gt; INITIALIZING DALIN.DEV v2026.1</div>
+      <div class="line">&gt; LOADING AGENTS [████████████░░░░] 7/7</div>
+      <div class="line">&gt; CONNECTING TO SERVICES [████████████████] 6/6</div>
+      <div class="line">&gt; SYNCING SKILL MATRIX  ............. OK</div>
+      <div class="line caret">&gt; READY </div>
+    </div>
+  </div>
 
   <header class="topbar">
     <div class="left">
@@ -1333,15 +1402,126 @@
       els.forEach(el => io.observe(el));
     }
 
-    // Placeholder until Task 15 wires up the actual matrix rain
-    function triggerMatrix() { console.log('matrix rain not yet wired'); }
+    /* ─── Boot sequence ─── */
+    function runBoot() {
+      const boot = document.getElementById('boot');
+      if (!boot) return;
+      const url = new URL(window.location);
+      const force = url.searchParams.get('boot') === '1';
+      const seen = localStorage.getItem('dalindev_booted');
+      if (seen && !force) { boot.remove(); return; }
+
+      const lines = boot.querySelectorAll('.line');
+      lines.forEach((line, i) => setTimeout(() => line.classList.add('show'), 200 + i * 280));
+      const total = 200 + lines.length * 280 + 500;
+      setTimeout(() => {
+        boot.classList.add('hide');
+        localStorage.setItem('dalindev_booted', '1');
+        setTimeout(() => boot.remove(), 320);
+      }, total);
+    }
+
+    /* ─── Matrix rain ─── */
+    function triggerMatrix() {
+      if (document.querySelector('.matrix-rain')) return;
+      const layer = document.createElement('div');
+      layer.className = 'matrix-rain';
+      const cols = Math.floor(window.innerWidth / 14);
+      const chars = 'アァカサタナハマヤラワABCDEF0123456789@#$%^&*<>{}[]/';
+      for (let i = 0; i < cols; i++) {
+        const col = document.createElement('div');
+        col.className = 'col';
+        col.style.left = (i * 14) + 'px';
+        col.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
+        col.style.animationDelay = (Math.random() * 0.8) + 's';
+        let text = '';
+        for (let j = 0; j < 30; j++) text += chars[Math.floor(Math.random() * chars.length)] + '\n';
+        col.textContent = text;
+        layer.appendChild(col);
+      }
+      const tag = document.createElement('div');
+      tag.className = 'tag'; tag.textContent = '// LEGACY MODE · 2024';
+      layer.appendChild(tag);
+      document.body.appendChild(layer);
+      setTimeout(() => layer.classList.add('hide'), 3600);
+      setTimeout(() => layer.remove(), 4100);
+    }
+
+    /* ─── Konami code ─── */
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let konamiIdx = 0;
+    document.addEventListener('keydown', e => {
+      const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (k === KONAMI[konamiIdx]) {
+        konamiIdx++;
+        if (konamiIdx === KONAMI.length) { triggerMatrix(); konamiIdx = 0; }
+      } else {
+        konamiIdx = (k === KONAMI[0]) ? 1 : 0;
+      }
+    });
+
+    /* ─── Status dot nudges ─── */
+    const STATUS_CYCLE = ['ONLINE · OTTAWA', 'BUILDING · OTTAWA', 'SHIPPING · OTTAWA', 'COFFEE · OTTAWA', 'ONLINE · OTTAWA'];
+    let dotClicks = 0; let dotClickTimer = null;
+    function wireStatusDot() {
+      const dot = document.getElementById('status-dot');
+      const txt = document.getElementById('status-text');
+      if (!dot || !txt) return;
+      dot.addEventListener('click', () => {
+        dotClicks++;
+        clearTimeout(dotClickTimer);
+        dotClickTimer = setTimeout(() => dotClicks = 0, 3000);
+        if (dotClicks >= 5) {
+          const cur = txt.textContent.trim();
+          const next = STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur) + 1) % STATUS_CYCLE.length];
+          txt.textContent = next;
+          dotClicks = 0;
+        }
+      });
+    }
+
+    /* ─── Version cycler ─── */
+    function wireVersionCycler() {
+      const cycle = () => {
+        if (document.querySelector('.vpop')) return;
+        const versions = [
+          { label: '2024', file: 'index_2024.html' },
+          { label: '2023', file: 'index_2023.html' },
+          { label: '2017', file: 'index_2017.html' },
+        ];
+        let idx = 0;
+        const pop = document.createElement('div');
+        pop.className = 'vpop';
+        pop.innerHTML = `<span class="label">PREVIOUS VERSION</span><span id="v-label" style="color:var(--ink);">·</span><a id="v-link" target="_blank" rel="noopener">→ open</a><span class="close" id="v-close">[esc]</span>`;
+        document.body.appendChild(pop);
+        const lbl = pop.querySelector('#v-label');
+        const lnk = pop.querySelector('#v-link');
+        const tick = () => {
+          const v = versions[idx % versions.length];
+          lbl.textContent = '· ' + v.label;
+          lnk.href = v.file;
+          idx++;
+        };
+        tick();
+        const intv = setInterval(tick, 3500);
+        const close = () => { clearInterval(intv); pop.remove(); document.removeEventListener('keydown', onEsc); };
+        pop.querySelector('#v-close').addEventListener('click', close);
+        function onEsc(e) { if (e.key === 'Escape') close(); }
+        document.addEventListener('keydown', onEsc);
+      };
+      document.getElementById('version-top')?.addEventListener('click', cycle);
+      document.getElementById('version-bottom')?.addEventListener('click', cycle);
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
+      runBoot();
       renderAgents();
       renderServices();
       renderCapabilities();
       startTerminalLoop();
       startCountUps();
+      wireStatusDot();
+      wireVersionCycler();
       window.addEventListener('load', () => setTimeout(() => {
         buildSystemMap();
         wireSystemMapInteractions();

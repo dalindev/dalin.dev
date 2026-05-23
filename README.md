@@ -1,3 +1,17 @@
+## Portfolio site 2026
+
+Mission Control for an AI developer. Repositioned around the Parker AI / AI agent platform work — billion-scale pipelines, LoRA fine-tuning, Gemini Batch API. Centerpiece is a Three.js **System Map** that connects roles ↔ projects ↔ skills as an interactive 3D graph (drag to rotate, click a node to fly to it and highlight the matching card below).
+
+Built with Claude Opus 4.7. Single static `index.html`, served by GitHub Pages.
+
+#### Easter eggs
+- Click `v2026.1` (top bar or footer) — cycles previous versions.
+- Type `matrix` into the System Map search, or press the Konami code (`↑ ↑ ↓ ↓ ← → ← → B A`).
+- Click the green `● ONLINE` dot 5× — status cycles through `ONLINE / BUILDING / SHIPPING / COFFEE`.
+- Append `?boot=1` to the URL — re-runs the boot sequence.
+
+---
+
 ## Portfolio site 2024
 
 Thanks to Claude 3.5 Sonnet for a complete rewrite of the portfolio site.
