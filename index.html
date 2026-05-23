@@ -21,7 +21,61 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;400;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* Tokens, base, layout — added in Task 2 */
+    :root {
+      --bg-deep: #04060c;
+      --bg: #07090f;
+      --bg-elev: #0a0d14;
+      --ink-strong: #f5f7fa;
+      --ink: #e0e7ec;
+      --ink-dim: #94a3b8;
+      --ink-faint: #4b5563;
+      --accent-live: #4ade80;
+      --accent-link: #60a5fa;
+      --accent-warn: #fbbf24;
+      --accent-hub: #ffffff;
+      --rule: rgba(96, 165, 250, 0.10);
+      --rule-strong: rgba(96, 165, 250, 0.20);
+      --glow-live: 0 0 12px rgba(74, 222, 128, 0.45);
+      --glow-link: 0 0 12px rgba(96, 165, 250, 0.45);
+      --glow-warn: 0 0 12px rgba(251, 191, 36, 0.45);
+      --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Roboto Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg-deep);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    h1, h2, h3, h4, h5, h6 { font-weight: 700; color: var(--ink-strong); }
+    a { color: var(--accent-link); text-decoration: none; }
+    a:hover { text-shadow: var(--glow-link); }
+    button { font-family: inherit; }
+
+    .label-cap {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
   </style>
 </head>
 <body>
