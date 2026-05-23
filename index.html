@@ -363,13 +363,13 @@
     }
 
     /* ─── Apple Studio Display sits ON TOP OF the desk ─── */
-    /* z-index 3: in FRONT of desk-top so the stand visibly rests on the desk surface */
+    /* z-index 4: stand and base render ON the desk surface */
     .desk-monitor {
       position: absolute;
-      top: 4%;
+      top: 3%;
       left: 22%; right: 22%;
-      height: 26%;
-      z-index: 3;
+      height: 22%;
+      z-index: 4;
       /* Aluminum body (silver brushed) */
       background: linear-gradient(180deg, #d8dbe2 0%, #a8acb5 60%, #8a8e98 100%);
       border-radius: 5px;
@@ -398,23 +398,25 @@
       border-radius: 50%;
       box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.15);
     }
-    /* Apple-style aluminum stand: thin neck + flat oval base */
+    /* Apple-style aluminum stand: thick visible neck + wide oval base on desk surface */
     .desk-monitor::after {
       content: "";
       position: absolute;
-      bottom: -11px; left: 50%; transform: translateX(-50%);
-      width: 14px; height: 11px;
-      background: linear-gradient(90deg, #888c95 0%, #d8dbe2 50%, #888c95 100%);
-      clip-path: polygon(20% 0%, 80% 0%, 95% 100%, 5% 100%);
+      bottom: -18px; left: 50%; transform: translateX(-50%);
+      width: 12px; height: 18px;
+      background: linear-gradient(90deg, #4a5060 0%, #d8dbe2 50%, #4a5060 100%);
+      clip-path: polygon(15% 0%, 85% 0%, 95% 100%, 5% 100%);
+      z-index: 5;
     }
     .desk-monitor::before {
       content: "";
       position: absolute;
-      bottom: -15px; left: 50%; transform: translateX(-50%);
-      width: 62px; height: 5px;
-      background: linear-gradient(180deg, #d8dbe2 0%, #a8acb5 60%, #6e7280 100%);
+      bottom: -24px; left: 50%; transform: translateX(-50%);
+      width: 70px; height: 7px;
+      background: linear-gradient(180deg, #d8dbe2 0%, #a8acb5 50%, #5e6470 100%);
       border-radius: 50%;
-      box-shadow: 0 3px 5px rgba(0,0,0,0.22);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.28);
+      z-index: 5;
     }
     .desk-monitor .screen {
       width: 100%; height: 100%;
@@ -702,6 +704,45 @@
       0%, 100% { transform: rotate(-15deg); }
       50%      { transform: rotate(15deg); }
     }
+
+    /* ─── Floor pets & clutter (makes office feel alive) ─── */
+    .desk-pet {
+      position: absolute;
+      bottom: 5%;
+      font-size: 18px;
+      z-index: 6;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+      pointer-events: none;
+    }
+    .desk-pet.left  { left: 8%; }
+    .desk-pet.right { right: 8%; }
+    /* Roomba spins as it cleans */
+    .desk-pet.roomba {
+      bottom: 7%; right: 10%;
+      animation: roombaSpin 6s linear infinite;
+    }
+    @keyframes roombaSpin {
+      0%   { transform: rotate(0deg)   translateX(0); }
+      25%  { transform: rotate(180deg) translateX(-6px); }
+      50%  { transform: rotate(360deg) translateX(0); }
+      75%  { transform: rotate(540deg) translateX(6px); }
+      100% { transform: rotate(720deg) translateX(0); }
+    }
+    /* Dog wags tail (subtle bounce) */
+    .desk-pet.dog { animation: pulseDot 1.6s ease-in-out infinite; transform-origin: bottom; }
+    /* Bird flits */
+    .desk-pet.bird {
+      animation: birdFly 4s ease-in-out infinite;
+      bottom: 38%;
+    }
+    @keyframes birdFly {
+      0%, 100% { transform: translate(0, 0); }
+      25%      { transform: translate(8px, -10px); }
+      50%      { transform: translate(0, -16px); }
+      75%      { transform: translate(-8px, -10px); }
+    }
+    /* Sleeping cat curls (no animation, just sits) */
+    .desk-pet.cat-sleep { opacity: 0.85; }
 
     /* ─── Screen content styles ─── */
     .scr-orchestrate { color: var(--accent-warn); }
@@ -1574,28 +1615,36 @@
     const OFFICE_AGENTS = [
       { id: 'opus-main',  name: 'Claude 4.7 Opus',  role: 'Main agent',       status: 'busy',
         task: 'Orchestrating 24 subtasks',          screen: 'orchestrate', color: '#f59e0b',
-        items: { left: ['☕'], right: ['📋'] } },
+        items: { left: ['☕'], right: ['📋'] },
+        pet: { emoji: '🐱', kind: 'cat-sleep', side: 'right' } },
       { id: 'opus-ft',    name: 'Claude 4.7 Opus',  role: 'Fine-tune agent',  status: 'busy',
         task: 'LoRA v17 · epoch 12 · 62%',          screen: 'progress',    color: '#f59e0b',
-        items: { left: ['☕'], right: ['⚡'] } },
+        items: { left: ['☕'], right: ['⚡'] },
+        pet: { emoji: '🤖', kind: 'roomba', side: 'right' } },
       { id: 'gem-pro',    name: 'Gemini 3.1 Pro',   role: 'AI tags',          status: 'busy',
         task: 'Classify 482 ads · 96.4% acc',       screen: 'chart',       color: '#60a5fa',
-        items: { left: ['🌱'], right: [] } },
+        items: { left: ['🌱'], right: [] },
+        pet: { emoji: '🐦', kind: 'bird', side: 'left' } },
       { id: 'gem-flash',  name: 'Gemini 3.0 Flash', role: 'Media analyze',    status: 'busy',
         task: 'Analyze 8.4K images · 12ms p50',     screen: 'media',       color: '#60a5fa',
-        items: { left: [], right: ['📷'] } },
+        items: { left: [], right: ['📷'] },
+        pet: { emoji: '🐶', kind: 'dog', side: 'left' } },
       { id: 'gem-search', name: 'Gemini 3.1 Pro',   role: 'Web search',       status: 'busy',
         task: 'Live grounding · 87 sources',        screen: 'crawler',     color: '#60a5fa',
-        items: { left: ['📚'], right: [] } },
+        items: { left: ['📚'], right: [] },
+        pet: { emoji: '🐢', kind: 'cat-sleep', side: 'right' } },
       { id: 'gpt55',      name: 'GPT 5.5',          role: 'Backup fallback',  status: 'idle',
         task: 'On standby · doomscrolling',         screen: 'phone',       color: '#10b981',
-        items: { left: ['☕'], right: ['📱'] } },
+        items: { left: ['☕'], right: ['📱'] },
+        pet: { emoji: '🐈', kind: 'cat-sleep', side: 'left' } },
       { id: 'whisper',    name: 'Whisper v4',       role: 'Audio transcribe', status: 'idle',
         task: 'No audio queued · napping',          screen: 'sleep',       color: '#10b981',
-        items: { left: ['🎧'], right: [] } },
+        items: { left: ['🎧'], right: [] },
+        pet: { emoji: '🐦', kind: 'cat-sleep', side: 'right' } },
       { id: 'deepseek',   name: 'DeepSeek v4',      role: 'Reasoning agent',  status: 'offline',
         task: 'OOM · reasoning chain too long',     screen: 'error',       color: '#ef4444',
-        items: { left: ['🔧'], right: [] } },
+        items: { left: ['🔧'], right: [] },
+        pet: { emoji: '🗑️', kind: 'cat-sleep', side: 'right' } },
     ];
 
     function screenHtml(type) {
@@ -1862,6 +1911,7 @@
             <div class="desk-chair">${SVG_CHAIR(a.id)}</div>
             ${a.status === 'idle'    ? '<div class="desk-fx zzz">z<sub>Z</sub>z</div>' : ''}
             ${a.status === 'offline' ? '<div class="desk-fx tool">🔧<span class="sys">SYS</span></div>' : ''}
+            ${a.pet ? `<div class="desk-pet ${a.pet.kind} ${a.pet.side || 'right'}">${a.pet.emoji}</div>` : ''}
           </div>
           <div class="desk-info">
             <div class="row">
