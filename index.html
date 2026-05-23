@@ -1085,7 +1085,7 @@
         <div class="macterm">
           <div class="macterm-bar">
             <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
-            <div class="title">finetune.v17 — LoRA · llama-3-8b</div>
+            <div class="title">finetune.v17 — LoRA · qwen-3.6-27b · A100 80GB</div>
             <div class="badge"><span class="ld"></span>TRAINING</div>
           </div>
           <div class="macterm-body ft" id="finetune-panel"></div>
@@ -1394,8 +1394,8 @@
       { id: 'gem-flash',  name: 'Gemini 3.0 Flash', role: 'Media analyze',    status: 'busy',
         task: 'Analyze 8.4K images · 12ms p50',     screen: 'media',       color: '#60a5fa',
         items: { left: [], right: ['📷'] } },
-      { id: 'sonar',      name: 'Sonar Pro',        role: 'Web research',     status: 'busy',
-        task: 'Gather competitor intel · 87 srcs',  screen: 'crawler',     color: '#22d3ee',
+      { id: 'gem-search', name: 'Gemini 3.1 Pro',   role: 'Web search',       status: 'busy',
+        task: 'Live grounding · 87 sources',        screen: 'crawler',     color: '#60a5fa',
         items: { left: ['📚'], right: [] } },
       { id: 'gpt55',      name: 'GPT 5.5',          role: 'Backup fallback',  status: 'idle',
         task: 'On standby · doomscrolling',         screen: 'phone',       color: '#10b981',
@@ -1403,8 +1403,8 @@
       { id: 'whisper',    name: 'Whisper v4',       role: 'Audio transcribe', status: 'idle',
         task: 'No audio queued · napping',          screen: 'sleep',       color: '#10b981',
         items: { left: ['🎧'], right: [] } },
-      { id: 'codex',      name: 'Codex',            role: 'Debug agent',      status: 'offline',
-        task: 'SYS debugging · reboot 14/∞',        screen: 'error',       color: '#ef4444',
+      { id: 'deepseek',   name: 'DeepSeek v4',      role: 'Reasoning agent',  status: 'offline',
+        task: 'OOM · reasoning chain too long',     screen: 'error',       color: '#ef4444',
         items: { left: ['🔧'], right: [] } },
     ];
 
@@ -2525,7 +2525,7 @@
         const now = Date.now();
         const gpu  = Math.max(40, Math.min(95, Math.round(74 + Math.sin(now/2100) * 10 + (Math.random() - 0.5) * 6)));
         const cpu  = Math.max(10, Math.min(70, Math.round(28 + Math.sin(now/3300) * 7 + (Math.random() - 0.5) * 5)));
-        const vram = (16.2 + Math.sin(now/5200) * 1.8 + Math.random() * 0.3).toFixed(1);
+        const vram = (58 + Math.sin(now/5200) * 8 + Math.random() * 2).toFixed(1);
         const ram  = (43.4 + Math.sin(now/4400) * 2.8).toFixed(1);
         const temp = Math.max(60, Math.min(86, Math.round(75 + Math.sin(now/6700) * 7)));
         const grad = (0.30 + Math.random() * 0.18).toFixed(2);
@@ -2550,7 +2550,7 @@
           <div class="ft-row">EPOCH <b>${epoch}/16</b> · STEP <b>${step}/${EPOCH_STEPS}</b>  <span class="bar prog">${progBar}</span> <b>${Math.round(progPct)}%</b></div>
           <div class="ft-row">loss <b class="ok">${loss.toFixed(3)}</b>${lossDStr}  val <b class="ok">${valLoss.toFixed(3)}</b>${valDStr}  lr <span class="key">${LR.toExponential(1)}</span></div>
           <div class="ft-divider"></div>
-          <div class="ft-row">GPU <span class="bar">${gpuBar}</span> <b>${pad(gpu, 2)}%</b>  VRAM <b>${vram}</b>/24GB  <span class="${tempCls}">${temp}°C</span></div>
+          <div class="ft-row">GPU <span class="bar">${gpuBar}</span> <b>${pad(gpu, 2)}%</b>  VRAM <b>${vram}</b>/80GB  <span class="${tempCls}">${temp}°C</span></div>
           <div class="ft-row">CPU <span class="bar cpu">${cpuBar}</span> <b>${pad(cpu, 2)}%</b>  RAM&nbsp; <b>${ram}</b>/64GB</div>
           <div class="ft-divider"></div>
           <div class="ft-recent">
