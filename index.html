@@ -126,12 +126,13 @@
     /* ─── Hero ─── */
     .hero {
       position: relative;
-      padding: 40px 0 32px;
+      padding: 44px 0 40px;
       border-bottom: 1px solid var(--rule);
       overflow: hidden;
       display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: 28px;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 32px;
+      align-items: start;
     }
     .hero .ghost {
       position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -174,29 +175,93 @@
       box-shadow: var(--glow-live);
     }
 
-    .term {
-      background: var(--bg-elev);
-      border: 1px solid var(--rule-strong);
-      border-radius: 4px;
-      padding: 12px;
-      height: 180px;
+    /* ─── macOS Terminal chrome (Terminal.app feel) ─── */
+    .hero-terms { display: flex; flex-direction: column; gap: 12px; }
+    .macterm {
+      background: #0a0d14;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
       overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .macterm-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 13px;
+      background: linear-gradient(180deg, #232a36 0%, #181d26 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      user-select: none;
+    }
+    .macterm-bar .dots { display: flex; gap: 6px; }
+    .macterm-bar .dots span {
+      width: 12px; height: 12px; border-radius: 50%;
+      box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.30), inset 0 -1px 0 rgba(0,0,0,0.20);
+    }
+    .macterm-bar .dots .r { background: #ff5f57; }
+    .macterm-bar .dots .y { background: #febc2e; }
+    .macterm-bar .dots .g { background: #28c840; }
+    .macterm-bar .title {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 11px; color: #b8c0ce; font-weight: 600;
+      letter-spacing: 0.02em;
+      pointer-events: none;
+    }
+    .macterm-bar .badge {
+      margin-left: auto;
+      font-size: 9px; letter-spacing: 0.15em;
+      color: var(--accent-live);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .macterm-bar .badge .ld {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-live); box-shadow: var(--glow-live);
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+    .macterm-body {
+      padding: 12px 14px;
       font-size: 10px;
       color: var(--ink-dim);
+      line-height: 1.55;
+      font-family: var(--mono);
     }
-    .term .head {
-      color: var(--ink-faint); font-size: 9px; letter-spacing: 0.18em;
-      text-transform: uppercase; margin-bottom: 10px;
-      display: flex; justify-content: space-between;
-    }
-    .term .head .live { color: var(--accent-live); }
-    .term .stream { display: flex; flex-direction: column; gap: 4px; }
+
+    /* System.live (preserves existing class names) */
+    .term .head { display: none; } /* old in-body title — replaced by macOS bar */
+    .term { background: transparent; border: 0; padding: 0; height: auto; overflow: visible; }
+    .term .stream { display: flex; flex-direction: column; gap: 4px; min-height: 130px; }
     .term .line { opacity: 0; }
     .term .line.show { opacity: 1; transition: opacity 220ms ease-out; }
     .term .ok   { color: var(--accent-live); }
     .term .warn { color: var(--accent-warn); }
     .term .key  { color: var(--accent-link); }
     .term .dim  { color: var(--ink-faint); }
+
+    /* Fine-tune panel — info-dense LoRA training monitor */
+    .ft { font-family: var(--mono); }
+    .ft-row { display: block; margin-bottom: 5px; font-size: 10px; white-space: nowrap; }
+    .ft-row b { color: var(--ink-strong); font-weight: 700; }
+    .ft .bar {
+      display: inline-block;
+      font-family: var(--mono);
+      letter-spacing: -0.5px;
+      color: var(--accent-live);
+      text-shadow: 0 0 4px rgba(74,222,128,0.4);
+    }
+    .ft .bar.cpu  { color: var(--accent-link); text-shadow: 0 0 4px rgba(96,165,250,0.4); }
+    .ft .bar.prog { color: var(--accent-warn); text-shadow: 0 0 4px rgba(251,191,36,0.4); }
+    .ft .ok      { color: var(--accent-live); }
+    .ft .warn    { color: var(--accent-warn); }
+    .ft .key     { color: var(--accent-link); }
+    .ft .delta   { color: var(--ink-faint); font-size: 9px; margin-left: 2px; }
+    .ft .delta.down { color: var(--accent-live); }
+    .ft-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+      margin: 7px 0;
+    }
+    .ft-recent { font-size: 9px; color: var(--ink-faint); }
+    .ft-log { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.85; }
+    .ft-log:first-child { color: var(--ink); opacity: 1; }
 
     @media (max-width: 720px) {
       .hero { grid-template-columns: 1fr; gap: 20px; padding: 28px 0 20px; }
@@ -612,7 +677,7 @@
       <a href="https://www.linkedin.com/in/dalinhuang/" target="_blank" rel="noopener">LINKEDIN</a>
       <a href="https://github.com/dalindev" target="_blank" rel="noopener">GITHUB</a>
       <a href="mailto:dhuan023@gmail.com">EMAIL</a>
-      <a href="#" id="resume-link">RESUME</a>
+      <a href="Dalin_Huang_Resume_2026.pdf" target="_blank" rel="noopener" id="resume-link">RESUME</a>
     </nav>
   </header>
 
@@ -653,35 +718,30 @@
           <a href="https://www.linkedin.com/in/dalinhuang/" target="_blank" rel="noopener">→ LINKEDIN</a>
           <a href="https://github.com/dalindev" target="_blank" rel="noopener">→ GITHUB</a>
           <a href="mailto:dhuan023@gmail.com">→ EMAIL</a>
-          <a href="#" id="hero-resume">→ RESUME.PDF</a>
+          <a href="Dalin_Huang_Resume_2026.pdf" target="_blank" rel="noopener" id="hero-resume">→ RESUME.PDF</a>
         </div>
       </div>
 
-      <div class="term" aria-live="polite">
-        <div class="head"><span>$ system.live</span><span class="live">● STREAMING</span></div>
-        <div class="stream" id="term-stream"></div>
-      </div>
-    </section>
-    <section class="kpis">
-      <div class="kpi" data-kpi="years">
-        <div class="label">YEARS SHIPPED</div>
-        <div class="value" data-count="11" data-suffix="+">11+</div>
-        <div class="sub">since 2015 · still compounding</div>
-      </div>
-      <div class="kpi" data-kpi="f1">
-        <div class="label">F1 LIFT · 30 ITER</div>
-        <div class="value" data-count="79" data-suffix="%">79%</div>
-        <div class="sub">from 0.7% zero-shot</div>
-      </div>
-      <div class="kpi" data-kpi="scale">
-        <div class="label">PLATFORM SCALE</div>
-        <div class="value" data-count="100" data-prefix="~" data-suffix="×">~100×</div>
-        <div class="sub">thousands of workflows</div>
-      </div>
-      <div class="kpi" data-kpi="throughput">
-        <div class="label">DATA THROUGHPUT</div>
-        <div class="value">BILLIONS</div>
-        <div class="sub">data pts · ads · media / day</div>
+      <div class="hero-terms">
+        <div class="macterm">
+          <div class="macterm-bar">
+            <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+            <div class="title">dalin@parker-ai ~ — system.live</div>
+            <div class="badge"><span class="ld"></span>STREAMING</div>
+          </div>
+          <div class="macterm-body term" aria-live="polite">
+            <div class="stream" id="term-stream"></div>
+          </div>
+        </div>
+
+        <div class="macterm">
+          <div class="macterm-bar">
+            <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+            <div class="title">finetune.v17 — LoRA · llama-3-8b</div>
+            <div class="badge"><span class="ld"></span>TRAINING</div>
+          </div>
+          <div class="macterm-body ft" id="finetune-panel"></div>
+        </div>
       </div>
     </section>
     <h2 class="section-head">SYSTEM MAP <span class="count">· roles ↔ projects ↔ skills</span></h2>
@@ -1877,30 +1937,81 @@
       setInterval(addLine, 1800);
     }
 
-    function startCountUps() {
-      const els = document.querySelectorAll('.kpi .value[data-count]');
-      if (!('IntersectionObserver' in window)) return;
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(en => {
-          if (!en.isIntersecting) return;
-          const el = en.target;
-          const target = parseFloat(el.dataset.count);
-          const pre = el.dataset.prefix || '';
-          const suf = el.dataset.suffix || '';
-          const start = performance.now(), dur = 900;
-          function tick() {
-            const t = Math.min((performance.now() - start) / dur, 1);
-            const k = 1 - Math.pow(1 - t, 3);
-            const v = Math.round(target * k);
-            el.textContent = pre + v + suf;
-            if (t < 1) requestAnimationFrame(tick);
-          }
-          el.textContent = pre + '0' + suf;
-          requestAnimationFrame(tick);
-          io.unobserve(el);
-        });
-      }, { threshold: 0.4 });
-      els.forEach(el => io.observe(el));
+    /* ─── Fine-tune training monitor (faux LoRA run, fast ticks) ─── */
+    function startFinetuneLoop() {
+      const el = document.getElementById('finetune-panel');
+      if (!el) return;
+
+      const EPOCH_STEPS = 2000;
+      const LR = 2.4e-5;
+      let step = 1240, epoch = 12, loss = 0.341, valLoss = 0.298;
+      let lossDelta = -0.012, valDelta = -0.008;
+      const recentLogs = [
+        '[step 1238] loss 0.353  grad 0.42',
+        '[step 1239] loss 0.349  grad 0.39',
+      ];
+
+      function bar(pct, len = 14) {
+        const filled = Math.max(0, Math.min(len, Math.round(pct / 100 * len)));
+        return '▓'.repeat(filled) + '░'.repeat(len - filled);
+      }
+      function pad(v, n = 4) { return String(v).padStart(n, ' '); }
+
+      function tick() {
+        step += 1;
+        if (step > EPOCH_STEPS) { step = 1; epoch += 1; if (epoch > 16) epoch = 1; }
+
+        const prevLoss = loss;
+        loss += (Math.random() - 0.56) * 0.014;
+        loss = Math.max(0.18, Math.min(0.42, loss));
+        lossDelta = loss - prevLoss;
+
+        if (step % 20 === 0) {
+          const prevVal = valLoss;
+          valLoss += (Math.random() - 0.6) * 0.005;
+          valLoss = Math.max(0.15, Math.min(0.38, valLoss));
+          valDelta = valLoss - prevVal;
+        }
+
+        const now = Date.now();
+        const gpu  = Math.max(40, Math.min(95, Math.round(74 + Math.sin(now/2100) * 10 + (Math.random() - 0.5) * 6)));
+        const cpu  = Math.max(10, Math.min(70, Math.round(28 + Math.sin(now/3300) * 7 + (Math.random() - 0.5) * 5)));
+        const vram = (16.2 + Math.sin(now/5200) * 1.8 + Math.random() * 0.3).toFixed(1);
+        const ram  = (43.4 + Math.sin(now/4400) * 2.8).toFixed(1);
+        const temp = Math.max(60, Math.min(86, Math.round(75 + Math.sin(now/6700) * 7)));
+        const grad = (0.30 + Math.random() * 0.18).toFixed(2);
+
+        const progPct  = step / EPOCH_STEPS * 100;
+        const progBar  = bar(progPct, 16);
+        const gpuBar   = bar(gpu, 10);
+        const cpuBar   = bar(cpu, 10);
+
+        recentLogs.unshift(`[step ${pad(step)}] loss ${loss.toFixed(3)}  grad ${grad}`);
+        while (recentLogs.length > 3) recentLogs.pop();
+
+        const lossDStr = lossDelta < 0
+          ? `<span class="delta down">↓${Math.abs(lossDelta).toFixed(3)}</span>`
+          : `<span class="delta">↑${lossDelta.toFixed(3)}</span>`;
+        const valDStr = valDelta < 0
+          ? `<span class="delta down">↓${Math.abs(valDelta).toFixed(3)}</span>`
+          : `<span class="delta">↑${valDelta.toFixed(3)}</span>`;
+        const tempCls = temp > 82 ? 'warn' : 'ok';
+
+        el.innerHTML = `
+          <div class="ft-row">EPOCH <b>${epoch}/16</b> · STEP <b>${step}/${EPOCH_STEPS}</b>  <span class="bar prog">${progBar}</span> <b>${Math.round(progPct)}%</b></div>
+          <div class="ft-row">loss <b class="ok">${loss.toFixed(3)}</b>${lossDStr}  val <b class="ok">${valLoss.toFixed(3)}</b>${valDStr}  lr <span class="key">${LR.toExponential(1)}</span></div>
+          <div class="ft-divider"></div>
+          <div class="ft-row">GPU <span class="bar">${gpuBar}</span> <b>${pad(gpu, 2)}%</b>  VRAM <b>${vram}</b>/24GB  <span class="${tempCls}">${temp}°C</span></div>
+          <div class="ft-row">CPU <span class="bar cpu">${cpuBar}</span> <b>${pad(cpu, 2)}%</b>  RAM&nbsp; <b>${ram}</b>/64GB</div>
+          <div class="ft-divider"></div>
+          <div class="ft-recent">
+            ${recentLogs.map(l => `<div class="ft-log">${l}</div>`).join('')}
+          </div>
+        `;
+      }
+
+      tick();
+      setInterval(tick, 380);
     }
 
     /* ─── Boot sequence ─── */
@@ -2020,7 +2131,7 @@
       renderServices();
       renderCapabilities();
       startTerminalLoop();
-      startCountUps();
+      startFinetuneLoop();
       wireStatusDot();
       wireVersionCycler();
       window.addEventListener('load', () => setTimeout(() => {
