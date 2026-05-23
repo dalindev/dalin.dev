@@ -346,15 +346,29 @@
       height: 260px;
       overflow: visible;
     }
-    /* Soft floor shadow under each desk */
+    /* Strong soft floor shadow under each desk (chair + desk grounds the scene) */
     .desk-scene::before {
       content: "";
       position: absolute;
-      bottom: 0; left: 6%; right: 6%;
-      height: 14px;
-      background: radial-gradient(ellipse, rgba(20,24,31,0.30) 0%, rgba(20,24,31,0.10) 50%, transparent 75%);
-      filter: blur(5px);
+      bottom: -2px; left: 4%; right: 4%;
+      height: 22px;
+      background: radial-gradient(ellipse 50% 80% at 50% 50%,
+        rgba(20,24,31,0.42) 0%,
+        rgba(20,24,31,0.18) 45%,
+        transparent 80%);
+      filter: blur(6px);
       z-index: 1;
+      border-radius: 50%;
+    }
+    /* Second softer shadow further out */
+    .desk-scene::after {
+      content: "";
+      position: absolute;
+      bottom: 4px; left: 12%; right: 12%;
+      height: 8px;
+      background: radial-gradient(ellipse, rgba(20,24,31,0.55) 0%, transparent 70%);
+      filter: blur(3px);
+      z-index: 2;
       border-radius: 50%;
     }
 
@@ -436,26 +450,93 @@
       88%, 92%      { opacity: 0.45; }
     }
 
-    /* ─── White desk surface (BEHIND the chair, visible at sides) ─── */
+    /* ─── White desk surface with thickness (BEHIND the chair) ─── */
     .desk-top {
       position: absolute;
       top: 33%;
       left: 3%; right: 3%;
       height: 14%;
       background:
-        linear-gradient(180deg, #ffffff 0%, #f5f3e8 60%, #d6d3c5 100%);
-      border-radius: 5px 5px 10px 10px;
+        linear-gradient(180deg, #ffffff 0%, #f5f3e8 55%, #c8c5b6 100%);
+      border-radius: 5px 5px 12px 12px;
       box-shadow:
-        0 4px 8px rgba(20,24,31,0.15),
-        inset 0 1px 0 rgba(255,255,255,1);
+        0 8px 14px rgba(20,24,31,0.22),
+        0 18px 24px -8px rgba(20,24,31,0.15),
+        inset 0 1px 0 rgba(255,255,255,1),
+        inset 0 -2px 4px rgba(0,0,0,0.08);
       z-index: 3;
+    }
+    /* Desk thickness — darker band below the surface implying depth */
+    .desk-top::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -6px;
+      height: 6px;
+      background: linear-gradient(180deg, #8e8b7f 0%, #5e5b51 100%);
+      border-radius: 0 0 14px 14px;
+      z-index: -1;
     }
     .desk-top::before {
       content: "";
       position: absolute;
-      left: 5%; right: 5%; top: 28%;
+      left: 4%; right: 4%; top: 24%;
       height: 1px;
       background: rgba(0,0,0,0.06);
+    }
+
+    /* ─── Apple Magic Keyboard (silver bar on desk) ─── */
+    .desk-keyboard {
+      position: absolute;
+      top: 39%;
+      left: 24%; right: 24%;
+      height: 9px;
+      background:
+        linear-gradient(180deg, #ebeef2 0%, #c7cbd2 50%, #9ca0a8 100%);
+      border-radius: 2px;
+      z-index: 3;
+      box-shadow:
+        0 2px 4px rgba(20,24,31,0.30),
+        inset 0 0.5px 0 rgba(255,255,255,0.95),
+        inset 0 -0.5px 0 rgba(0,0,0,0.15);
+    }
+    /* Tiny key hint rows */
+    .desk-keyboard::before {
+      content: "";
+      position: absolute;
+      top: 1.5px; left: 3px; right: 3px; bottom: 2px;
+      background:
+        repeating-linear-gradient(90deg,
+          transparent 0, transparent 1.5px,
+          rgba(40,44,52,0.55) 1.5px, rgba(40,44,52,0.55) 2px),
+        repeating-linear-gradient(0deg,
+          transparent 0, transparent 1.5px,
+          transparent 1.5px, transparent 2.2px);
+      border-radius: 1px;
+    }
+    /* Long spacebar accent */
+    .desk-keyboard::after {
+      content: "";
+      position: absolute;
+      bottom: 1.5px; left: 30%; right: 30%;
+      height: 1.5px;
+      background: rgba(40,44,52,0.55);
+      border-radius: 1px;
+    }
+
+    /* ─── Magic Trackpad (small white slab next to keyboard) ─── */
+    .desk-trackpad {
+      position: absolute;
+      top: 39%;
+      right: 14%;
+      width: 8%;
+      height: 9px;
+      background:
+        linear-gradient(180deg, #f8f9fb 0%, #d8dbe2 100%);
+      border-radius: 2px;
+      z-index: 3;
+      box-shadow:
+        0 2px 4px rgba(20,24,31,0.25),
+        inset 0 0.5px 0 rgba(255,255,255,1);
     }
 
     /* ─── Items on the desk, positioned to LEFT/RIGHT of where the chair sits ─── */
@@ -1654,6 +1735,8 @@
             <!-- Back-view depth order: monitor → desk → bot head → chair (foreground) -->
             <div class="desk-monitor"><div class="monitor-bezel"><div class="screen scr-${a.screen}">${screenHtml(a.screen)}</div></div></div>
             <div class="desk-top"></div>
+            <div class="desk-keyboard"></div>
+            <div class="desk-trackpad"></div>
             <div class="desk-items">
               <div class="left">${(a.items.left||[]).map(item).join('')}</div>
               <div class="right">${(a.items.right||[]).map(item).join('')}</div>
