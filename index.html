@@ -1066,11 +1066,137 @@
       SM.renderer.render(SM.scene, SM.camera);
     }
 
+    function isConnected(a, b) {
+      return SM.edges.some(e => (e.a === a && e.b === b) || (e.a === b && e.b === a));
+    }
+
+    function setHighlight(node) {
+      SM.nodes.forEach(n => {
+        const isHi = !node || n === node || (node.type !== 'hub' && isConnected(node, n));
+        n.mesh.material.opacity = isHi ? 1 : 0.18;
+      });
+      SM.edges.forEach(e => {
+        const isHi = !node || e.a === node || e.b === node;
+        e.line.material.opacity = isHi ? Math.max(e.baseOpacity, 0.7) : 0.04;
+      });
+    }
+
+    function flyTo(node) {
+      if (!SM.camera) return;
+      // Compute world position by accounting for group rotation
+      const worldPos = node.mesh.position.clone().applyMatrix4(SM.group.matrixWorld);
+      const dir = worldPos.clone().normalize();
+      const dist = 2.2 + node.mesh.geometry.parameters.radius * 4;
+      const target = dir.multiplyScalar(Math.max(3.2, dist));
+      const from = SM.camera.position.clone();
+      const start = performance.now(); const dur = 700;
+      function tick() {
+        const t = Math.min((performance.now() - start) / dur, 1);
+        const k = t < 0.5 ? 4 * t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+        SM.camera.position.lerpVectors(from, target, k);
+        SM.camera.lookAt(0, 0, 0);
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      tick();
+      SM.autoRotate = false;
+      SM.autoRotateResumeAt = performance.now() + 6000;
+      SM.selected = node;
+    }
+
+    function flashCardFor(node) {
+      let el = null;
+      if (node.type === 'role') el = document.querySelector(`.agent[data-id="${node.id}"]`);
+      else if (node.type === 'project') el = document.querySelector(`.svc[data-id="${node.id}"]`);
+      if (!el) return;
+      // Open the card if it's collapsed
+      if (node.type === 'role') el.classList.add('open');
+      el.classList.add('flash');
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => el.classList.remove('flash'), 2200);
+    }
+
+    function wireSystemMapInteractions() {
+      if (!SM.renderer) return;
+      const canvas = SM.renderer.domElement;
+      const tip = document.getElementById('sm-tooltip');
+      const vp = document.getElementById('sm-viewport');
+
+      function pickNode(e) {
+        const rect = canvas.getBoundingClientRect();
+        SM.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        SM.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        SM.raycaster.setFromCamera(SM.mouse, SM.camera);
+        const meshes = SM.nodes.map(n => n.mesh).filter(m => m.visible !== false);
+        const hits = SM.raycaster.intersectObjects(meshes);
+        return hits.length ? SM.nodes.find(n => n.mesh === hits[0].object) : null;
+      }
+
+      function showTip(node, e) {
+        const rect = vp.getBoundingClientRect();
+        tip.style.left = (e.clientX - rect.left) + 'px';
+        tip.style.top  = (e.clientY - rect.top) + 'px';
+        const typeLabel = node.type.toUpperCase();
+        const meta = node.period || '';
+        const desc = node.payload?.desc || node.payload?.title || '';
+        tip.innerHTML = `<h6>● ${node.name}</h6><div class="meta">${typeLabel}${meta ? ' · ' + meta : ''}</div>${desc ? `<div style="color:var(--ink); font-size:9px; line-height:1.5;">${desc}</div>` : ''}`;
+        tip.classList.add('show');
+      }
+      function hideTip() { tip.classList.remove('show'); }
+
+      canvas.addEventListener('mousemove', e => {
+        const node = pickNode(e);
+        if (node && node.type !== 'hub') {
+          if (SM.hovered !== node) { SM.hovered = node; setHighlight(node); }
+          showTip(node, e);
+          canvas.style.cursor = 'pointer';
+        } else {
+          if (SM.hovered) { SM.hovered = null; setHighlight(null); }
+          hideTip();
+          canvas.style.cursor = 'grab';
+        }
+      });
+      canvas.addEventListener('mouseleave', () => {
+        SM.hovered = null; setHighlight(null); hideTip();
+      });
+
+      canvas.addEventListener('click', e => {
+        const node = pickNode(e);
+        if (!node || node.type === 'hub') { setHighlight(null); SM.selected = null; return; }
+        flyTo(node);
+        flashCardFor(node);
+      });
+
+      canvas.addEventListener('dblclick', e => {
+        const node = pickNode(e);
+        if (!node || node.type === 'hub') return;
+        flyTo(node);
+        setTimeout(() => dolly(0.7), 100);
+        flashCardFor(node);
+      });
+    }
+
+    function wireJumpPills() {
+      document.querySelectorAll('[data-jump]').forEach(el => {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          const id = el.dataset.jump;
+          const node = SM.nodes.find(n => n.id === id);
+          if (!node) return;
+          document.querySelector('.systemmap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => flyTo(node), 400);
+        });
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderAgents();
       renderServices();
       renderCapabilities();
-      window.addEventListener('load', () => setTimeout(buildSystemMap, 0));
+      window.addEventListener('load', () => setTimeout(() => {
+        buildSystemMap();
+        wireSystemMapInteractions();
+        wireJumpPills();
+      }, 0));
     });
   </script>
 
