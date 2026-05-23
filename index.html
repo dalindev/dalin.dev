@@ -1188,6 +1188,89 @@
       });
     }
 
+    function applyFilters() {
+      SM.nodes.forEach(n => {
+        if (n.type === 'hub') return;
+        n.mesh.visible = !!SM.filters[n.type];
+      });
+      SM.edges.forEach(e => {
+        e.line.visible = e.a.mesh.visible && e.b.mesh.visible;
+      });
+    }
+
+    function setSearchHighlight(node) {
+      if (!node) {
+        SM.nodes.forEach(n => { n.mesh.material.opacity = 1; });
+        SM.edges.forEach(e => { e.line.material.opacity = e.baseOpacity; });
+        return;
+      }
+      SM.nodes.forEach(n => {
+        n.mesh.material.opacity = (n === node) ? 1 : 0.20;
+      });
+      SM.edges.forEach(e => {
+        e.line.material.opacity = (e.a === node || e.b === node) ? 0.75 : 0.05;
+      });
+    }
+
+    function dolly(factor) {
+      if (!SM.camera) return;
+      const dir = SM.camera.position.clone().normalize();
+      const dist = SM.camera.position.length() * factor;
+      const clamped = Math.max(3, Math.min(12, dist));
+      SM.camera.position.copy(dir.multiplyScalar(clamped));
+    }
+
+    function wireSystemMapControls() {
+      if (!SM.renderer) return;
+
+      document.querySelectorAll('.sm-chip[data-filter]').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const f = chip.dataset.filter;
+          SM.filters[f] = !SM.filters[f];
+          chip.classList.toggle('on');
+          chip.classList.toggle('off');
+          applyFilters();
+        });
+      });
+
+      const search = document.getElementById('sm-search');
+      search.addEventListener('input', () => {
+        const q = search.value.trim().toLowerCase();
+        if (!q) { setSearchHighlight(null); return; }
+        if (q === 'matrix' || q === 'konami') return;
+        const match = SM.nodes.find(n => n.name && n.name.toLowerCase().includes(q));
+        setSearchHighlight(match || null);
+      });
+      search.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const q = search.value.trim().toLowerCase();
+          if (q === 'matrix' || q === 'konami') { triggerMatrix(); search.value = ''; return; }
+          if (q === 'help') {
+            alert('SYSTEM MAP commands:\n  help    — this list\n  reset   — clear search\n  matrix  — legacy mode rain\n  konami  — same as matrix');
+            return;
+          }
+          if (q === 'reset') { setSearchHighlight(null); search.value = ''; return; }
+          const match = SM.nodes.find(n => n.name && n.name.toLowerCase().includes(q));
+          if (match) { flyTo(match); flashCardFor(match); }
+          search.blur();
+        }
+        if (e.key === 'Escape') { search.value = ''; setSearchHighlight(null); search.blur(); }
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+          e.preventDefault();
+          search.focus();
+        }
+      });
+
+      document.getElementById('sm-zoom-in').addEventListener('click', () => dolly(0.82));
+      document.getElementById('sm-zoom-out').addEventListener('click', () => dolly(1.22));
+    }
+
+    // Placeholder until Task 15 wires up the actual matrix rain
+    function triggerMatrix() { console.log('matrix rain not yet wired'); }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderAgents();
       renderServices();
@@ -1195,6 +1278,7 @@
       window.addEventListener('load', () => setTimeout(() => {
         buildSystemMap();
         wireSystemMapInteractions();
+        wireSystemMapControls();
         wireJumpPills();
       }, 0));
     });
