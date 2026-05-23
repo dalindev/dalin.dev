@@ -340,54 +340,31 @@
 
     .desk-scene {
       position: relative;
-      height: 230px;
+      height: 260px;
       overflow: visible;
     }
     /* Soft floor shadow under each desk */
     .desk-scene::before {
       content: "";
       position: absolute;
-      bottom: 4px; left: 8%; right: 8%;
+      bottom: 0; left: 6%; right: 6%;
       height: 14px;
-      background: radial-gradient(ellipse, rgba(20,24,31,0.32) 0%, rgba(20,24,31,0.10) 50%, transparent 75%);
-      filter: blur(4px);
+      background: radial-gradient(ellipse, rgba(20,24,31,0.30) 0%, rgba(20,24,31,0.10) 50%, transparent 75%);
+      filter: blur(5px);
       z-index: 1;
       border-radius: 50%;
     }
 
-    /* ─── White rounded desk top ─── */
-    .desk-top {
-      position: absolute;
-      bottom: 28%;
-      left: 4%; right: 4%;
-      height: 26px;
-      background: linear-gradient(180deg, #ffffff 0%, #efedde 60%, #cfccbe 100%);
-      border-radius: 5px 5px 14px 14px;
-      box-shadow:
-        0 5px 8px rgba(0,0,0,0.12),
-        inset 0 1px 0 rgba(255,255,255,0.95);
-      z-index: 3;
-    }
-    /* Single round desk leg in the middle */
-    .desk-top::after {
-      content: "";
-      position: absolute;
-      bottom: -30px; left: 50%; transform: translateX(-50%);
-      width: 5px; height: 30px;
-      background: linear-gradient(90deg, #9a978a, #cfccbe, #9a978a);
-      border-radius: 0 0 2px 2px;
-    }
-
-    /* ─── Apple-style monitor sitting ON the desk top ─── */
+    /* ─── Apple Studio Display on top ─── */
     .desk-monitor {
       position: absolute;
-      bottom: 35%;
+      top: 5%;
       left: 22%; right: 22%;
-      height: 55%;
+      height: 38%;
       background: #0a0d14;
       border-radius: 6px;
       padding: 2.5px;
-      z-index: 5;
+      z-index: 2;
       box-shadow:
         inset 0 0 0 1.2px #b5bac3,
         0 6px 10px rgba(0,0,0,0.20);
@@ -431,18 +408,68 @@
       88%, 92%      { opacity: 0.45; }
     }
 
-    /* ─── Items on desk ─── */
+    /* ─── Bot's chair back rises behind the bot ─── */
+    .desk-chair-back {
+      position: absolute;
+      top: 36%;
+      left: 50%; transform: translateX(-50%);
+      width: 25%; height: 26%;
+      z-index: 3;
+    }
+    .desk-chair-back svg { width: 100%; height: 100%; overflow: visible; }
+
+    /* ─── Bot: head + shoulders sitting between monitor and desk ─── */
+    .desk-bot {
+      position: absolute;
+      top: 42%;
+      left: 50%; transform: translateX(-50%);
+      width: 44px; height: 60px;
+      z-index: 4;
+      color: var(--bot-color, var(--accent-warn));
+    }
+    .desk-bot svg {
+      width: 100%; height: 100%;
+      overflow: visible;
+    }
+    .desk-bot .led-glow { animation: pulseDot 1.8s ease-in-out infinite; transform-origin: center; }
+    .desk.offline .desk-bot { display: none; }
+    .desk.offline .desk-chair-back { opacity: 0.85; }
+
+    /* ─── White desk surface (prominent, in front of chair) ─── */
+    .desk-top {
+      position: absolute;
+      top: 64%;
+      left: 4%; right: 4%;
+      height: 16%;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f8f5ea 50%, #e0dccc 100%);
+      border-radius: 6px 6px 18px 18px;
+      box-shadow:
+        0 6px 10px rgba(20,24,31,0.18),
+        inset 0 1px 0 rgba(255,255,255,1);
+      z-index: 5;
+    }
+    /* Front-edge highlight on desk */
+    .desk-top::before {
+      content: "";
+      position: absolute;
+      left: 6%; right: 6%; top: 30%;
+      height: 1px;
+      background: rgba(0,0,0,0.08);
+    }
+
+    /* ─── Items sit on the white desk ─── */
     .desk-items {
       position: absolute;
-      bottom: 32%;
+      top: 60%;
       left: 0; right: 0;
       display: flex; justify-content: space-between;
-      padding: 0 14%;
+      padding: 0 12%;
       z-index: 6;
       pointer-events: none;
-      font-size: 14px;
+      font-size: 16px;
     }
-    .desk-items .left, .desk-items .right { display: flex; gap: 5px; }
+    .desk-items .left, .desk-items .right { display: flex; gap: 6px; }
     .desk-items .item {
       filter: drop-shadow(0 2px 3px rgba(0,0,0,0.20));
       transform-origin: bottom;
@@ -468,33 +495,15 @@
       animation: pulseDot 1.2s ease-in-out infinite;
     }
 
-    /* ─── Chair: SVG with colored seat ─── */
-    .desk-chair {
+    /* ─── Chair base: pneumatic stem + 5-wheel star (visible below desk) ─── */
+    .desk-chair-base {
       position: absolute;
-      bottom: 0;
+      top: 78%;
       left: 50%; transform: translateX(-50%);
-      width: 36%; height: 32%;
-      z-index: 7;
-      color: var(--bot-color, #4a5260);  /* used by chair seat */
+      width: 36%; height: 20%;
+      z-index: 5;
     }
-    .desk-chair svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18)); }
-
-    /* ─── Bot: sitting in chair, head + shoulders ─── */
-    .desk-bot {
-      position: absolute;
-      bottom: 22%;
-      left: 50%; transform: translateX(-50%);
-      width: 38px; height: 44px;
-      z-index: 8;
-      color: var(--bot-color, var(--accent-warn));
-    }
-    .desk-bot svg {
-      width: 100%; height: 100%;
-      filter: drop-shadow(0 3px 5px rgba(0,0,0,0.30));
-      overflow: visible;
-    }
-    .desk-bot .led-glow { animation: pulseDot 1.8s ease-in-out infinite; transform-origin: center; }
-    .desk.offline .desk-bot { display: none; }
+    .desk-chair-base svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 3px 4px rgba(0,0,0,0.18)); }
 
     /* ─── Effects: zZz, wrench, etc. ─── */
     .desk-fx {
@@ -1478,14 +1487,47 @@
       }
     }
 
-    /* SVG illustrations — Marvis-inspired clean office chair + bot,
-       drawn for a light background. uid keeps gradient defs scoped. */
+    /* SVG illustrations — proper office chair (neutral) + bot (brand-colored).
+       Chair is drawn in two parts: BACK (rises behind bot) and BASE (visible
+       below the white desk). uid keeps gradient defs unique per agent. */
+
+    const SVG_CHAIR_BACK = (uid) => `
+      <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+        <defs>
+          <linearGradient id="cb-${uid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#3a4250"/>
+            <stop offset="60%"  stop-color="#262c38"/>
+            <stop offset="100%" stop-color="#1a1f2b"/>
+          </linearGradient>
+        </defs>
+        <!-- Headrest (slightly narrower than back) -->
+        <path d="M 18 4 Q 18 0 24 0 L 36 0 Q 42 0 42 4 L 41 13 Q 40 16 36 16 L 24 16 Q 20 16 19 13 Z"
+              fill="#1a1f2b" stroke="rgba(255,255,255,0.08)" stroke-width="0.4"/>
+        <!-- Headrest mid-stitch -->
+        <line x1="22" y1="6" x2="38" y2="6" stroke="rgba(255,255,255,0.06)" stroke-width="0.35"/>
+        <!-- Connector between headrest and back -->
+        <rect x="27" y="16" width="6" height="6" fill="#1a1f2b" rx="1"/>
+        <!-- Main chair back (curved, ergonomic shape) -->
+        <path d="M 8 25 Q 8 20 16 20 L 44 20 Q 52 20 52 25 L 50 70 Q 49 78 40 78 L 20 78 Q 11 78 10 70 Z"
+              fill="url(#cb-${uid})" stroke="rgba(255,255,255,0.06)" stroke-width="0.4"/>
+        <!-- Top highlight -->
+        <path d="M 14 22 Q 30 17 46 22" stroke="rgba(255,255,255,0.10)" stroke-width="0.5" fill="none"/>
+        <!-- Centerline seam -->
+        <line x1="30" y1="22" x2="30" y2="74" stroke="rgba(255,255,255,0.05)" stroke-width="0.4"/>
+        <!-- Lumbar curve -->
+        <path d="M 12 45 Q 30 49 48 45" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" fill="none"/>
+        <!-- Side stitching -->
+        <path d="M 11 24 Q 9 50 14 76" stroke="rgba(255,255,255,0.05)" stroke-width="0.4" fill="none"/>
+        <path d="M 49 24 Q 51 50 46 76" stroke="rgba(255,255,255,0.05)" stroke-width="0.4" fill="none"/>
+      </svg>
+    `;
+
     const SVG_BOT = (uid) => `
-      <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="bh-${uid}" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#3a4150"/>
-            <stop offset="55%"  stop-color="#22272f"/>
+            <stop offset="0%"   stop-color="#4a5160"/>
+            <stop offset="55%"  stop-color="#262c38"/>
             <stop offset="100%" stop-color="#11141b"/>
           </linearGradient>
           <linearGradient id="bb-${uid}" x1="0" y1="0" x2="0" y2="1">
@@ -1494,66 +1536,63 @@
           </linearGradient>
         </defs>
         <!-- Antenna with brand-colored LED -->
-        <line x1="30" y1="3" x2="30" y2="11" stroke="#22272f" stroke-width="1.5" stroke-linecap="round"/>
-        <circle cx="30" cy="3" r="4" fill="currentColor" opacity="0.35" class="led-glow"/>
-        <circle cx="30" cy="3" r="2.2" fill="currentColor"/>
-        <!-- Head: ovoid silhouette, back view -->
-        <path d="M 12 28 Q 12 12 30 12 Q 48 12 48 28 L 48 38 Q 48 50 30 50 Q 12 50 12 38 Z"
+        <line x1="30" y1="2" x2="30" y2="10" stroke="#1a1f2b" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="30" cy="2" r="4.2" fill="currentColor" opacity="0.32" class="led-glow"/>
+        <circle cx="30" cy="2" r="2.3" fill="currentColor"/>
+        <!-- Head: ovoid, back view -->
+        <path d="M 10 28 Q 10 12 30 12 Q 50 12 50 28 L 50 40 Q 50 54 30 54 Q 10 54 10 40 Z"
               fill="url(#bh-${uid})"/>
-        <!-- Subtle highlight on top -->
-        <path d="M 18 18 Q 30 12 42 18" stroke="rgba(255,255,255,0.10)" stroke-width="0.6" fill="none"/>
+        <!-- Top highlight -->
+        <path d="M 16 19 Q 30 12 44 19" stroke="rgba(255,255,255,0.12)" stroke-width="0.6" fill="none"/>
         <!-- Centerline seam -->
-        <line x1="30" y1="14" x2="30" y2="48" stroke="rgba(255,255,255,0.06)" stroke-width="0.4"/>
+        <line x1="30" y1="14" x2="30" y2="52" stroke="rgba(255,255,255,0.06)" stroke-width="0.4"/>
         <!-- Side ear-modules -->
-        <rect x="9" y="28" width="3" height="9" rx="1" fill="#1a1f2b"/>
-        <rect x="48" y="28" width="3" height="9" rx="1" fill="#1a1f2b"/>
-        <circle cx="10.5" cy="32.5" r="0.9" fill="currentColor" opacity="0.85"/>
-        <circle cx="49.5" cy="32.5" r="0.9" fill="currentColor" opacity="0.85"/>
+        <rect x="7" y="28" width="3" height="10" rx="1" fill="#1a1f2b"/>
+        <rect x="50" y="28" width="3" height="10" rx="1" fill="#1a1f2b"/>
+        <circle cx="8.5" cy="33" r="1" fill="currentColor" opacity="0.85"/>
+        <circle cx="51.5" cy="33" r="1" fill="currentColor" opacity="0.85"/>
         <!-- Brand-colored patch on back of head -->
-        <rect x="21" y="36" width="18" height="6" rx="2" fill="currentColor" opacity="0.85"/>
+        <rect x="20" y="38" width="20" height="6" rx="2" fill="currentColor" opacity="0.85"/>
         <!-- Neck -->
-        <rect x="25" y="49" width="10" height="6" fill="#1a1f2b"/>
-        <!-- Shoulders / upper torso (sits in the chair seat) -->
-        <path d="M 4 80 Q 8 56 22 55 Q 30 56 38 55 Q 52 56 56 80 Z"
+        <rect x="24" y="53" width="12" height="6" fill="#1a1f2b"/>
+        <!-- Shoulders (upper torso, fits into chair seat) -->
+        <path d="M 2 80 Q 8 58 22 57 Q 30 58 38 57 Q 52 58 58 80 Z"
               fill="url(#bb-${uid})"/>
-        <!-- Subtle chest line -->
-        <line x1="30" y1="60" x2="30" y2="78" stroke="rgba(255,255,255,0.05)" stroke-width="0.4"/>
+        <line x1="30" y1="62" x2="30" y2="78" stroke="rgba(255,255,255,0.05)" stroke-width="0.4"/>
       </svg>
     `;
 
-    const SVG_CHAIR = (uid) => `
-      <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+    const SVG_CHAIR_BASE = (uid) => `
+      <svg viewBox="0 0 100 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
         <defs>
-          <linearGradient id="cs-${uid}" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="currentColor" stop-opacity="1"/>
-            <stop offset="100%" stop-color="currentColor" stop-opacity="0.85"/>
+          <linearGradient id="cs-${uid}" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#3a4150"/>
+            <stop offset="50%"  stop-color="#7a8090"/>
+            <stop offset="100%" stop-color="#3a4150"/>
           </linearGradient>
         </defs>
-        <!-- Seat cushion (colored, brand color) -->
-        <ellipse cx="60" cy="22" rx="55" ry="11" fill="url(#cs-${uid})"/>
-        <!-- Seat side (depth) -->
-        <path d="M 5 22 Q 5 30 60 33 Q 115 30 115 22 L 115 18 Q 60 10 5 18 Z"
-              fill="currentColor" opacity="0.65"/>
-        <!-- Top highlight ridge on seat -->
-        <ellipse cx="60" cy="20" rx="50" ry="2.5" fill="rgba(255,255,255,0.25)"/>
-        <!-- Pneumatic stem -->
-        <rect x="56" y="32" width="8" height="40" fill="#2a3040" rx="1.5"/>
-        <!-- Highlight on stem (chrome) -->
-        <rect x="57" y="32" width="2" height="40" fill="rgba(255,255,255,0.18)" rx="1"/>
-        <!-- 5-spoke base (radial legs) -->
-        <g stroke="#1a1f2b" stroke-width="5" stroke-linecap="round" fill="none">
-          <line x1="60" y1="72" x2="20" y2="92"/>
-          <line x1="60" y1="72" x2="60" y2="97"/>
-          <line x1="60" y1="72" x2="100" y2="92"/>
-          <line x1="60" y1="72" x2="38" y2="95"/>
-          <line x1="60" y1="72" x2="82" y2="95"/>
+        <!-- Pneumatic stem (chrome metal) -->
+        <rect x="46" y="0" width="8" height="26" fill="url(#cs-${uid})" rx="1.5"/>
+        <!-- 5-spoke radial base -->
+        <g stroke="#1a1f2b" stroke-width="5.5" stroke-linecap="round" fill="none">
+          <line x1="50" y1="26" x2="10" y2="48"/>
+          <line x1="50" y1="26" x2="50" y2="54"/>
+          <line x1="50" y1="26" x2="90" y2="48"/>
+          <line x1="50" y1="26" x2="30" y2="52"/>
+          <line x1="50" y1="26" x2="70" y2="52"/>
         </g>
         <!-- Wheel caps -->
-        <circle cx="20" cy="92" r="4" fill="#2a3040"/>
-        <circle cx="38" cy="95" r="4" fill="#2a3040"/>
-        <circle cx="60" cy="97" r="4" fill="#2a3040"/>
-        <circle cx="82" cy="95" r="4" fill="#2a3040"/>
-        <circle cx="100" cy="92" r="4" fill="#2a3040"/>
+        <ellipse cx="10" cy="48" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <ellipse cx="30" cy="52" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <ellipse cx="50" cy="54" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <ellipse cx="70" cy="52" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <ellipse cx="90" cy="48" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <!-- Wheel highlights -->
+        <ellipse cx="10" cy="47" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
+        <ellipse cx="30" cy="51" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
+        <ellipse cx="50" cy="53" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
+        <ellipse cx="70" cy="51" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
+        <ellipse cx="90" cy="47" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
       </svg>
     `;
 
@@ -1572,12 +1611,14 @@
         <article class="desk ${a.status}" data-id="${a.id}" style="--bot-color: ${a.color}">
           <div class="desk-scene">
             <div class="desk-monitor"><div class="screen scr-${a.screen}">${screenHtml(a.screen)}</div></div>
+            <div class="desk-chair-back">${SVG_CHAIR_BACK(a.id)}</div>
+            <div class="desk-bot">${SVG_BOT(a.id)}</div>
+            <div class="desk-top"></div>
             <div class="desk-items">
               <div class="left">${(a.items.left||[]).map(item).join('')}</div>
               <div class="right">${(a.items.right||[]).map(item).join('')}</div>
             </div>
-            <div class="desk-bot">${SVG_BOT(a.id)}</div>
-            <div class="desk-chair">${SVG_CHAIR(a.id)}</div>
+            <div class="desk-chair-base">${SVG_CHAIR_BASE(a.id)}</div>
             ${a.status === 'idle'    ? '<div class="desk-fx zzz">z<sub>Z</sub>z</div>' : ''}
             ${a.status === 'offline' ? '<div class="desk-fx tool">🔧<span class="sys">SYS</span></div>' : ''}
           </div>
