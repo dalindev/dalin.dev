@@ -346,28 +346,30 @@
       height: 300px;
       overflow: visible;
     }
-    /* Floor shadow grounds the desk legs */
+    /* Tight floor shadow directly under the chair (close to wheels) */
     .desk-scene::before {
       content: "";
       position: absolute;
-      bottom: -2px; left: 4%; right: 4%;
-      height: 26px;
-      background: radial-gradient(ellipse 60% 80% at 50% 50%,
-        rgba(20,24,31,0.32) 0%,
-        rgba(20,24,31,0.12) 45%,
+      bottom: 2%;
+      left: 28%; right: 28%;
+      height: 14px;
+      background: radial-gradient(ellipse 50% 70% at 50% 50%,
+        rgba(20,24,31,0.42) 0%,
+        rgba(20,24,31,0.18) 50%,
         transparent 80%);
-      filter: blur(7px);
-      z-index: 1;
+      filter: blur(5px);
+      z-index: 4;
       border-radius: 50%;
     }
 
-    /* ─── Apple Studio Display sits ON the desk at the top of the scene ─── */
-    /* z-index 1: furthest from viewer */
+    /* ─── Apple Studio Display sits ON TOP OF the desk ─── */
+    /* z-index 3: in FRONT of desk-top so the stand visibly rests on the desk surface */
     .desk-monitor {
       position: absolute;
       top: 4%;
       left: 22%; right: 22%;
       height: 26%;
+      z-index: 3;
       /* Aluminum body (silver brushed) */
       background: linear-gradient(180deg, #d8dbe2 0%, #a8acb5 60%, #8a8e98 100%);
       border-radius: 5px;
@@ -529,8 +531,8 @@
       box-shadow: 1px 0 2px rgba(0,0,0,0.20);
       border-radius: 0 0 1px 1px;
     }
-    /* Only the 2 OUTER (front) legs are visible — back legs are hidden by the desk in perspective */
-    .desk-leg.fl, .desk-leg.fr { top: 50%; width: 5px; height: 44%; }
+    /* Only the 2 OUTER (front) legs are visible — short legs (modern table style) */
+    .desk-leg.fl, .desk-leg.fr { top: 50%; width: 5px; height: 22%; }
     .desk-leg.fl { left: 6%; }
     .desk-leg.fr { right: 6%; }
     /* Back legs disabled */
