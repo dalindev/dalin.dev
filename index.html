@@ -1268,6 +1268,71 @@
       document.getElementById('sm-zoom-out').addEventListener('click', () => dolly(1.22));
     }
 
+    /* ─── Terminal stream + KPI count-up ─── */
+    const TERM_LINES = [
+      { ts: '12:04:01', key: 'agent.parker',    status: 'ok',   tail: '· batch 482 · 12.4M embeddings' },
+      { ts: '12:04:03', key: 'finetune.v17',    status: 'key',  tail: '· step 1240/2000', statusLabel: 'LoRA' },
+      { ts: '12:04:05', key: 'scraper.adset',   status: 'ok',   tail: '· 87 sources synced' },
+      { ts: '12:04:07', key: 'dashboard.ttq',   status: '',     tail: '· 38ms p50 · 124ms p95' },
+      { ts: '12:04:09', key: '',                status: 'warn', tail: '[!] rate-limit · backoff 2s · retry · ok' },
+      { ts: '12:04:11', key: 'f1.score',        status: '',     tail: '= <span class="ok">0.794</span> ↑' },
+      { ts: '12:04:13', key: 'postgres.rollup', status: '',     tail: '· daily · 18.2M rows' },
+      { ts: '12:04:15', key: 'ingest.media',    status: '',     tail: '· 2.1TB queued' },
+    ];
+
+    function startTerminalLoop() {
+      const stream = document.getElementById('term-stream');
+      if (!stream) return;
+      let i = 0;
+      const MAX_LINES = 8;
+
+      function addLine() {
+        const L = TERM_LINES[i % TERM_LINES.length];
+        i++;
+        const line = document.createElement('div');
+        line.className = 'line';
+        let statusHtml = '';
+        if (L.status === 'ok')   statusHtml = '<span class="ok">ok</span>';
+        if (L.status === 'key')  statusHtml = '<span class="key">' + (L.statusLabel || '') + '</span>';
+        if (L.status === 'warn') statusHtml = '';
+        const keyHtml = L.key ? '<span class="key">' + L.key + '</span> ' : '';
+        const tailHtml = L.status === 'warn' ? `<span class="warn">${L.tail}</span>` : L.tail;
+        line.innerHTML = `<span class="dim">[${L.ts}]</span> ${keyHtml}${statusHtml} ${tailHtml}`;
+        stream.appendChild(line);
+        requestAnimationFrame(() => line.classList.add('show'));
+        while (stream.children.length > MAX_LINES) stream.removeChild(stream.firstChild);
+      }
+
+      addLine();
+      setInterval(addLine, 1800);
+    }
+
+    function startCountUps() {
+      const els = document.querySelectorAll('.kpi .value[data-count]');
+      if (!('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (!en.isIntersecting) return;
+          const el = en.target;
+          const target = parseFloat(el.dataset.count);
+          const pre = el.dataset.prefix || '';
+          const suf = el.dataset.suffix || '';
+          const start = performance.now(), dur = 900;
+          function tick() {
+            const t = Math.min((performance.now() - start) / dur, 1);
+            const k = 1 - Math.pow(1 - t, 3);
+            const v = Math.round(target * k);
+            el.textContent = pre + v + suf;
+            if (t < 1) requestAnimationFrame(tick);
+          }
+          el.textContent = pre + '0' + suf;
+          requestAnimationFrame(tick);
+          io.unobserve(el);
+        });
+      }, { threshold: 0.4 });
+      els.forEach(el => io.observe(el));
+    }
+
     // Placeholder until Task 15 wires up the actual matrix rain
     function triggerMatrix() { console.log('matrix rain not yet wired'); }
 
@@ -1275,6 +1340,8 @@
       renderAgents();
       renderServices();
       renderCapabilities();
+      startTerminalLoop();
+      startCountUps();
       window.addEventListener('load', () => setTimeout(() => {
         buildSystemMap();
         wireSystemMapInteractions();
