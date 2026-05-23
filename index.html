@@ -122,6 +122,86 @@
       .topbar .logo { font-size: 10px; }
       .topbar .right { gap: 10px; }
     }
+
+    /* ─── Hero ─── */
+    .hero {
+      position: relative;
+      padding: 40px 0 32px;
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 28px;
+    }
+    .hero .ghost {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      opacity: 0.35;
+    }
+    .hero .ghost svg { width: 100%; height: 100%; display: block; }
+    .hero > .body, .hero > .term { position: relative; z-index: 1; }
+
+    .hero .op {
+      font-size: 10px; letter-spacing: 0.20em;
+      color: var(--ink-faint); margin-bottom: 8px;
+    }
+    .hero h1 {
+      font-size: 40px; line-height: 1.05; font-weight: 800;
+      letter-spacing: -0.02em; color: var(--ink-strong); margin-bottom: 6px;
+    }
+    .hero .role {
+      color: var(--accent-link); font-size: 14px; font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .hero .bio {
+      color: var(--ink-dim); font-size: 12px; line-height: 1.7;
+      max-width: 420px;
+    }
+    .hero .bio b { color: var(--accent-link); font-weight: 700; }
+    .hero .links {
+      margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px;
+      font-size: 10px;
+    }
+    .hero .links a {
+      color: var(--accent-live);
+      padding: 6px 10px;
+      border: 1px solid rgba(74, 222, 128, 0.30);
+      border-radius: 3px;
+      letter-spacing: 0.08em;
+      transition: all 180ms ease-out;
+    }
+    .hero .links a:hover {
+      background: rgba(74, 222, 128, 0.10);
+      box-shadow: var(--glow-live);
+    }
+
+    .term {
+      background: var(--bg-elev);
+      border: 1px solid var(--rule-strong);
+      border-radius: 4px;
+      padding: 12px;
+      height: 180px;
+      overflow: hidden;
+      font-size: 10px;
+      color: var(--ink-dim);
+    }
+    .term .head {
+      color: var(--ink-faint); font-size: 9px; letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 10px;
+      display: flex; justify-content: space-between;
+    }
+    .term .head .live { color: var(--accent-live); }
+    .term .stream { display: flex; flex-direction: column; gap: 4px; }
+    .term .line { opacity: 0; }
+    .term .line.show { opacity: 1; transition: opacity 220ms ease-out; }
+    .term .ok   { color: var(--accent-live); }
+    .term .warn { color: var(--accent-warn); }
+    .term .key  { color: var(--accent-link); }
+    .term .dim  { color: var(--ink-faint); }
+
+    @media (max-width: 720px) {
+      .hero { grid-template-columns: 1fr; gap: 20px; padding: 28px 0 20px; }
+      .hero h1 { font-size: 32px; }
+    }
   </style>
 </head>
 <body>
@@ -143,7 +223,51 @@
   </header>
 
   <main>
-    <section class="hero"><!-- Task 5 --></section>
+    <section class="hero">
+      <div class="ghost" aria-hidden="true">
+        <svg viewBox="0 0 800 240" preserveAspectRatio="xMidYMid slice">
+          <g fill="none" stroke="rgba(96,165,250,0.30)" stroke-width="0.7" stroke-dasharray="3 5">
+            <path d="M80,60 Q200,180 380,90"/>
+            <path d="M380,90 Q500,40 720,140"/>
+            <path d="M380,90 Q480,200 620,180"/>
+            <path d="M120,200 Q280,120 380,90"/>
+            <path d="M720,140 Q650,80 540,100"/>
+            <path d="M120,200 Q380,260 620,180"/>
+          </g>
+          <g>
+            <circle cx="80"  cy="60"  r="6" fill="#4ade80" opacity=".7"/>
+            <circle cx="380" cy="90"  r="9" fill="#60a5fa" opacity=".7"/>
+            <circle cx="720" cy="140" r="6" fill="#4ade80" opacity=".7"/>
+            <circle cx="120" cy="200" r="4" fill="#fbbf24" opacity=".7"/>
+            <circle cx="620" cy="180" r="4" fill="#fbbf24" opacity=".7"/>
+            <circle cx="540" cy="100" r="4" fill="#fbbf24" opacity=".7"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="body">
+        <div class="op">// OPERATOR</div>
+        <h1>Dalin Huang</h1>
+        <div class="role">Senior Full Stack Developer / AI Developer</div>
+        <p class="bio">
+          Building AI agent platforms at <b>Parker AI</b>. Async pipelines that process
+          billions of data points a day. Fine-tunes open-weight LLMs with LoRA.
+          Eleven years shipping production systems — backend, frontend, and the weird
+          stuff in between.
+        </p>
+        <div class="links">
+          <a href="https://www.linkedin.com/in/dalinhuang/" target="_blank" rel="noopener">→ LINKEDIN</a>
+          <a href="https://github.com/dalindev" target="_blank" rel="noopener">→ GITHUB</a>
+          <a href="mailto:dhuan023@gmail.com">→ EMAIL</a>
+          <a href="#" id="hero-resume">→ RESUME.PDF</a>
+        </div>
+      </div>
+
+      <div class="term" aria-live="polite">
+        <div class="head"><span>$ system.live</span><span class="live">● STREAMING</span></div>
+        <div class="stream" id="term-stream"></div>
+      </div>
+    </section>
     <section class="kpis"><!-- Task 6 --></section>
     <section class="systemmap"><!-- Tasks 10–13 --></section>
     <section class="agents"><!-- Task 7 --></section>
