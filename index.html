@@ -311,14 +311,31 @@
       background:
         radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,255,255,0.4), transparent 60%),
         linear-gradient(180deg, #f4f3ed 0%, #e8e6dd 100%);
-      padding: 32px 26px 40px;
+      padding: 32px 26px 50px;
       border-radius: 12px;
       margin: 16px 0 0;
       box-shadow:
         inset 0 0 0 1px rgba(0,0,0,0.04),
         0 12px 32px rgba(0,0,0,0.35);
       position: relative;
+      overflow: hidden;
     }
+
+    /* Ambient office props — sit at edges/corners of the room */
+    .office-ambient {
+      position: absolute;
+      font-size: 26px;
+      filter: drop-shadow(0 3px 5px rgba(0,0,0,0.20));
+      pointer-events: none;
+      z-index: 0;
+    }
+    .office-ambient.plant-bigl { left: 6px;  bottom: 8px;  font-size: 32px; }
+    .office-ambient.plant-bigr { right: 6px; bottom: 8px;  font-size: 32px; }
+    .office-ambient.cooler     { right: 50px; bottom: 14px; font-size: 28px; }
+    .office-ambient.printer    { left: 60px; bottom: 14px; font-size: 24px; }
+    .office-ambient.clock      { right: 50%; top: 8px;     font-size: 18px; transform: translateX(50%); opacity: 0.45; }
+    .office-ambient.window-l   { left: 14px; top: 60px;    font-size: 32px; opacity: 0.4; }
+    .office-ambient.window-r   { right: 14px; top: 60px;   font-size: 32px; opacity: 0.4; }
     /* Override the global section-head when inside .office-room */
     .office-room .section-head {
       color: #1a1f2b; margin: 0 0 24px 0;
@@ -706,16 +723,28 @@
     }
 
     /* ─── Floor pets & clutter (makes office feel alive) ─── */
-    .desk-pet {
+    .desk-pet, .desk-floor-item {
       position: absolute;
-      bottom: 5%;
       font-size: 18px;
       z-index: 6;
       filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
       pointer-events: none;
     }
+    .desk-pet  { bottom: 5%; }
     .desk-pet.left  { left: 8%; }
     .desk-pet.right { right: 8%; }
+
+    /* Floor-level props (plant, trash, boxes, etc.) */
+    .desk-floor-item.plant       { bottom: 6%; left: 1%;  font-size: 22px; }
+    .desk-floor-item.trash       { bottom: 6%; right: 1%; font-size: 18px; }
+    .desk-floor-item.plant-small { bottom: 8%; left: 14%; font-size: 14px; opacity: 0.95; }
+    .desk-floor-item.boxes       { bottom: 6%; right: 16%; font-size: 16px; }
+    .desk-floor-item.books-floor { bottom: 6%; right: 16%; font-size: 16px; }
+    .desk-floor-item.bag         { bottom: 7%; left: 16%;  font-size: 16px; }
+    .desk-floor-item.caution {
+      bottom: 7%; right: 16%; font-size: 18px;
+      animation: pulseDot 1.5s ease-in-out infinite;
+    }
     /* Roomba spins as it cleans */
     .desk-pet.roomba {
       bottom: 7%; right: 10%;
@@ -1324,6 +1353,14 @@
     <section class="office-room">
       <h2 class="section-head">OFFICE FLOOR <span class="count" id="office-count">· crew loading…</span></h2>
       <div class="office" id="office-floor"></div>
+      <!-- Ambient props (decorative) -->
+      <span class="office-ambient clock">🕐</span>
+      <span class="office-ambient window-l">🪟</span>
+      <span class="office-ambient window-r">🪟</span>
+      <span class="office-ambient printer">🖨️</span>
+      <span class="office-ambient cooler">🚰</span>
+      <span class="office-ambient plant-bigl">🌴</span>
+      <span class="office-ambient plant-bigr">🪴</span>
     </section>
 
     <h2 class="section-head">SYSTEM MAP <span class="count">· roles ↔ projects ↔ skills</span></h2>
@@ -1616,35 +1653,73 @@
       { id: 'opus-main',  name: 'Claude 4.7 Opus',  role: 'Main agent',       status: 'busy',
         task: 'Orchestrating 24 subtasks',          screen: 'orchestrate', color: '#f59e0b',
         items: { left: ['☕'], right: ['📋'] },
-        pet: { emoji: '🐱', kind: 'cat-sleep', side: 'right' } },
+        pet: { emoji: '🐱', kind: 'cat-sleep', side: 'right' },
+        floor: [
+          { emoji: '🪴', kind: 'plant' },
+          { emoji: '🗑️', kind: 'trash' },
+          { emoji: '📦', kind: 'boxes' },
+        ] },
       { id: 'opus-ft',    name: 'Claude 4.7 Opus',  role: 'Fine-tune agent',  status: 'busy',
         task: 'LoRA v17 · epoch 12 · 62%',          screen: 'progress',    color: '#f59e0b',
         items: { left: ['☕'], right: ['⚡'] },
-        pet: { emoji: '🤖', kind: 'roomba', side: 'right' } },
+        pet: { emoji: '🤖', kind: 'roomba', side: 'right' },
+        floor: [
+          { emoji: '🌿', kind: 'plant' },
+          { emoji: '🗑️', kind: 'trash' },
+        ] },
       { id: 'gem-pro',    name: 'Gemini 3.1 Pro',   role: 'AI tags',          status: 'busy',
         task: 'Classify 482 ads · 96.4% acc',       screen: 'chart',       color: '#60a5fa',
         items: { left: ['🌱'], right: [] },
-        pet: { emoji: '🐦', kind: 'bird', side: 'left' } },
+        pet: { emoji: '🐦', kind: 'bird', side: 'left' },
+        floor: [
+          { emoji: '🪴', kind: 'plant' },
+          { emoji: '🗑️', kind: 'trash' },
+          { emoji: '📚', kind: 'books-floor' },
+        ] },
       { id: 'gem-flash',  name: 'Gemini 3.0 Flash', role: 'Media analyze',    status: 'busy',
         task: 'Analyze 8.4K images · 12ms p50',     screen: 'media',       color: '#60a5fa',
         items: { left: [], right: ['📷'] },
-        pet: { emoji: '🐶', kind: 'dog', side: 'left' } },
+        pet: { emoji: '🐶', kind: 'dog', side: 'left' },
+        floor: [
+          { emoji: '🌵', kind: 'plant' },
+          { emoji: '🗑️', kind: 'trash' },
+          { emoji: '🎒', kind: 'bag' },
+        ] },
       { id: 'gem-search', name: 'Gemini 3.1 Pro',   role: 'Web search',       status: 'busy',
         task: 'Live grounding · 87 sources',        screen: 'crawler',     color: '#60a5fa',
         items: { left: ['📚'], right: [] },
-        pet: { emoji: '🐢', kind: 'cat-sleep', side: 'right' } },
+        pet: { emoji: '🐢', kind: 'cat-sleep', side: 'right' },
+        floor: [
+          { emoji: '🪴', kind: 'plant' },
+          { emoji: '🗑️', kind: 'trash' },
+        ] },
       { id: 'gpt55',      name: 'GPT 5.5',          role: 'Backup fallback',  status: 'idle',
         task: 'On standby · doomscrolling',         screen: 'phone',       color: '#10b981',
         items: { left: ['☕'], right: ['📱'] },
-        pet: { emoji: '🐈', kind: 'cat-sleep', side: 'left' } },
+        pet: { emoji: '🐈', kind: 'cat-sleep', side: 'left' },
+        floor: [
+          { emoji: '🌱', kind: 'plant' },
+          { emoji: '🗑️', kind: 'trash' },
+          { emoji: '🧸', kind: 'bag' },
+        ] },
       { id: 'whisper',    name: 'Whisper v4',       role: 'Audio transcribe', status: 'idle',
         task: 'No audio queued · napping',          screen: 'sleep',       color: '#10b981',
         items: { left: ['🎧'], right: [] },
-        pet: { emoji: '🐦', kind: 'cat-sleep', side: 'right' } },
+        pet: { emoji: '🐦', kind: 'cat-sleep', side: 'right' },
+        floor: [
+          { emoji: '🪴', kind: 'plant' },
+          { emoji: '🗑️', kind: 'trash' },
+          { emoji: '🎧', kind: 'bag' },
+        ] },
       { id: 'deepseek',   name: 'DeepSeek v4',      role: 'Reasoning agent',  status: 'offline',
         task: 'OOM · reasoning chain too long',     screen: 'error',       color: '#ef4444',
         items: { left: ['🔧'], right: [] },
-        pet: { emoji: '🗑️', kind: 'cat-sleep', side: 'right' } },
+        pet: { emoji: '🗑️', kind: 'cat-sleep', side: 'right' },
+        floor: [
+          { emoji: '🥀', kind: 'plant' },
+          { emoji: '🗑️', kind: 'trash' },
+          { emoji: '⚠️', kind: 'caution' },
+        ] },
     ];
 
     function screenHtml(type) {
@@ -1912,6 +1987,7 @@
             ${a.status === 'idle'    ? '<div class="desk-fx zzz">z<sub>Z</sub>z</div>' : ''}
             ${a.status === 'offline' ? '<div class="desk-fx tool">🔧<span class="sys">SYS</span></div>' : ''}
             ${a.pet ? `<div class="desk-pet ${a.pet.kind} ${a.pet.side || 'right'}">${a.pet.emoji}</div>` : ''}
+            ${(a.floor || []).map(f => `<div class="desk-floor-item ${f.kind}">${f.emoji}</div>`).join('')}
           </div>
           <div class="desk-info">
             <div class="row">
