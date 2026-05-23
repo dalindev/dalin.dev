@@ -311,6 +311,50 @@
       .agent .head .right { justify-content: flex-start; flex-wrap: wrap; }
       .agent .body { grid-template-columns: 1fr; }
     }
+
+    /* ─── Deployed Services ─── */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .svc {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 14px;
+      position: relative;
+      transition: transform 180ms ease-out, box-shadow 180ms ease-out, border-color 180ms ease-out;
+      display: flex; flex-direction: column;
+    }
+    .svc:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    .svc.live:hover    { border-color: var(--accent-live); box-shadow: 0 6px 20px rgba(0,0,0,0.4), var(--glow-live); }
+    .svc.oss:hover     { border-color: var(--accent-warn); box-shadow: 0 6px 20px rgba(0,0,0,0.4), var(--glow-warn); }
+    .svc.flash         { border-color: var(--accent-link); box-shadow: 0 0 0 1px var(--accent-link), var(--glow-link); }
+
+    .svc .dot-svc {
+      position: absolute; top: 14px; right: 14px;
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .svc.live    .dot-svc { background: var(--accent-live); box-shadow: var(--glow-live); animation: pulseDot 2s ease-in-out infinite; }
+    .svc.oss     .dot-svc { background: var(--accent-warn); box-shadow: var(--glow-warn); }
+    .svc.archived .dot-svc { background: var(--ink-faint); }
+
+    .svc .name { color: var(--accent-link); font-weight: 700; font-size: 13px; padding-right: 16px; }
+    .svc .name a { color: inherit; }
+    .svc .name a:hover { text-shadow: var(--glow-link); }
+    .svc .meta { color: var(--ink-faint); font-size: 8px; letter-spacing: 0.12em; margin: 2px 0 10px; }
+    .svc .desc { color: var(--ink-dim); font-size: 11px; line-height: 1.55; flex: 1; }
+    .svc .visit {
+      margin-top: 10px; font-size: 9px; letter-spacing: 0.10em;
+      color: var(--accent-live);
+    }
+
+    @media (max-width: 900px) { .services { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .services { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -402,7 +446,8 @@
     <section class="systemmap"><!-- Tasks 10–13 --></section>
     <h2 class="section-head">ACTIVE AGENTS <span class="count" id="agents-count"></span></h2>
     <section class="agents" id="agents-list"></section>
-    <section class="services"><!-- Task 8 --></section>
+    <h2 class="section-head">DEPLOYED SERVICES <span class="count" id="services-count"></span></h2>
+    <section class="services" id="services-list"></section>
     <section class="capabilities"><!-- Task 9 --></section>
   </main>
 
@@ -616,8 +661,25 @@
       });
     }
 
+    function renderServices() {
+      const list = document.getElementById('services-list');
+      list.innerHTML = PROJECTS.map(p => `
+        <article class="svc ${p.status}" data-id="${p.id}">
+          <span class="dot-svc"></span>
+          <div class="name">
+            ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener">${p.name}</a>` : p.name}
+          </div>
+          <div class="meta">${p.year} · ${p.status === 'live' ? 'LIVE' : p.status === 'oss' ? 'OSS' : 'ARCHIVED'}</div>
+          <div class="desc">${p.desc}</div>
+          ${p.url ? `<div class="visit">→ VISIT ↗</div>` : ''}
+        </article>
+      `).join('');
+      document.getElementById('services-count').textContent = `· ${PROJECTS.length} endpoints`;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderAgents();
+      renderServices();
     });
   </script>
 
