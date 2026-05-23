@@ -449,7 +449,7 @@
 
     .sm-viewport {
       position: relative;
-      height: 480px;
+      height: 640px;
       background:
         radial-gradient(60% 60% at 50% 50%, rgba(96,165,250,0.06), transparent 70%),
         var(--bg-deep);
@@ -482,7 +482,7 @@
     }
 
     @media (max-width: 720px) {
-      .sm-viewport { height: 360px; }
+      .sm-viewport { height: 460px; }
       .sm-search { width: 110px; }
       .sm-toolbar .title { display: none; }
     }
@@ -507,7 +507,7 @@
     .sm-label .name { display: inline-block; }
     .sm-label .sub  { color: var(--ink-faint); margin-left: 6px; font-weight: 400; font-size: 9px; }
 
-    .sm-label-role    { color: var(--accent-live); border: 1px solid rgba(74, 222, 128, 0.50); font-size: 11px; }
+    .sm-label-role    { color: var(--accent-live); border: 1px solid rgba(74, 222, 128, 0.55); font-size: 13px; padding: 5px 11px; letter-spacing: 0.12em; }
     .sm-label-project { color: var(--accent-link); border: 1px solid rgba(96, 165, 250, 0.45); font-size: 10px; }
     .sm-label-skill   { color: var(--accent-warn); font-size: 9px; padding: 2px 6px; background: rgba(4, 6, 12, 0.68); }
 
@@ -517,7 +517,7 @@
       padding: 6px 10px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.45);
     }
-    .sm-label-role.highlighted    { font-size: 14px; color: var(--ink-strong); background: rgba(74,222,128,0.18); border-color: var(--accent-live); box-shadow: 0 4px 16px rgba(0,0,0,0.45), var(--glow-live); }
+    .sm-label-role.highlighted    { font-size: 16px; color: var(--ink-strong); background: rgba(74,222,128,0.20); border-color: var(--accent-live); box-shadow: 0 4px 16px rgba(0,0,0,0.45), var(--glow-live); }
     .sm-label-project.highlighted { font-size: 12px; color: var(--ink-strong); background: rgba(96,165,250,0.18); border-color: var(--accent-link); box-shadow: 0 4px 16px rgba(0,0,0,0.45), var(--glow-link); }
     .sm-label-skill.highlighted   { font-size: 11px; color: var(--ink-strong); background: rgba(251,191,36,0.20); border: 1px solid var(--accent-warn); box-shadow: 0 0 10px rgba(251,191,36,0.45); }
 
@@ -1233,23 +1233,54 @@
       });
       const skillIds = Object.keys(skillUsers);
 
+      // Gather role positions for repulsion below
+      const rolePositionsArr = ROLES.map(r => ROLE_POSITIONS[r.id]).filter(Boolean);
+      const placedSkillPositions = [];
+      const MIN_DIST_FROM_ROLE   = 1.10;  // skills can't sit on top of role labels
+      const MIN_DIST_FROM_SKILL  = 0.55;  // skills can't overlap each other
+
       skillIds.forEach((s, i) => {
         const positions = skillUsers[s];
         const avg = [0, 0, 0];
         positions.forEach(p => p.forEach((c, idx) => avg[idx] += c));
         avg.forEach((_, idx) => avg[idx] /= positions.length);
-        // Push slightly outward so techs orbit OUTSIDE their parent roles
+        // Push outward so techs orbit OUTSIDE their parent roles
         const dist = Math.hypot(avg[0], avg[1], avg[2]);
-        const push = 0.6;
+        const push = 1.15;
         if (dist > 0.4) {
           const k = (dist + push) / dist;
           avg[0] *= k; avg[1] *= k; avg[2] *= k;
         }
-        // Deterministic jitter so co-located techs don't overlap
+        // Deterministic jitter so co-located techs don't sit identically
         const j = i * 0.831;
-        avg[0] += Math.cos(j) * 0.32;
-        avg[1] += Math.sin(j * 1.7) * 0.32;
-        avg[2] += Math.sin(j) * 0.32;
+        avg[0] += Math.cos(j) * 0.50;
+        avg[1] += Math.sin(j * 1.7) * 0.50;
+        avg[2] += Math.sin(j) * 0.50;
+
+        // Repulsion: push skill away from any role it's too close to (3 passes)
+        for (let iter = 0; iter < 3; iter++) {
+          rolePositionsArr.forEach(rp => {
+            const dx = avg[0] - rp[0], dy = avg[1] - rp[1], dz = avg[2] - rp[2];
+            const d = Math.hypot(dx, dy, dz);
+            if (d > 0 && d < MIN_DIST_FROM_ROLE) {
+              const k = MIN_DIST_FROM_ROLE / d;
+              avg[0] = rp[0] + dx * k;
+              avg[1] = rp[1] + dy * k;
+              avg[2] = rp[2] + dz * k;
+            }
+          });
+          placedSkillPositions.forEach(sp => {
+            const dx = avg[0] - sp[0], dy = avg[1] - sp[1], dz = avg[2] - sp[2];
+            const d = Math.hypot(dx, dy, dz);
+            if (d > 0 && d < MIN_DIST_FROM_SKILL) {
+              const k = MIN_DIST_FROM_SKILL / d;
+              avg[0] = sp[0] + dx * k;
+              avg[1] = sp[1] + dy * k;
+              avg[2] = sp[2] + dz * k;
+            }
+          });
+        }
+        placedSkillPositions.push([avg[0], avg[1], avg[2]]);
 
         const meta = SKILL_ICONS[s];
         let material;
@@ -1269,8 +1300,20 @@
       });
 
       // ============ EDGES: hub → roles, role → its projects (less spaghetti) ============
+      const HUB_RADIUS = 0.62;  // outer edge of the photo + glow ring
       function addEdge(a, b, color, opacity) {
-        const geo = new THREE.BufferGeometry().setFromPoints([a.mesh.position, b.mesh.position]);
+        // Trim endpoint(s) sitting on the hub so the line doesn't cross the portrait
+        let pa = a.mesh.position.clone();
+        let pb = b.mesh.position.clone();
+        if (a.type === 'hub') {
+          const dir = pb.clone().sub(pa).normalize();
+          pa.add(dir.multiplyScalar(HUB_RADIUS));
+        }
+        if (b.type === 'hub') {
+          const dir = pa.clone().sub(pb).normalize();
+          pb.add(dir.multiplyScalar(HUB_RADIUS));
+        }
+        const geo = new THREE.BufferGeometry().setFromPoints([pa, pb]);
         const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
         const line = new THREE.Line(geo, mat);
         SM.group.add(line);
