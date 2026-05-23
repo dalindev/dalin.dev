@@ -99,7 +99,160 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.148.0/examples/js/controls/OrbitControls.js" defer></script>
 
   <script>
-    // Data + app — added in Task 3
+    const ROLES = [
+      {
+        id: 'parker-ai', name: 'Parker AI', title: 'Senior FS / AI Developer',
+        period: 'Dec 2023 → Present', status: 'live', tenure: 2.4, slot: 1,
+        bullets: [
+          'Architected AI agent platform for marketing/creative strategy.',
+          'Pipelines: billions of data pts/day · millions of ads · TBs of media.',
+          'LoRA fine-tunes + auto-research loop: F1 0.7% → 79% over 30 iter.',
+          'Supabase Postgres at scale: partitioning, indexing, rollups, read-replicas.',
+          'TanStack Query dashboards for ops + analytics — used by internal teams.',
+          'Async batch processing on Gemini Batch API for large-scale ad classification.',
+        ],
+        metrics: [
+          { k: 'DATA/DAY', v: '~B' }, { k: 'SCALE', v: '~100×' },
+          { k: 'ITER', v: '30+' }, { k: 'UPTIME', v: '99.9%' },
+        ],
+        skills: ['lora', 'gemini', 'embeddings', 'supabase', 'tanstack', 'postgres', 'python', 'react'],
+      },
+      {
+        id: 'hinature', name: 'HiNature Ltd', title: 'Founder',
+        period: 'Jun 2019 → Present', status: 'live', tenure: 7, slot: 2,
+        bullets: [
+          'Founded eco-friendly microbiome cosmetics; mobile scanner app analyzing 35,000+ ingredients with ~95% accuracy.',
+          'Led product, data ingestion, and ingredient classification pipelines.',
+          'Pivoted the company into a profitable Quebec real-estate / Airbnb operation.',
+        ],
+        metrics: [{ k: 'INGREDIENTS', v: '35K+' }, { k: 'ACCURACY', v: '~95%' }],
+        skills: ['python', 'react', 'firebase', 'gcp'],
+      },
+      {
+        id: 'orium', name: 'Orium', title: 'Senior Product Developer',
+        period: 'May 2022 → Dec 2023', status: 'archived', tenure: 1.6, slot: 3,
+        bullets: [
+          'Core contributor to Composable UI — MACH Alliance–awarded headless commerce starter kit. Reduced client delivery timelines by up to 6 months.',
+          'Designed Figma-synced theme system and performance-critical storefront features (PDP, checkout) with strong a11y and security.',
+          'Led Harry Rosen headless checkout in 6 weeks; later productized and reused across enterprise clients.',
+          'Built internal tooling and led AI-focused technical talks across the org.',
+        ],
+        metrics: [{ k: 'DELIVERY', v: '−6mo' }, { k: 'LIGHTHOUSE', v: '90+' }],
+        skills: ['react', 'nextjs', 'typescript', 'chakra', 'tailwind'],
+      },
+      {
+        id: 'shopify', name: 'Shopify', title: 'Developer',
+        period: 'May 2019 → Feb 2020', status: 'archived', tenure: 0.8, slot: 4,
+        bullets: [
+          'Money/Capital team. Refactored the capital offer decision tree — a critical system generating daily loan offers — improving efficiency, maintainability, and flexibility. Enabled the "starter loans" launch.',
+          'Designed/maintained the backend Capital API + admin systems. Optimized DB queries, on-call rotation.',
+        ],
+        metrics: [],
+        skills: ['ruby', 'rails', 'postgres'],
+      },
+      {
+        id: 'combyne', name: 'Combyne Ag', title: 'Full Stack Developer',
+        period: 'Feb 2017 → May 2019', status: 'archived', tenure: 2.3, slot: 5,
+        bullets: [
+          'Scaled monolithic marketplace to 1M+ users: DB optimization, Redis caching, Elasticsearch (10–100× search speedup).',
+          'Built admin dashboard system with role-based access from scratch.',
+          'Refactored to AWS SQS + Python workers for async tasks, enabling future scale.',
+        ],
+        metrics: [],
+        skills: ['python', 'redis', 'elasticsearch', 'aws'],
+      },
+      {
+        id: 'isight', name: 'i-sight.com', title: 'Software Application Developer',
+        period: 'Mar 2016 → Feb 2017', status: 'archived', tenure: 1, slot: 6,
+        bullets: [
+          'Led key client projects (Michigan State, GSK, Wipro) full-stack on Node.js, Backbone.js, PostgreSQL, Elasticsearch.',
+        ],
+        metrics: [],
+        skills: ['nodejs', 'backbone', 'postgres', 'elasticsearch'],
+      },
+      {
+        id: 'events', name: 'Events.com', title: 'Web Developer',
+        period: 'Mar 2015 → Mar 2016', status: 'archived', tenure: 1, slot: 7,
+        bullets: [
+          'Built event-registration services on the LAMP stack: PHP, MySQL, AngularJS, CodeIgniter.',
+        ],
+        metrics: [],
+        skills: ['php', 'mysql', 'angular', 'codeigniter'],
+      },
+    ];
+
+    const PROJECTS = [
+      { id: 'xnohub', name: 'xnohub.com', year: '2024', status: 'live',
+        url: 'https://xnohub.com',
+        desc: 'Real-time visualizer for the Nano currency network on a 3D globe.',
+        skills: ['threejs', 'react', 'nextjs'] },
+      { id: 'localxno', name: 'LocalXNO.com', year: '2024', status: 'live',
+        url: 'https://localxno.com',
+        desc: 'Nano marketplace on Next.js + Supabase + PostgreSQL, with Google API integrations.',
+        skills: ['nextjs', 'supabase', 'postgres'] },
+      { id: 'composable', name: 'Composable UI', year: '2022–23', status: 'oss',
+        url: 'https://composable.com/composable-ui',
+        desc: 'Open-source headless-commerce starter kit (React/Next.js). UI library + Figma kit + Algolia/Stripe. MACH Alliance award.',
+        skills: ['react', 'nextjs', 'chakra'] },
+      { id: 'paypaw', name: 'PayPaw', year: '2019–21', status: 'archived', url: null,
+        desc: 'Payment service for Bytom Blockchain. Won first place at a dev challenge — USD $30K prize.',
+        skills: ['bytom'] },
+      { id: 'gpu-miner', name: 'GPU Miner Opt', year: '2020', status: 'archived', url: null,
+        desc: 'Optimized C++ GPU mining; +30% efficiency through caching.',
+        skills: ['cpp', 'cuda'] },
+      { id: 'bytom-dice', name: 'Bytom Dice', year: '2019–20', status: 'archived', url: null,
+        desc: 'On-chain cryptocurrency betting site on Bytom.',
+        skills: ['bytom'] },
+    ];
+
+    const SKILLS = {
+      'AI / LLM':   [
+        { name: 'LoRA', heat: 'hot' }, { name: 'Gemini API', heat: 'hot' },
+        { name: 'Embeddings', heat: 'hot' }, { name: 'Eval loops', heat: 'hot' },
+        { name: 'Claude', heat: 'warm' }, { name: 'ChatGPT', heat: 'warm' },
+        { name: 'Cursor', heat: 'warm' }, { name: 'Grok', heat: 'cool' },
+      ],
+      'FRONTEND':   [
+        { name: 'React', heat: 'hot' }, { name: 'Next.js', heat: 'hot' },
+        { name: 'TanStack Q', heat: 'hot' }, { name: 'TypeScript', heat: 'hot' },
+        { name: 'Tailwind', heat: 'warm' }, { name: 'Shadcn/UI', heat: 'warm' },
+        { name: 'Chakra UI', heat: 'warm' }, { name: 'HTML5/CSS3', heat: 'warm' },
+      ],
+      'BACKEND':    [
+        { name: 'Node.js', heat: 'hot' }, { name: 'Python', heat: 'hot' },
+        { name: 'Ruby', heat: 'cool' }, { name: 'PHP', heat: 'cool' },
+        { name: 'Java', heat: 'cool' }, { name: 'Perl', heat: 'cool' },
+      ],
+      'DATA':       [
+        { name: 'PostgreSQL', heat: 'hot' }, { name: 'Supabase', heat: 'hot' },
+        { name: 'Redis', heat: 'warm' }, { name: 'Elasticsearch', heat: 'warm' },
+        { name: 'MySQL', heat: 'cool' }, { name: 'Firebase', heat: 'cool' },
+      ],
+      'CLOUD':      [
+        { name: 'Supabase', heat: 'hot' }, { name: 'GCP', heat: 'hot' },
+        { name: 'AWS', heat: 'warm' }, { name: 'Vercel', heat: 'warm' },
+        { name: 'Netlify', heat: 'cool' }, { name: 'Firebase', heat: 'cool' },
+        { name: 'Tencent', heat: 'cool' },
+      ],
+      'FRAMEWORKS': [
+        { name: 'Next.js', heat: 'hot' }, { name: 'Remix', heat: 'warm' },
+        { name: 'Rails', heat: 'cool' }, { name: 'Django', heat: 'cool' },
+        { name: 'Flask', heat: 'cool' }, { name: 'Vue', heat: 'cool' },
+        { name: 'Express', heat: 'cool' }, { name: 'Backbone', heat: 'cool' },
+        { name: 'CodeIgniter', heat: 'cool' },
+      ],
+    };
+
+    const SKILL_ID = {
+      lora: 'LoRA', gemini: 'Gemini API', embeddings: 'Embeddings',
+      supabase: 'Supabase', tanstack: 'TanStack Q', postgres: 'PostgreSQL',
+      python: 'Python', react: 'React', nextjs: 'Next.js', typescript: 'TypeScript',
+      chakra: 'Chakra UI', tailwind: 'Tailwind', threejs: 'Three.js',
+      ruby: 'Ruby', rails: 'Rails', redis: 'Redis', elasticsearch: 'Elasticsearch',
+      aws: 'AWS', nodejs: 'Node.js', backbone: 'Backbone', php: 'PHP',
+      mysql: 'MySQL', angular: 'Angular', codeigniter: 'CodeIgniter',
+      firebase: 'Firebase', gcp: 'GCP', cpp: 'C++', cuda: 'CUDA', bytom: 'Bytom',
+    };
   </script>
 
   <script type="application/ld+json">
