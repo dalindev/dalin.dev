@@ -234,6 +234,83 @@
       .kpi { padding: 14px; }
       .kpi .value { font-size: 24px; }
     }
+
+    /* ─── Section headers ─── */
+    .section-head {
+      margin: 32px 0 12px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; letter-spacing: 0.20em; text-transform: uppercase;
+      color: var(--accent-link); font-weight: 700;
+    }
+    .section-head::before {
+      content: ""; display: inline-block; width: 6px; height: 6px;
+      background: var(--accent-link); box-shadow: var(--glow-link);
+    }
+    .section-head .count { color: var(--ink-faint); font-weight: 400; letter-spacing: 0.12em; }
+
+    /* ─── Active Agents ─── */
+    .agents { display: flex; flex-direction: column; gap: 8px; }
+    .agent {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent-live);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: box-shadow 400ms ease-out, border-color 400ms ease-out;
+    }
+    .agent.archived { border-left-color: var(--ink-faint); opacity: 0.92; }
+    .agent.flash    { border-left-color: var(--accent-link); box-shadow: 0 0 0 1px var(--accent-link), var(--glow-link); }
+
+    .agent .head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 12px 16px;
+      cursor: pointer;
+      gap: 10px;
+    }
+    .agent .head .name { color: var(--ink-strong); font-weight: 700; font-size: 14px; }
+    .agent .head .name .title { color: var(--ink-dim); font-weight: 400; font-size: 11px; }
+    .agent .head .meta { color: var(--ink-faint); font-size: 9px; letter-spacing: 0.12em; margin-top: 2px; }
+    .agent .head .right { display: flex; gap: 10px; align-items: center; font-size: 10px; }
+    .agent .head .period { color: var(--accent-warn); letter-spacing: 0.08em; }
+    .agent .head .status {
+      display: inline-block; padding: 2px 6px; border-radius: 2px;
+      background: rgba(74,222,128,0.12); color: var(--accent-live);
+      font-size: 8px; letter-spacing: 0.15em; font-weight: 700;
+    }
+    .agent.archived .head .status { background: rgba(148,163,184,0.10); color: var(--ink-dim); }
+    .agent .head .jump {
+      color: var(--ink-faint); font-size: 9px; letter-spacing: 0.08em;
+      padding: 4px 8px; border: 1px solid var(--rule);
+      border-radius: 2px; cursor: pointer;
+      transition: all 180ms ease-out;
+    }
+    .agent .head .jump:hover { color: var(--accent-link); border-color: var(--accent-link); }
+    .agent .head .caret { color: var(--ink-faint); font-size: 9px; transition: transform 180ms ease-out; display: inline-block; }
+    .agent.open .head .caret { transform: rotate(90deg); }
+
+    .agent .body {
+      display: none;
+      padding: 0 16px 14px;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+    .agent.open .body { display: grid; }
+    .agent .body ul { padding-left: 16px; color: var(--ink); font-size: 11px; line-height: 1.65; }
+    .agent .body li { margin-bottom: 4px; }
+    .agent .body .metrics { display: flex; flex-direction: column; gap: 6px; }
+    .agent .body .metrics .row {
+      display: flex; justify-content: space-between; font-size: 9px;
+    }
+    .agent .body .metrics .k { color: var(--ink-faint); letter-spacing: 0.1em; }
+    .agent .body .metrics .v { color: var(--accent-live); font-weight: 700; }
+
+    @media (max-width: 640px) {
+      .agent .head { grid-template-columns: 1fr; }
+      .agent .head .right { justify-content: flex-start; flex-wrap: wrap; }
+      .agent .body { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -323,7 +400,8 @@
       </div>
     </section>
     <section class="systemmap"><!-- Tasks 10–13 --></section>
-    <section class="agents"><!-- Task 7 --></section>
+    <h2 class="section-head">ACTIVE AGENTS <span class="count" id="agents-count"></span></h2>
+    <section class="agents" id="agents-list"></section>
     <section class="services"><!-- Task 8 --></section>
     <section class="capabilities"><!-- Task 9 --></section>
   </main>
@@ -492,6 +570,55 @@
       mysql: 'MySQL', angular: 'Angular', codeigniter: 'CodeIgniter',
       firebase: 'Firebase', gcp: 'GCP', cpp: 'C++', cuda: 'CUDA', bytom: 'Bytom',
     };
+
+    /* ─── Renderers ─── */
+    function renderAgents() {
+      const list = document.getElementById('agents-list');
+      list.innerHTML = ROLES.map(r => `
+        <article class="agent ${r.status === 'archived' ? 'archived' : ''} ${r.status === 'live' ? 'open' : ''}" data-id="${r.id}">
+          <div class="head" role="button" tabindex="0" aria-expanded="${r.status === 'live' ? 'true' : 'false'}">
+            <div>
+              <div class="name">${r.name} <span class="title">· ${r.title}</span></div>
+              <div class="meta">agent-${String(r.slot).padStart(3, '0')}</div>
+            </div>
+            <div class="right">
+              <span class="period">${r.period}</span>
+              <span class="status">● ${r.status === 'live' ? 'LIVE' : 'ARCHIVED'}</span>
+              <span class="jump" data-jump="${r.id}">↑ MAP</span>
+              <span class="caret">▶</span>
+            </div>
+          </div>
+          <div class="body">
+            <ul>${r.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+            <div class="metrics">
+              ${r.metrics.map(m => `<div class="row"><span class="k">${m.k}</span><span class="v">${m.v}</span></div>`).join('')}
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      const live = ROLES.filter(r => r.status === 'live').length;
+      document.getElementById('agents-count').textContent = `· ${ROLES.length} deployed · ${live} live`;
+
+      list.querySelectorAll('.agent .head').forEach(head => {
+        const toggle = () => {
+          const a = head.closest('.agent');
+          a.classList.toggle('open');
+          head.setAttribute('aria-expanded', a.classList.contains('open'));
+        };
+        head.addEventListener('click', e => {
+          if (e.target.closest('[data-jump]')) return;
+          toggle();
+        });
+        head.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAgents();
+    });
   </script>
 
   <script type="application/ld+json">
