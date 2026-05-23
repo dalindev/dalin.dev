@@ -397,6 +397,95 @@
       .cap-row { grid-template-columns: 1fr; gap: 4px; }
       .cap-row .cat { font-size: 9px; }
     }
+
+    /* ─── System Map ─── */
+    .systemmap {
+      margin: 0;
+      background: var(--bg-deep);
+      border: 1px solid var(--rule-strong);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .sm-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--rule);
+      font-size: 9px; color: var(--ink-faint); letter-spacing: 0.12em;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .sm-toolbar .title { color: var(--ink-dim); }
+    .sm-toolbar .right {
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
+    .sm-chip {
+      padding: 4px 9px; border: 1px solid var(--rule-strong);
+      border-radius: 2px; font-size: 9px; letter-spacing: 0.12em;
+      color: var(--ink-dim); cursor: pointer; user-select: none;
+      transition: all 180ms ease-out;
+    }
+    .sm-chip.role.on  { color: var(--accent-live); border-color: rgba(74,222,128,0.5); background: rgba(74,222,128,0.10); }
+    .sm-chip.proj.on  { color: var(--accent-link); border-color: rgba(96,165,250,0.5); background: rgba(96,165,250,0.10); }
+    .sm-chip.skill.on { color: var(--accent-warn); border-color: rgba(251,191,36,0.5); background: rgba(251,191,36,0.10); }
+    .sm-chip.off { opacity: 0.4; }
+
+    .sm-search {
+      background: var(--bg-elev); border: 1px solid var(--rule-strong);
+      border-radius: 2px; padding: 4px 8px; color: var(--ink); font-family: var(--mono);
+      font-size: 10px; width: 160px; outline: none;
+    }
+    .sm-search:focus { border-color: var(--accent-link); box-shadow: var(--glow-link); }
+    .sm-search::placeholder { color: var(--ink-faint); }
+
+    .sm-zoom { display: flex; gap: 2px; }
+    .sm-zoom button {
+      width: 24px; height: 22px;
+      background: var(--bg-elev); border: 1px solid var(--rule-strong);
+      color: var(--ink-dim); cursor: pointer; font-size: 12px;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: all 180ms ease-out;
+    }
+    .sm-zoom button:hover { color: var(--ink-strong); border-color: var(--accent-link); }
+
+    .sm-viewport {
+      position: relative;
+      height: 480px;
+      background:
+        radial-gradient(60% 60% at 50% 50%, rgba(96,165,250,0.06), transparent 70%),
+        var(--bg-deep);
+    }
+    .sm-viewport canvas { display: block; width: 100% !important; height: 100% !important; }
+    .sm-viewport .sm-fallback { width: 100%; height: 100%; }
+
+    .sm-tooltip {
+      position: absolute; pointer-events: none;
+      background: rgba(4,6,12,0.92);
+      border: 1px solid var(--accent-link);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-size: 10px; color: var(--ink);
+      max-width: 240px;
+      box-shadow: 0 4px 20px rgba(96,165,250,0.30);
+      opacity: 0; transform: translate(-50%, -110%);
+      transition: opacity 150ms ease-out;
+      z-index: 5;
+    }
+    .sm-tooltip.show { opacity: 1; }
+    .sm-tooltip h6 { color: var(--accent-link); font-size: 11px; margin-bottom: 3px; }
+    .sm-tooltip .meta { color: var(--ink-faint); font-size: 8px; letter-spacing: 0.12em; margin-bottom: 5px; }
+
+    .sm-hint {
+      padding: 6px 14px;
+      border-top: 1px solid var(--rule);
+      font-size: 8px; color: var(--ink-faint); letter-spacing: 0.12em;
+      display: flex; justify-content: space-between;
+    }
+
+    @media (max-width: 720px) {
+      .sm-viewport { height: 360px; }
+      .sm-search { width: 110px; }
+      .sm-toolbar .title { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -485,7 +574,72 @@
         <div class="sub">data pts · ads · media / day</div>
       </div>
     </section>
-    <section class="systemmap"><!-- Tasks 10–13 --></section>
+    <h2 class="section-head">SYSTEM MAP <span class="count">· roles ↔ projects ↔ skills</span></h2>
+    <section class="systemmap">
+      <div class="sm-toolbar">
+        <span class="title">// DRAG TO ROTATE · CLICK A NODE TO HIGHLIGHT BELOW · TYPE / TO SEARCH</span>
+        <div class="right">
+          <span class="sm-chip role on" data-filter="role">● ROLES</span>
+          <span class="sm-chip proj on" data-filter="project">● PROJECTS</span>
+          <span class="sm-chip skill on" data-filter="skill">● SKILLS</span>
+          <input class="sm-search" id="sm-search" placeholder="⌕ search nodes" aria-label="Search system map">
+          <div class="sm-zoom">
+            <button id="sm-zoom-in"  title="Zoom in" aria-label="Zoom in">+</button>
+            <button id="sm-zoom-out" title="Zoom out" aria-label="Zoom out">−</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sm-viewport" id="sm-viewport">
+        <svg class="sm-fallback" id="sm-fallback" viewBox="0 0 700 480" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <g fill="none" stroke="rgba(96,165,250,0.30)" stroke-width="0.8" stroke-dasharray="3 5">
+            <path d="M350,240 L150,140"/>
+            <path d="M350,240 L540,120"/>
+            <path d="M350,240 L600,340"/>
+            <path d="M350,240 L100,330"/>
+            <path d="M350,240 L240,400"/>
+            <path d="M150,140 L260,90"/>
+            <path d="M540,120 L430,80"/>
+            <path d="M600,340 L470,300"/>
+            <path d="M100,330 L290,360"/>
+          </g>
+          <circle cx="350" cy="240" r="14" fill="#fff" opacity="0.95"/>
+          <text x="370" y="245" fill="#fff" font-size="10" font-family="monospace" font-weight="700">DALIN</text>
+          <circle cx="150" cy="140" r="9" fill="#4ade80"/>
+          <text x="40" y="135" fill="#4ade80" font-size="9" font-family="monospace">PARKER AI</text>
+          <circle cx="540" cy="120" r="7" fill="#4ade80"/>
+          <text x="555" y="116" fill="#4ade80" font-size="9" font-family="monospace">ORIUM</text>
+          <circle cx="600" cy="340" r="6" fill="#4ade80"/>
+          <text x="612" y="336" fill="#4ade80" font-size="9" font-family="monospace">SHOPIFY</text>
+          <circle cx="100" cy="330" r="6" fill="#4ade80"/>
+          <text x="20" y="355" fill="#4ade80" font-size="9" font-family="monospace">COMBYNE</text>
+          <circle cx="240" cy="400" r="5" fill="#4ade80"/>
+          <text x="190" y="420" fill="#4ade80" font-size="8" font-family="monospace">i-sight · events</text>
+          <circle cx="430" cy="80" r="7" fill="#60a5fa"/>
+          <text x="445" y="76" fill="#60a5fa" font-size="9" font-family="monospace">COMPOSABLE UI</text>
+          <circle cx="260" cy="90" r="6" fill="#60a5fa"/>
+          <text x="218" y="78" fill="#60a5fa" font-size="9" font-family="monospace">HINATURE</text>
+          <circle cx="470" cy="300" r="6" fill="#60a5fa"/>
+          <text x="485" y="296" fill="#60a5fa" font-size="9" font-family="monospace">XNOHUB</text>
+          <circle cx="290" cy="360" r="5" fill="#60a5fa"/>
+          <text x="250" y="380" fill="#60a5fa" font-size="9" font-family="monospace">LOCALXNO</text>
+          <circle cx="220" cy="180" r="4" fill="#fbbf24"/>
+          <text x="195" y="200" fill="#fbbf24" font-size="8" font-family="monospace">LoRA</text>
+          <circle cx="280" cy="170" r="4" fill="#fbbf24"/>
+          <text x="260" y="162" fill="#fbbf24" font-size="8" font-family="monospace">Gemini</text>
+          <circle cx="400" cy="170" r="4" fill="#fbbf24"/>
+          <text x="378" y="162" fill="#fbbf24" font-size="8" font-family="monospace">React</text>
+          <circle cx="430" cy="240" r="4" fill="#fbbf24"/>
+          <text x="440" y="246" fill="#fbbf24" font-size="8" font-family="monospace">Supabase</text>
+        </svg>
+        <div class="sm-tooltip" id="sm-tooltip"></div>
+      </div>
+
+      <div class="sm-hint">
+        <span>● ROLE &nbsp; ● PROJECT &nbsp; ● SKILL &nbsp;— edges = "used at" / "shipped at"</span>
+        <span>POWERED BY THREE.JS</span>
+      </div>
+    </section>
     <h2 class="section-head">ACTIVE AGENTS <span class="count" id="agents-count"></span></h2>
     <section class="agents" id="agents-list"></section>
     <h2 class="section-head">DEPLOYED SERVICES <span class="count" id="services-count"></span></h2>
