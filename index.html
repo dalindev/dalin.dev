@@ -886,10 +886,191 @@
       `).join('');
     }
 
+    /* ─── System Map (Three.js) ─── */
+    const SM = {
+      scene: null, camera: null, renderer: null, controls: null,
+      group: null,
+      nodes: [], edges: [],
+      raycaster: null, mouse: null,
+      hovered: null, selected: null,
+      autoRotate: true, autoRotateResumeAt: 0,
+      filters: { role: true, project: true, skill: true },
+      reducedMotion: false,
+    };
+
+    function buildSystemMap() {
+      if (typeof THREE === 'undefined') {
+        console.warn('Three.js not loaded; SVG fallback stays.');
+        return;
+      }
+
+      SM.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const vp = document.getElementById('sm-viewport');
+      const fallback = document.getElementById('sm-fallback');
+      fallback.style.display = 'none';
+
+      const w = vp.clientWidth, h = vp.clientHeight;
+
+      SM.scene = new THREE.Scene();
+      SM.group = new THREE.Group();
+      SM.scene.add(SM.group);
+
+      SM.camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 100);
+      SM.camera.position.set(5, 2.5, 6.5);
+      SM.camera.lookAt(0, 0, 0);
+
+      SM.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      SM.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      SM.renderer.setSize(w, h);
+      SM.renderer.setClearColor(0x000000, 0);
+      vp.insertBefore(SM.renderer.domElement, fallback);
+
+      if (THREE.OrbitControls) {
+        SM.controls = new THREE.OrbitControls(SM.camera, SM.renderer.domElement);
+        SM.controls.enableDamping = true;
+        SM.controls.dampingFactor = 0.08;
+        SM.controls.enableZoom = false;
+        SM.controls.enablePan = false;
+        SM.controls.minDistance = 3;
+        SM.controls.maxDistance = 12;
+        SM.controls.addEventListener('start', () => {
+          SM.autoRotate = false;
+          SM.autoRotateResumeAt = performance.now() + 4000;
+        });
+      }
+
+      SM.scene.add(new THREE.HemisphereLight(0xffffff, 0x223355, 0.7));
+      const point = new THREE.PointLight(0xaaccff, 1.0, 30);
+      point.position.set(0, 0, 0);
+      SM.scene.add(point);
+
+      // Hub
+      const hubGeo = new THREE.IcosahedronGeometry(0.42, 1);
+      const hubMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.55,
+        roughness: 0.25, metalness: 0.4, transparent: true,
+      });
+      const hub = new THREE.Mesh(hubGeo, hubMat);
+      hub.userData = { type: 'hub', id: 'dalin', name: 'DALIN' };
+      SM.group.add(hub);
+      SM.nodes.push({ mesh: hub, type: 'hub', id: 'dalin', name: 'DALIN', baseScale: 1 });
+
+      // Build node list from data
+      const roleNodes = ROLES.map((r, i) => ({
+        type: 'role', id: r.id, name: r.name, period: r.period,
+        color: 0x4ade80, radius: 0.18 + Math.min(r.tenure / 4, 0.18),
+        ring: 1, slot: i, total: ROLES.length, payload: r,
+      }));
+      const projNodes = PROJECTS.map((p, i) => ({
+        type: 'project', id: p.id, name: p.name, period: p.year,
+        color: 0x60a5fa, radius: 0.17,
+        ring: 2, slot: i, total: PROJECTS.length, payload: p,
+      }));
+      const skillSet = new Set();
+      ROLES.forEach(r => r.skills.forEach(s => skillSet.add(s)));
+      PROJECTS.forEach(p => p.skills.forEach(s => skillSet.add(s)));
+      const skillIds = Array.from(skillSet);
+      const skillNodes = skillIds.map((s, i) => ({
+        type: 'skill', id: s, name: SKILL_ID[s] || s, period: '',
+        color: 0xfbbf24, radius: 0.11,
+        ring: 3, slot: i, total: skillIds.length, payload: { id: s, name: SKILL_ID[s] || s },
+      }));
+
+      function placeNode(n) {
+        const ringRadius = [0, 2.1, 2.8, 3.6][n.ring];
+        const slotAngle = (n.slot / n.total) * Math.PI * 2 + (n.ring * 0.6);
+        const tilt = (n.ring === 2) ? 0.45 : (n.ring === 3 ? -0.35 : 0.1);
+        const x = Math.cos(slotAngle) * ringRadius;
+        const z = Math.sin(slotAngle) * ringRadius;
+        const y = Math.sin(slotAngle * 1.3) * 0.7 + tilt;
+        return [x, y, z];
+      }
+
+      [...roleNodes, ...projNodes, ...skillNodes].forEach(n => {
+        const geo = new THREE.SphereGeometry(n.radius, 18, 18);
+        const mat = new THREE.MeshStandardMaterial({
+          color: n.color, emissive: n.color, emissiveIntensity: 0.65,
+          roughness: 0.4, metalness: 0.3, transparent: true,
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        const [x, y, z] = placeNode(n);
+        mesh.position.set(x, y, z);
+        mesh.userData = { type: n.type, id: n.id, name: n.name, period: n.period, payload: n.payload, color: n.color, baseRadius: n.radius };
+        SM.group.add(mesh);
+        SM.nodes.push({ mesh, type: n.type, id: n.id, name: n.name, period: n.period, payload: n.payload, baseScale: 1 });
+      });
+
+      // Edges
+      function addEdge(a, b, color, opacity) {
+        const geo = new THREE.BufferGeometry().setFromPoints([a.mesh.position, b.mesh.position]);
+        const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
+        const line = new THREE.Line(geo, mat);
+        SM.group.add(line);
+        SM.edges.push({ line, a, b, baseOpacity: opacity });
+      }
+      const hubNode = SM.nodes.find(n => n.type === 'hub');
+      SM.nodes.filter(n => n.type === 'role').forEach(r => addEdge(hubNode, r, 0x4ade80, 0.45));
+      SM.nodes.filter(n => n.type === 'project').forEach(p => addEdge(hubNode, p, 0x60a5fa, 0.30));
+      ROLES.forEach(r => {
+        const roleNode = SM.nodes.find(n => n.id === r.id);
+        r.skills.forEach(s => {
+          const skillNode = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+          if (roleNode && skillNode) addEdge(roleNode, skillNode, 0x4ade80, 0.18);
+        });
+      });
+      PROJECTS.forEach(p => {
+        const projNode = SM.nodes.find(n => n.id === p.id);
+        p.skills.forEach(s => {
+          const skillNode = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+          if (projNode && skillNode) addEdge(projNode, skillNode, 0x60a5fa, 0.18);
+        });
+      });
+
+      SM.raycaster = new THREE.Raycaster();
+      SM.mouse = new THREE.Vector2();
+
+      const onResize = () => {
+        const nw = vp.clientWidth, nh = vp.clientHeight;
+        SM.camera.aspect = nw / nh;
+        SM.camera.updateProjectionMatrix();
+        SM.renderer.setSize(nw, nh);
+      };
+      window.addEventListener('resize', onResize);
+
+      animateSystemMap();
+    }
+
+    let _lastT = 0;
+    function animateSystemMap() {
+      requestAnimationFrame(animateSystemMap);
+      if (!SM.scene) return;
+      const t = performance.now();
+      const dt = Math.min((t - _lastT) / 1000, 0.05); _lastT = t;
+
+      if (!SM.autoRotate && t > SM.autoRotateResumeAt) SM.autoRotate = true;
+      if (SM.autoRotate && !SM.reducedMotion) {
+        SM.group.rotation.y += dt * (Math.PI / 30);
+      }
+
+      if (!SM.reducedMotion) {
+        SM.nodes.forEach((n, i) => {
+          if (n.type === 'hub') return;
+          const phase = (t / 1000 + i * 0.3) * (Math.PI * 2 / 3);
+          const k = n.baseScale * (1 + Math.sin(phase) * 0.08);
+          n.mesh.scale.set(k, k, k);
+        });
+      }
+
+      if (SM.controls) SM.controls.update();
+      SM.renderer.render(SM.scene, SM.camera);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderAgents();
       renderServices();
       renderCapabilities();
+      window.addEventListener('load', () => setTimeout(buildSystemMap, 0));
     });
   </script>
 
