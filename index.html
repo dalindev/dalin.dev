@@ -345,7 +345,7 @@
     }
     .office-room .section-head .count { color: #5a6275; font-weight: 400; }
 
-    .office { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .office { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 12px; row-gap: 4px; }
 
     .desk {
       background: transparent;
@@ -379,14 +379,14 @@
       border-radius: 50%;
     }
 
-    /* ─── Apple Studio Display sits ON TOP OF the desk ─── */
-    /* Monitor moved down ~20px and floats above all other elements */
+    /* ─── Apple Studio Display floats ABOVE everything ─── */
+    /* Body ends RIGHT at desk top (no overlap into desk), stand visibly bridges to desk */
     .desk-monitor {
       position: absolute;
       top: 12%;
       left: 22%; right: 22%;
-      height: 22%;
-      z-index: 10;
+      height: 18%;
+      z-index: 50;
       /* Aluminum body (silver brushed) */
       background: linear-gradient(180deg, #d8dbe2 0%, #a8acb5 60%, #8a8e98 100%);
       border-radius: 5px;
@@ -423,7 +423,7 @@
       width: 12px; height: 18px;
       background: linear-gradient(90deg, #4a5060 0%, #d8dbe2 50%, #4a5060 100%);
       clip-path: polygon(15% 0%, 85% 0%, 95% 100%, 5% 100%);
-      z-index: 11;
+      z-index: 51;
     }
     .desk-monitor::before {
       content: "";
@@ -433,7 +433,7 @@
       background: linear-gradient(180deg, #d8dbe2 0%, #a8acb5 50%, #5e6470 100%);
       border-radius: 50%;
       box-shadow: 0 3px 6px rgba(0,0,0,0.28);
-      z-index: 11;
+      z-index: 51;
     }
     .desk-monitor .screen {
       width: 100%; height: 100%;
@@ -684,9 +684,9 @@
     /* z-index 5: same foreground level as the chair back */
     .desk-chair {
       position: absolute;
-      bottom: 6%;
+      bottom: 3%;
       left: 50%; transform: translateX(-50%);
-      width: 28%; height: 19%;
+      width: 28%; height: 18%;
       z-index: 5;
     }
     .desk-chair svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.20)); }
@@ -1724,7 +1724,7 @@
     /* Chair base only — pneumatic stem + 5-wheel star (visible below desk).
        The short white chair back is handled by .desk-chair-back CSS. */
     const SVG_CHAIR = (uid) => `
-      <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <svg viewBox="0 0 100 66" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
         <defs>
           <linearGradient id="ch-${uid}" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%"   stop-color="#9c9889"/>
