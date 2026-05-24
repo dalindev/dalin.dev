@@ -381,9 +381,9 @@
     /* Body OVERLAPS desk so monitor sits ON the desk; high z-index keeps it in front */
     .desk-monitor {
       position: absolute;
-      top: 14%;
+      top: 3%;
       left: 18%; right: 18%;
-      height: 26%;
+      height: 37%;
       z-index: 50;
       /* Aluminum body (silver brushed) */
       background: linear-gradient(180deg, #d8dbe2 0%, #a8acb5 60%, #8a8e98 100%);
@@ -785,10 +785,18 @@
     .desk-pet.cat-sleep { opacity: 0.85; }
 
     /* ─── Screen content styles ─── */
+    /* Shared helpers across all screens for clean column alignment */
+    .desk .screen .mk  { display: inline-block; width: 11px; text-align: left; }
+    .desk .screen .lbl { display: inline-block; width: 28px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .desk .screen .dim { color: rgba(148,163,184,0.7); }
+    .desk .screen .ok  { color: var(--accent-live); }
+    .desk .screen .hi  { color: var(--accent-warn); font-weight: 700; }
+
     .scr-orchestrate { color: var(--accent-warn); }
     .scr-orchestrate .done { color: var(--accent-live); }
     .scr-orchestrate .wip  { color: var(--accent-warn); animation: blink 1.2s steps(1) infinite; }
     .scr-orchestrate .todo { color: var(--ink-faint); }
+    .scr-orchestrate .eta  { color: var(--ink-faint); font-size: 4.5px; letter-spacing: 0.05em; display: block; margin-top: 1px; }
 
     .scr-progress .pct { color: var(--accent-warn); }
     .scr-progress .bar { color: var(--accent-live); text-shadow: 0 0 3px rgba(74,222,128,0.5); }
@@ -797,6 +805,7 @@
     .scr-chart .row { animation: barShift 2.4s ease-in-out infinite; transform-origin: left; }
     .scr-chart .row:nth-child(2) { animation-delay: 0.7s; opacity: 0.85; }
     .scr-chart .acc { color: var(--accent-warn); font-size: 6.5px; }
+    .scr-chart .acc.dim { color: var(--ink-faint); font-size: 5px; margin-top: 1px; }
     @keyframes barShift {
       0%, 100% { transform: scaleX(1); }
       50%      { transform: scaleX(0.92); }
@@ -1675,33 +1684,37 @@
     function screenHtml(type) {
       switch (type) {
         case 'orchestrate': return `
-          <span class="done">[✓]</span> embed 12M<br>
-          <span class="done">[✓]</span> classify 482<br>
-          <span class="wip">[⚙]</span> train LoRA<br>
-          <span class="todo">[ ]</span> eval F1<br>
-          <span class="todo">[ ]</span> deploy v17`;
+          <span class="mk done">[✓]</span> embed 12.4M docs<br>
+          <span class="mk done">[✓]</span> classify 482 ads<br>
+          <span class="mk wip">[⟳]</span> train LoRA r16<br>
+          <span class="mk todo">[ ]</span> eval F1 / EM<br>
+          <span class="mk todo">[ ]</span> deploy v17 → prod<br>
+          <span class="eta">─ eta 8m · 7 / 13 done</span>`;
         case 'progress': return `
-          EPOCH <span class="pct">12/16</span><br>
-          STEP 1240/2000<br>
-          <span class="bar">▓▓▓▓▓▓▓░░░</span><br>
-          loss <span class="pct">0.341</span> ↓<br>
-          lr 2.4e-5`;
+          <span class="lbl">EPOCH</span><span class="pct">12 / 16</span> · ETA <span class="pct">14m</span><br>
+          <span class="lbl">STEP</span>1240 / 2000<br>
+          <span class="lbl">LOSS</span><span class="pct">0.341</span> ↓<br>
+          <span class="lbl">LR</span><span class="pct">2.4e-5</span><br>
+          <span class="bar">▓▓▓▓▓▓▓░░░</span> 62%<br>
+          <span class="lbl">GPU</span>A100 · 71GB · 73°C`;
         case 'chart': return `
-          <div class="row">▆▃▅▇▄▆▂▇</div>
-          <div class="row">▃▅▇▄▆▂▇▅</div>
-          <div class="acc">acc 96.4%</div>`;
+          <div class="row">▆▃▅▇▄▆▂▇▃▅</div>
+          <div class="row">▃▅▇▄▆▂▇▅▇▄</div>
+          <div class="acc">F1 <span class="hi">96.4</span> · P 97.1 · R 95.6</div>
+          <div class="acc dim">batch 482 · 28ms · v17</div>`;
         case 'media': return `
-          📷 batch 24/42<br>
+          📷 <span class="lbl">batch</span>24 / 42<br>
           <span class="box1">face·98</span><span class="box2">logo·87</span><br>
-          ─────<br>
-          12ms p50<br>
-          embed: ok`;
+          <span class="box1">text·94</span><span class="box2">nsfw·02</span><br>
+          <span class="lbl">queue</span>156 · 12ms p50<br>
+          <span class="lbl">embed</span><span class="ok">ok</span> · CLIP-L`;
         case 'crawler': return `
-          scrape://*.com<br>
-          87 sources<br>
-          <span class="dots">● ● ●</span><br>
-          fetching…<br>
-          rank: top-50`;
+          <span class="lbl">GET</span>/api/v3/search<br>
+          87 sources · top-50<br>
+          <span class="dots">● ● ●</span> fetching…<br>
+          └─ <span class="dim">nytimes.com</span> <span class="ok">✓</span><br>
+          └─ <span class="dim">github.com</span> <span class="ok">✓</span><br>
+          └─ <span class="dim">arxiv.org</span> ⟳`;
         case 'phone': return `
           <div class="time">14:23</div>
           <div class="row"><span class="badge">12</span> Slack <span class="dot">●</span></div>
@@ -1715,11 +1728,12 @@
           <br>
           <span class="dvd">●</span>`;
         case 'error': return `
-          <span class="blink">FATAL SEGFAULT</span><br>
-          <span class="trace">at agent::core::tick</span><br>
-          <span class="trace">  line 1024</span><br>
-          <br>
-          retry 14/∞`;
+          <span class="blink">FATAL OOM</span><br>
+          chain depth: 4194 ↑<br>
+          <span class="trace">at reasoner::expand()</span><br>
+          <span class="trace">at think::deeper()</span><br>
+          <span class="trace">at think::even_deeper()</span><br>
+          core dumped · retry 14/∞`;
         default: return '';
       }
     }
@@ -1834,8 +1848,16 @@
             <stop offset="100%" stop-color="#11141b"/>
           </linearGradient>
         </defs>
-        <!-- Head: tilted forward + slumped left, raised slightly (10px up from previous) -->
+        <!-- Head: tilted forward + slumped left, raised slightly (10px up from previous).
+             SMIL animateTransform adds a tiny ±3° sway pivoting at the NECK (40,50) on top of
+             the static translate+rotate — looks like slow breathing during sleep. -->
         <g transform="translate(-14 5) rotate(-22 40 32)">
+          <animateTransform attributeName="transform" type="rotate"
+            values="-3 40 50; 3 40 50; -3 40 50"
+            keyTimes="0; 0.5; 1"
+            dur="3.8s" repeatCount="indefinite"
+            additive="sum"
+            calcMode="spline" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1"/>
           <!-- Antenna -->
           <line x1="40" y1="6" x2="40" y2="14" stroke="#1a1f2b" stroke-width="1.6" stroke-linecap="round"/>
           <circle cx="40" cy="6" r="3.5" fill="currentColor" opacity="0.30" class="led-glow"/>
@@ -1933,7 +1955,6 @@
             <div class="desk-chair-back"></div>
             <div class="desk-chair">${SVG_CHAIR(a.id)}</div>
             ${a.status === 'idle'    ? '<div class="desk-fx zzz">z<sub>Z</sub>z</div>' : ''}
-            ${a.status === 'offline' ? '<div class="desk-fx tool">🔧<span class="sys">SYS</span></div>' : ''}
             ${(a.floor || []).map(f => `<div class="desk-floor-item ${f.kind}">${f.emoji}</div>`).join('')}
             <!-- Monitor LAST = renders on top of desk-top in DOM order -->
             <div class="desk-monitor"><div class="monitor-bezel"><div class="screen ${a.status}">${renderScreen(a)}</div></div></div>
