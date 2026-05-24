@@ -360,21 +360,21 @@
 
     .desk-scene {
       position: relative;
-      height: 300px;
+      height: 260px;
       overflow: visible;
     }
     /* Tight floor shadow directly under the chair (close to wheels) */
     .desk-scene::before {
       content: "";
       position: absolute;
-      bottom: 2%;
-      left: 28%; right: 28%;
-      height: 14px;
-      background: radial-gradient(ellipse 50% 70% at 50% 50%,
+      bottom: 1%;
+      left: 30%; right: 30%;
+      height: 10px;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%,
         rgba(20,24,31,0.42) 0%,
         rgba(20,24,31,0.18) 50%,
         transparent 80%);
-      filter: blur(5px);
+      filter: blur(4px);
       z-index: 4;
       border-radius: 50%;
     }
@@ -383,7 +383,7 @@
     /* z-index 4: stand and base render ON the desk surface */
     .desk-monitor {
       position: absolute;
-      top: 3%;
+      top: 9%;
       left: 22%; right: 22%;
       height: 22%;
       z-index: 4;
@@ -557,43 +557,48 @@
     /* Back legs disabled */
     .desk-leg.bl, .desk-leg.br { display: none; }
 
-    /* ─── Apple Magic Keyboard on desk ─── */
+    /* ─── Apple Magic Keyboard with visible keys + spacebar ─── */
     .desk-keyboard {
       position: absolute;
       top: 40%;
-      left: 26%; right: 26%;
-      height: 9px;
+      left: 28%; right: 28%;
+      height: 13px;
       background:
-        linear-gradient(180deg, #ebeef2 0%, #c7cbd2 50%, #9ca0a8 100%);
-      border-radius: 2px;
+        linear-gradient(180deg, #f0f2f6 0%, #c0c4cc 70%, #8c9098 100%);
+      border-radius: 2.5px;
       z-index: 3;
       box-shadow:
-        0 2px 4px rgba(20,24,31,0.30),
-        inset 0 0.5px 0 rgba(255,255,255,0.95),
-        inset 0 -0.5px 0 rgba(0,0,0,0.15);
+        0 2px 5px rgba(20,24,31,0.32),
+        inset 0 0.5px 0 rgba(255,255,255,1),
+        inset 0 -0.5px 0 rgba(0,0,0,0.20);
     }
-    /* Tiny key hint rows */
+    /* Top key rows — visible 2 rows of keys */
     .desk-keyboard::before {
       content: "";
       position: absolute;
-      top: 1.5px; left: 3px; right: 3px; bottom: 2px;
+      top: 1.5px; left: 3px; right: 3px;
+      height: 6.5px;
       background:
+        /* Vertical key separators (gaps between keys) */
         repeating-linear-gradient(90deg,
-          transparent 0, transparent 1.5px,
-          rgba(40,44,52,0.55) 1.5px, rgba(40,44,52,0.55) 2px),
-        repeating-linear-gradient(0deg,
-          transparent 0, transparent 1.5px,
-          transparent 1.5px, transparent 2.2px);
+          rgba(255,255,255,0.0) 0, rgba(255,255,255,0.0) 2px,
+          rgba(120,124,132,0.7) 2px, rgba(120,124,132,0.7) 2.6px),
+        /* Horizontal row gap */
+        linear-gradient(180deg,
+          rgba(50,55,64,0.6) 0, rgba(50,55,64,0.6) 2.6px,
+          rgba(255,255,255,0.5) 2.6px, rgba(255,255,255,0.5) 3.2px,
+          rgba(50,55,64,0.6) 3.2px, rgba(50,55,64,0.6) 5.8px);
       border-radius: 1px;
     }
-    /* Long spacebar accent */
+    /* Spacebar row */
     .desk-keyboard::after {
       content: "";
       position: absolute;
-      bottom: 1.5px; left: 30%; right: 30%;
-      height: 1.5px;
-      background: rgba(40,44,52,0.55);
-      border-radius: 1px;
+      bottom: 1.5px; left: 22%; right: 22%;
+      height: 2.6px;
+      background: rgba(50,55,64,0.65);
+      border-radius: 1.3px;
+      box-shadow: inset 0 -0.5px 0 rgba(255,255,255,0.18);
     }
 
     /* ─── Magic Trackpad next to keyboard ─── */
@@ -872,17 +877,16 @@
       70%      { transform: translateX(1px); }
     }
 
-    /* ─── Desk info block (dark text on light bg) ─── */
+    /* ─── Desk info block — single line, name + status only ─── */
     .desk-info {
-      padding: 14px 4px 0;
+      padding: 8px 4px 0;
       text-align: center;
-    }
-    .desk-info .row {
       display: flex; justify-content: center; align-items: baseline; gap: 8px;
     }
     .desk-info .name {
-      color: #1a1f2b; font-weight: 800; font-size: 12px;
+      color: #1a1f2b; font-weight: 800; font-size: 11px;
       letter-spacing: -0.01em;
+      white-space: nowrap;
     }
     .desk-info .status {
       font-size: 8px; letter-spacing: 0.15em; font-weight: 800;
@@ -891,17 +895,6 @@
     .desk-info .status.busy    { color: #16a34a; }
     .desk-info .status.idle    { color: #2563eb; }
     .desk-info .status.offline { color: #dc2626; }
-    .desk-info .role-tag {
-      font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--bot-color, #5a6275);
-      margin-top: 3px; font-weight: 800;
-      filter: brightness(0.85);  /* tone down on light bg */
-    }
-    .desk-info .task {
-      color: #5a6275; font-size: 10px; margin-top: 6px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      line-height: 1.4;
-    }
 
     @media (max-width: 1000px) { .office { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 520px)  { .office { grid-template-columns: 1fr; } }
@@ -1353,12 +1346,7 @@
     <section class="office-room">
       <h2 class="section-head">OFFICE FLOOR <span class="count" id="office-count">· crew loading…</span></h2>
       <div class="office" id="office-floor"></div>
-      <!-- Ambient props (decorative) -->
-      <span class="office-ambient clock">🕐</span>
-      <span class="office-ambient window-l">🪟</span>
-      <span class="office-ambient window-r">🪟</span>
-      <span class="office-ambient printer">🖨️</span>
-      <span class="office-ambient cooler">🚰</span>
+      <!-- Ambient (minimal) -->
       <span class="office-ambient plant-bigl">🌴</span>
       <span class="office-ambient plant-bigr">🪴</span>
     </section>
@@ -1650,76 +1638,31 @@
 
     /* ─── Office floor: the actual Parker AI agent crew ─── */
     const OFFICE_AGENTS = [
+      /* Reduced clutter: 3 trash cans total, ~3 plants on table, 1 teddy on table, no pets */
       { id: 'opus-main',  name: 'Claude 4.7 Opus',  role: 'Main agent',       status: 'busy',
         task: 'Orchestrating 24 subtasks',          screen: 'orchestrate', color: '#f59e0b',
-        items: { left: ['☕'], right: ['📋'] },
-        pet: { emoji: '🐱', kind: 'cat-sleep', side: 'right' },
-        floor: [
-          { emoji: '🪴', kind: 'plant' },
-          { emoji: '🗑️', kind: 'trash' },
-          { emoji: '📦', kind: 'boxes' },
-        ] },
+        items: { left: ['☕', '🪴'], right: ['📋'] }, floor: [] },
       { id: 'opus-ft',    name: 'Claude 4.7 Opus',  role: 'Fine-tune agent',  status: 'busy',
         task: 'LoRA v17 · epoch 12 · 62%',          screen: 'progress',    color: '#f59e0b',
-        items: { left: ['☕'], right: ['⚡'] },
-        pet: { emoji: '🤖', kind: 'roomba', side: 'right' },
-        floor: [
-          { emoji: '🌿', kind: 'plant' },
-          { emoji: '🗑️', kind: 'trash' },
-        ] },
+        items: { left: ['☕'], right: ['⚡'] }, floor: [{ emoji: '🗑️', kind: 'trash' }] },
       { id: 'gem-pro',    name: 'Gemini 3.1 Pro',   role: 'AI tags',          status: 'busy',
         task: 'Classify 482 ads · 96.4% acc',       screen: 'chart',       color: '#60a5fa',
-        items: { left: ['🌱'], right: [] },
-        pet: { emoji: '🐦', kind: 'bird', side: 'left' },
-        floor: [
-          { emoji: '🪴', kind: 'plant' },
-          { emoji: '🗑️', kind: 'trash' },
-          { emoji: '📚', kind: 'books-floor' },
-        ] },
+        items: { left: ['🌿'], right: ['📚'] }, floor: [] },
       { id: 'gem-flash',  name: 'Gemini 3.0 Flash', role: 'Media analyze',    status: 'busy',
         task: 'Analyze 8.4K images · 12ms p50',     screen: 'media',       color: '#60a5fa',
-        items: { left: [], right: ['📷'] },
-        pet: { emoji: '🐶', kind: 'dog', side: 'left' },
-        floor: [
-          { emoji: '🌵', kind: 'plant' },
-          { emoji: '🗑️', kind: 'trash' },
-          { emoji: '🎒', kind: 'bag' },
-        ] },
+        items: { left: [], right: ['📷'] }, floor: [{ emoji: '🗑️', kind: 'trash' }] },
       { id: 'gem-search', name: 'Gemini 3.1 Pro',   role: 'Web search',       status: 'busy',
         task: 'Live grounding · 87 sources',        screen: 'crawler',     color: '#60a5fa',
-        items: { left: ['📚'], right: [] },
-        pet: { emoji: '🐢', kind: 'cat-sleep', side: 'right' },
-        floor: [
-          { emoji: '🪴', kind: 'plant' },
-          { emoji: '🗑️', kind: 'trash' },
-        ] },
+        items: { left: ['📚'], right: ['🪴'] }, floor: [] },
       { id: 'gpt55',      name: 'GPT 5.5',          role: 'Backup fallback',  status: 'idle',
         task: 'On standby · doomscrolling',         screen: 'phone',       color: '#10b981',
-        items: { left: ['☕'], right: ['📱'] },
-        pet: { emoji: '🐈', kind: 'cat-sleep', side: 'left' },
-        floor: [
-          { emoji: '🌱', kind: 'plant' },
-          { emoji: '🗑️', kind: 'trash' },
-          { emoji: '🧸', kind: 'bag' },
-        ] },
+        items: { left: ['☕', '🧸'], right: ['📱'] }, floor: [] },
       { id: 'whisper',    name: 'Whisper v4',       role: 'Audio transcribe', status: 'idle',
         task: 'No audio queued · napping',          screen: 'sleep',       color: '#10b981',
-        items: { left: ['🎧'], right: [] },
-        pet: { emoji: '🐦', kind: 'cat-sleep', side: 'right' },
-        floor: [
-          { emoji: '🪴', kind: 'plant' },
-          { emoji: '🗑️', kind: 'trash' },
-          { emoji: '🎧', kind: 'bag' },
-        ] },
+        items: { left: ['🎧'], right: [] }, floor: [{ emoji: '🗑️', kind: 'trash' }] },
       { id: 'deepseek',   name: 'DeepSeek v4',      role: 'Reasoning agent',  status: 'offline',
         task: 'OOM · reasoning chain too long',     screen: 'error',       color: '#ef4444',
-        items: { left: ['🔧'], right: [] },
-        pet: { emoji: '🗑️', kind: 'cat-sleep', side: 'right' },
-        floor: [
-          { emoji: '🥀', kind: 'plant' },
-          { emoji: '🗑️', kind: 'trash' },
-          { emoji: '⚠️', kind: 'caution' },
-        ] },
+        items: { left: ['🔧'], right: ['⚠️'] }, floor: [] },
     ];
 
     function screenHtml(type) {
@@ -1781,7 +1724,7 @@
     /* Chair base only — pneumatic stem + 5-wheel star (visible below desk).
        The short white chair back is handled by .desk-chair-back CSS. */
     const SVG_CHAIR = (uid) => `
-      <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
+      <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
         <defs>
           <linearGradient id="ch-${uid}" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%"   stop-color="#9c9889"/>
@@ -1986,16 +1929,11 @@
             <div class="desk-chair">${SVG_CHAIR(a.id)}</div>
             ${a.status === 'idle'    ? '<div class="desk-fx zzz">z<sub>Z</sub>z</div>' : ''}
             ${a.status === 'offline' ? '<div class="desk-fx tool">🔧<span class="sys">SYS</span></div>' : ''}
-            ${a.pet ? `<div class="desk-pet ${a.pet.kind} ${a.pet.side || 'right'}">${a.pet.emoji}</div>` : ''}
             ${(a.floor || []).map(f => `<div class="desk-floor-item ${f.kind}">${f.emoji}</div>`).join('')}
           </div>
           <div class="desk-info">
-            <div class="row">
-              <span class="name">${a.name}</span>
-              <span class="status ${a.status}">● ${a.status.toUpperCase()}</span>
-            </div>
-            <div class="role-tag">${a.role}</div>
-            <div class="task">${a.task}</div>
+            <span class="name">${a.name}</span>
+            <span class="status ${a.status}">● ${a.status.toUpperCase()}</span>
           </div>
         </article>
       `).join('');
