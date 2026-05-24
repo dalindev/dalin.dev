@@ -353,9 +353,7 @@
       border-radius: 0;
       padding: 0;
       position: relative;
-      transition: transform 220ms ease-out;
     }
-    .desk:hover { transform: translateY(-4px); }
     .desk.offline .desk-scene { filter: saturate(0.4); }
 
     .desk-scene {
@@ -1913,8 +1911,7 @@
       root.innerHTML = OFFICE_AGENTS.map(a => `
         <article class="desk ${a.status}" data-id="${a.id}" style="--bot-color: ${a.color}">
           <div class="desk-scene">
-            <!-- Back-view, 45° feel: monitor on desk → bot sitting in front of desk → chair base below -->
-            <div class="desk-monitor"><div class="monitor-bezel"><div class="screen ${a.status}">${renderScreen(a)}</div></div></div>
+            <!-- Order matters for stacking: monitor goes LAST so it sits on top of desk -->
             <div class="desk-top"></div>
             <div class="desk-leg fl"></div><div class="desk-leg fr"></div>
             <div class="desk-leg bl"></div><div class="desk-leg br"></div>
@@ -1930,6 +1927,8 @@
             ${a.status === 'idle'    ? '<div class="desk-fx zzz">z<sub>Z</sub>z</div>' : ''}
             ${a.status === 'offline' ? '<div class="desk-fx tool">🔧<span class="sys">SYS</span></div>' : ''}
             ${(a.floor || []).map(f => `<div class="desk-floor-item ${f.kind}">${f.emoji}</div>`).join('')}
+            <!-- Monitor LAST = renders on top of desk-top in DOM order -->
+            <div class="desk-monitor"><div class="monitor-bezel"><div class="screen ${a.status}">${renderScreen(a)}</div></div></div>
           </div>
           <div class="desk-info">
             <span class="name">${a.name}</span>
