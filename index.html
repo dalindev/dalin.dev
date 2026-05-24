@@ -311,9 +311,9 @@
       background:
         radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,255,255,0.4), transparent 60%),
         linear-gradient(180deg, #f4f3ed 0%, #e8e6dd 100%);
-      padding: 18px 26px 28px;
-      border-radius: 12px;
-      margin: 16px 0 0;
+      padding: 14px 22px 16px;
+      border-radius: 10px;
+      margin: 12px 0 0;
       box-shadow:
         inset 0 0 0 1px rgba(0,0,0,0.04),
         0 12px 32px rgba(0,0,0,0.35);
@@ -338,14 +338,14 @@
     .office-ambient.window-r   { right: 14px; top: 60px;   font-size: 32px; opacity: 0.4; }
     /* Override the global section-head when inside .office-room */
     .office-room .section-head {
-      color: #1a1f2b; margin: 0 0 8px 0;
+      color: #1a1f2b; margin: 0 0 4px 0; font-size: 10px;
     }
     .office-room .section-head::before {
       background: #1a1f2b; box-shadow: none;
     }
     .office-room .section-head .count { color: #5a6275; font-weight: 400; }
 
-    .office { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 12px; row-gap: 4px; }
+    .office { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 10px; row-gap: 0; }
 
     .desk {
       background: transparent;
@@ -358,7 +358,7 @@
 
     .desk-scene {
       position: relative;
-      height: 260px;
+      height: 215px;
       overflow: visible;
     }
     /* Tight floor shadow directly under the chair (close to wheels) */
@@ -658,7 +658,7 @@
       position: absolute;
       top: 40%;
       left: 50%; transform: translateX(-50%);
-      width: 86px; height: 96px;
+      width: 72px; height: 80px;
       z-index: 4;
       color: var(--bot-color, var(--accent-warn));
     }
@@ -883,20 +883,20 @@
       70%      { transform: translateX(1px); }
     }
 
-    /* ─── Desk info block — single line, role + status (same size) ─── */
+    /* ─── Desk info block — single line, role + status (compact) ─── */
     .desk-info {
-      padding: 8px 4px 0;
+      padding: 2px 4px 0;
       text-align: center;
-      display: flex; justify-content: center; align-items: baseline; gap: 8px;
+      display: flex; justify-content: center; align-items: baseline; gap: 6px;
     }
     .desk-info .name {
-      color: #1a1f2b; font-weight: 800; font-size: 11px;
+      color: #1a1f2b; font-weight: 800; font-size: 10px;
       letter-spacing: 0.05em;
       text-transform: uppercase;
       white-space: nowrap;
     }
     .desk-info .status {
-      font-size: 11px; letter-spacing: 0.10em; font-weight: 800;
+      font-size: 10px; letter-spacing: 0.10em; font-weight: 800;
       white-space: nowrap;
     }
     .desk-info .status.busy    { color: #16a34a; }
