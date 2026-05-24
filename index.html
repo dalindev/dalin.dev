@@ -1645,29 +1645,29 @@
 
     /* ─── Office floor: the actual Parker AI agent crew ─── */
     const OFFICE_AGENTS = [
-      /* Reduced clutter: 3 trash cans total, ~3 plants on table, 1 teddy on table, no pets */
-      { id: 'opus-main',  name: 'Claude 4.7 Opus',  role: 'Main agent',       status: 'busy',
+      /* Professional agent group names — consistent X AGENT format */
+      { id: 'opus-main',  name: 'Claude 4.7 Opus',  role: 'Main Agent',         status: 'busy',
         task: 'Orchestrating 24 subtasks',          screen: 'orchestrate', color: '#f59e0b',
         items: { left: ['☕', '🪴'], right: ['📋'] }, floor: [] },
-      { id: 'opus-ft',    name: 'Claude 4.7 Opus',  role: 'Fine-tune agent',  status: 'busy',
+      { id: 'opus-ft',    name: 'Claude 4.7 Opus',  role: 'Fine-tune Agent',    status: 'busy',
         task: 'LoRA v17 · epoch 12 · 62%',          screen: 'progress',    color: '#f59e0b',
         items: { left: ['☕'], right: ['⚡'] }, floor: [{ emoji: '🗑️', kind: 'trash' }] },
-      { id: 'gem-pro',    name: 'Gemini 3.1 Pro',   role: 'AI tags',          status: 'busy',
+      { id: 'gem-pro',    name: 'Gemini 3.1 Pro',   role: 'Classifier Agent',   status: 'busy',
         task: 'Classify 482 ads · 96.4% acc',       screen: 'chart',       color: '#60a5fa',
         items: { left: ['🌿'], right: ['📚'] }, floor: [] },
-      { id: 'gem-flash',  name: 'Gemini 3.0 Flash', role: 'Media analyze',    status: 'busy',
+      { id: 'gem-flash',  name: 'Gemini 3.0 Flash', role: 'Analyze Agent',      status: 'busy',
         task: 'Analyze 8.4K images · 12ms p50',     screen: 'media',       color: '#60a5fa',
         items: { left: [], right: ['📷'] }, floor: [{ emoji: '🗑️', kind: 'trash' }] },
-      { id: 'gem-search', name: 'Gemini 3.1 Pro',   role: 'Web search',       status: 'busy',
+      { id: 'gem-search', name: 'Gemini 3.1 Pro',   role: 'Web Search Agent',   status: 'busy',
         task: 'Live grounding · 87 sources',        screen: 'crawler',     color: '#60a5fa',
         items: { left: ['📚'], right: ['🪴'] }, floor: [] },
-      { id: 'gpt55',      name: 'GPT 5.5',          role: 'Backup fallback',  status: 'idle',
+      { id: 'gpt55',      name: 'GPT 5.5',          role: 'Failover Agent',     status: 'idle',
         task: 'On standby · doomscrolling',         screen: 'phone',       color: '#10b981',
         items: { left: ['☕', '🧸'], right: ['📱'] }, floor: [] },
-      { id: 'whisper',    name: 'Whisper v4',       role: 'Audio transcribe', status: 'idle',
+      { id: 'whisper',    name: 'Whisper v4',       role: 'Transcribe Agent',   status: 'idle',
         task: 'No audio queued · napping',          screen: 'sleep',       color: '#10b981',
         items: { left: ['🎧'], right: [] }, floor: [{ emoji: '🗑️', kind: 'trash' }] },
-      { id: 'deepseek',   name: 'DeepSeek v4',      role: 'Reasoning agent',  status: 'offline',
+      { id: 'deepseek',   name: 'DeepSeek v4',      role: 'Inference Agent',    status: 'offline',
         task: 'OOM · reasoning chain too long',     screen: 'error',       color: '#ef4444',
         items: { left: ['🔧'], right: ['⚠️'] }, floor: [] },
     ];
