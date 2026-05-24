@@ -227,11 +227,20 @@
       line-height: 1.55;
       font-family: var(--mono);
     }
+    /* Both terminal bodies get a locked height so streaming logs settle into
+       a fixed slot and never push the page down after first paint. Older lines
+       fall off the top (clipped by overflow:hidden). */
+    .macterm-body.term,
+    .macterm-body.ft {
+      height: 184px;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
 
     /* System.live (preserves existing class names) */
     .term .head { display: none; } /* old in-body title — replaced by macOS bar */
-    .term { background: transparent; border: 0; padding: 0; height: auto; overflow: visible; }
-    .term .stream { display: flex; flex-direction: column; gap: 4px; min-height: 130px; }
+    .term { background: transparent; border: 0; padding: 0; }
+    .term .stream { display: flex; flex-direction: column; gap: 4px; height: 100%; overflow: hidden; }
     .term .line { opacity: 0; }
     .term .line.show { opacity: 1; transition: opacity 220ms ease-out; }
     .term .ok   { color: var(--accent-live); }
@@ -269,6 +278,9 @@
     @media (max-width: 720px) {
       .hero { grid-template-columns: 1fr; gap: 20px; padding: 28px 0 20px; }
       .hero h1 { font-size: 32px; }
+      /* Tighter terminals on mobile — still capped so no layout shift */
+      .macterm-body.term,
+      .macterm-body.ft { height: 164px; }
     }
 
     /* ─── KPI strip ─── */
@@ -1187,25 +1199,95 @@
     .sm-label .name { display: inline-block; }
     .sm-label .sub  { color: var(--ink-faint); margin-left: 6px; font-weight: 400; font-size: 9px; }
 
-    .sm-label-role    { color: var(--accent-live); border: 1px solid rgba(74, 222, 128, 0.55); font-size: 13px; padding: 5px 11px; letter-spacing: 0.12em; }
-    .sm-label-project { color: var(--accent-link); border: 1px solid rgba(96, 165, 250, 0.45); font-size: 10px; }
-    .sm-label-skill   { color: var(--accent-warn); font-size: 9px; padding: 2px 6px; background: rgba(4, 6, 12, 0.68); }
-
-    /* When a node is selected, related labels grow + pop; others shrink + dim */
-    .sm-label.highlighted {
-      z-index: 20;
-      padding: 6px 10px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+    /* Roles read as the primary anchors — leading dot, bolder, soft halo.
+       pointer-events:auto so the LABEL itself is hoverable/clickable —
+       the underlying hit-sphere isn't always big enough to cover the label
+       text edges, so labels need to catch their own pointer events. */
+    .sm-label-role {
+      color: #bbf7d0;                                  /* green-200, brighter than accent-live */
+      background: rgba(74, 222, 128, 0.18);            /* was 0.10 */
+      border: 1px solid rgba(134, 239, 172, 0.85);     /* brighter green-300 at higher alpha */
+      font-size: 13px;
+      padding: 5px 12px;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      text-shadow: 0 0 4px rgba(74,222,128,0.35);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.55), 0 0 14px rgba(74,222,128,0.30);
+      pointer-events: auto;
+      cursor: pointer;
     }
-    .sm-label-role.highlighted    { font-size: 16px; color: var(--ink-strong); background: rgba(74,222,128,0.20); border-color: var(--accent-live); box-shadow: 0 4px 16px rgba(0,0,0,0.45), var(--glow-live); }
-    .sm-label-project.highlighted { font-size: 12px; color: var(--ink-strong); background: rgba(96,165,250,0.18); border-color: var(--accent-link); box-shadow: 0 4px 16px rgba(0,0,0,0.45), var(--glow-link); }
-    .sm-label-skill.highlighted   { font-size: 11px; color: var(--ink-strong); background: rgba(251,191,36,0.20); border: 1px solid var(--accent-warn); box-shadow: 0 0 10px rgba(251,191,36,0.45); }
+    .sm-label-role:hover {
+      background: rgba(74, 222, 128, 0.28);
+      border-color: rgba(187, 247, 208, 0.95);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.55), 0 0 18px rgba(74,222,128,0.55);
+    }
+    .sm-label-role::before {
+      content: "● ";
+      color: #86efac;
+      text-shadow: 0 0 8px rgba(134,239,172,1);
+      margin-right: 4px;
+    }
+    /* Projects + skills are scaffolding by default — they don't compete with
+       the roles for attention. Hover on a role wakes them via .highlighted. */
+    .sm-label-project {
+      color: var(--accent-link);
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      font-size: 10px;
+      opacity: 0.55;
+    }
+    .sm-label-skill {
+      color: var(--accent-warn);
+      font-size: 9px;
+      padding: 2px 6px;
+      background: rgba(4, 6, 12, 0.55);
+      opacity: 0.55;
+    }
+    /* Weak / exploratory tech — peripheral nodes, intentionally low-key */
+    .sm-label-weakskill {
+      color: rgba(180, 190, 205, 0.55);
+      font-size: 7.5px;
+      padding: 1px 4px;
+      background: rgba(4, 6, 12, 0.3);
+      border: 1px solid rgba(148, 163, 184, 0.10);
+      letter-spacing: 0.04em;
+      font-weight: 400;
+      opacity: 0.7;
+    }
+    .sm-label-weakskill.highlighted {
+      color: rgba(220, 230, 245, 0.85);
+      background: rgba(148, 163, 184, 0.12);
+      border-color: rgba(148, 163, 184, 0.35);
+      box-shadow: 0 0 8px rgba(148, 163, 184, 0.30);
+    }
 
+    /* Highlight = brighter bg + glow at the SAME physical size — so neighbors
+       never collide. Stacking issue solved by not growing the box on hover. */
+    .sm-label.highlighted { z-index: 20; }
+    .sm-label-role.highlighted {
+      color: var(--ink-strong);
+      background: rgba(74,222,128,0.32);
+      border-color: var(--accent-live);
+      box-shadow: 0 0 14px rgba(74,222,128,0.65), 0 4px 16px rgba(0,0,0,0.55);
+    }
+    .sm-label-project.highlighted {
+      color: var(--ink-strong);
+      background: rgba(96,165,250,0.22);
+      border-color: var(--accent-link);
+      box-shadow: 0 0 12px rgba(96,165,250,0.55), 0 4px 16px rgba(0,0,0,0.5);
+      opacity: 1;
+    }
+    .sm-label-skill.highlighted {
+      color: var(--ink-strong);
+      background: rgba(251,191,36,0.22);
+      border: 1px solid var(--accent-warn);
+      box-shadow: 0 0 12px rgba(251,191,36,0.55);
+      opacity: 1;
+    }
+
+    /* Dim only via opacity — no size shrink, so layout stays stable. */
     .sm-label.dimmed {
-      opacity: 0.22 !important;
-      font-size: 8px !important;
-      padding: 2px 5px !important;
-      filter: saturate(0.4);
+      opacity: 0.16 !important;
+      filter: saturate(0.3);
     }
 
     /* ─── Boot sequence ─── */
@@ -1460,14 +1542,18 @@
           'Pipelines: billions of data pts/day · millions of ads · TBs of media.',
           'LoRA fine-tunes + auto-research loop: F1 0.7% → 79% over 30 iter.',
           'Supabase Postgres at scale: partitioning, indexing, rollups, read-replicas.',
-          'TanStack Query dashboards for ops + analytics — used by internal teams.',
-          'Async batch processing on Gemini Batch API for large-scale ad classification.',
+          'Shipped one of the best Meta ad dashboards on the market — fast, fully sortable, daily data up to 1 year, any range, trends + analytics.',
+          'Async batch on Gemini Batch API — large-scale ad classification, media analysis + reports, embeddings.',
         ],
         metrics: [
           { k: 'DATA/DAY', v: '~B' }, { k: 'SCALE', v: '~100×' },
           { k: 'ITER', v: '30+' }, { k: 'UPTIME', v: '99.9%' },
         ],
-        skills: ['lora', 'gemini', 'embeddings', 'supabase', 'tanstack', 'postgres', 'python', 'react'],
+        skills: [
+          'lora', 'gemini', 'claude_api', 'openai_api', 'embeddings',
+          'python', 'typescript', 'react', 'nextjs', 'tanstack',
+          'supabase', 'postgres', 'gcp',
+        ],
       },
       {
         id: 'hinature', name: 'HiNature Ltd', title: 'Founder',
@@ -1478,7 +1564,10 @@
           'Pivoted the company into a profitable Quebec real-estate / Airbnb operation.',
         ],
         metrics: [{ k: 'INGREDIENTS', v: '35K+' }, { k: 'ACCURACY', v: '~95%' }],
-        skills: ['python', 'react', 'firebase', 'gcp'],
+        skills: [
+          'python', 'javascript', 'react', 'firebase', 'gcp',
+          'html5', 'css3', 'chartjs', 'figma', 'adobecc',
+        ],
       },
       {
         id: 'orium', name: 'Orium', title: 'Senior Product Developer',
@@ -1490,7 +1579,12 @@
           'Built internal tooling and led AI-focused technical talks across the org.',
         ],
         metrics: [{ k: 'DELIVERY', v: '−6mo' }, { k: 'LIGHTHOUSE', v: '90+' }],
-        skills: ['react', 'nextjs', 'typescript', 'chakra', 'tailwind'],
+        skills: [
+          'react', 'nextjs', 'remix', 'reactrouter', 'tanstack',
+          'typescript', 'javascript', 'chakra', 'tailwind',
+          'html5', 'css3', 'storybook', 'figma',
+          'vercel', 'netlify', 'graphql', 'nodejs',
+        ],
       },
       {
         id: 'shopify', name: 'Shopify', title: 'Developer',
@@ -1500,7 +1594,10 @@
           'Designed/maintained the backend Capital API + admin systems. Optimized DB queries, on-call rotation.',
         ],
         metrics: [],
-        skills: ['ruby', 'rails', 'postgres'],
+        skills: [
+          'ruby', 'rails', 'postgres', 'mysql', 'redis',
+          'datadog', 'nginx', 'graphql', 'javascript',
+        ],
       },
       {
         id: 'combyne', name: 'Combyne Ag', title: 'Full Stack Developer',
@@ -1511,7 +1608,12 @@
           'Refactored to AWS SQS + Python workers for async tasks, enabling future scale.',
         ],
         metrics: [],
-        skills: ['python', 'redis', 'elasticsearch', 'aws'],
+        skills: [
+          'python', 'nodejs', 'express', 'vue', 'javascript',
+          'redis', 'elasticsearch', 'mysql', 'postgres',
+          'aws', 'heroku', 'digitalocean', 'nginx',
+          'jquery', 'bootstrap', 'html5', 'css3',
+        ],
       },
       {
         id: 'isight', name: 'i-sight.com', title: 'Software Application Developer',
@@ -1520,7 +1622,11 @@
           'Led key client projects (Michigan State, GSK, Wipro) full-stack on Node.js, Backbone.js, PostgreSQL, Elasticsearch.',
         ],
         metrics: [],
-        skills: ['nodejs', 'backbone', 'postgres', 'elasticsearch'],
+        skills: [
+          'nodejs', 'express', 'backbone', 'sequelize',
+          'postgres', 'mysql', 'elasticsearch',
+          'javascript', 'jquery', 'bootstrap', 'html5', 'css3',
+        ],
       },
       {
         id: 'events', name: 'Events.com', title: 'Web Developer',
@@ -1529,23 +1635,92 @@
           'Built event-registration services on the LAMP stack: PHP, MySQL, AngularJS, CodeIgniter.',
         ],
         metrics: [],
-        skills: ['php', 'mysql', 'angular', 'codeigniter'],
+        skills: [
+          'php', 'codeigniter', 'mysql', 'angular',
+          'javascript', 'jquery', 'bootstrap', 'html5', 'css3',
+        ],
       },
     ];
 
     const PROJECTS = [
+      // ── Personal / OSS ──
       { id: 'xnohub', name: 'xnohub.com', year: '2024', status: 'live', at: 'personal',
         url: 'https://xnohub.com',
         desc: 'Real-time visualizer for the Nano currency network on a 3D globe.',
-        skills: ['threejs', 'react', 'nextjs'] },
+        skills: ['threejs', 'react', 'nextjs', 'typescript', 'tanstack', 'tailwind', 'vercel'] },
       { id: 'localxno', name: 'LocalXNO.com', year: '2024', status: 'live', at: 'personal',
         url: 'https://localxno.com',
         desc: 'Nano marketplace on Next.js + Supabase + PostgreSQL, with Google API integrations.',
-        skills: ['nextjs', 'supabase', 'postgres'] },
+        skills: ['nextjs', 'supabase', 'postgres', 'react', 'typescript', 'tailwind', 'vercel'] },
+
+      // ── Parker AI (incl. legacy RSL products: dashboards, payments, backend) ──
+      { id: 'rsl-redesign', name: 'Site Redesign', year: '2024', status: 'archived', at: 'parker-ai', url: null,
+        desc: 'Migrated a Flutter web app to Next.js + React + TS — 80% smaller bundle, 5× faster load, 10× first-render, Lighthouse 99.',
+        skills: ['nextjs', 'react', 'typescript', 'tailwind', 'vercel'] },
+      { id: 'rsl-payments', name: 'Payments & Shopify', year: '2024', status: 'archived', at: 'parker-ai', url: null,
+        desc: 'Engineered refunds, transactions, webhooks; shipped multiple Shopify extension apps to broaden product surface.',
+        skills: ['nextjs', 'typescript', 'supabase', 'postgres'] },
+      { id: 'rsl-backend', name: 'Backend Rebuild', year: '2024', status: 'archived', at: 'parker-ai', url: null,
+        desc: 'Rebuilt Firebase + Express into Supabase Postgres + Next.js. Strategy/CoR/Command/Template patterns + tests → 80% coverage in weeks.',
+        skills: ['nextjs', 'supabase', 'postgres', 'typescript', 'nodejs'] },
+
+      // ── Orium ──
       { id: 'composable', name: 'Composable UI', year: '2022–23', status: 'oss', at: 'orium',
         url: 'https://composable.com/composable-ui',
         desc: 'Open-source headless-commerce starter kit (React/Next.js). UI library + Figma kit + Algolia/Stripe. MACH Alliance award.',
-        skills: ['react', 'nextjs', 'chakra'] },
+        skills: ['react', 'nextjs', 'typescript', 'chakra', 'tanstack', 'storybook', 'figma', 'tailwind'] },
+      { id: 'harry-rosen', name: 'Harry Rosen Checkout', year: '2022', status: 'archived', at: 'orium', url: null,
+        desc: 'Headless checkout shipped in 6 weeks. Productized into Composable UI for additional enterprise clients.',
+        skills: ['react', 'nextjs', 'typescript', 'chakra', 'tanstack'] },
+      { id: 'theme-system', name: 'Figma → Chakra Theme', year: '2022–23', status: 'archived', at: 'orium', url: null,
+        desc: 'Custom library that converts Figma design tokens into dynamic Chakra UI themes — design-to-code from days to real-time.',
+        skills: ['react', 'typescript', 'chakra', 'figma', 'storybook'] },
+
+      // ── HiNature ──
+      { id: 'hi-scanner', name: 'Microbiome Scanner', year: '2019', status: 'archived', at: 'hinature', url: null,
+        desc: 'WeChat scanner mini-app — analyzes 35,000+ cosmetic ingredients with ~95% accuracy. Built ingestion + classifier.',
+        skills: ['python', 'firebase', 'javascript', 'chartjs', 'gcp'] },
+
+      // ── Shopify Capital ──
+      { id: 'starter-loans', name: 'Starter Loans', year: '2019', status: 'archived', at: 'shopify', url: null,
+        desc: 'Launched the Capital "starter loans" offer program — recognized by CEO. Tree refactor was the enabler.',
+        skills: ['ruby', 'rails', 'postgres', 'datadog'] },
+      { id: 'capital-tree', name: 'Decision Tree Refactor', year: '2019', status: 'archived', at: 'shopify', url: null,
+        desc: 'Refactored the capital offer decision tree — daily loan generator. Faster, easier to test, simpler to update.',
+        skills: ['ruby', 'rails', 'postgres', 'redis', 'datadog'] },
+
+      // ── Combyne / FarmLead ──
+      { id: 'farmlead-mp', name: 'FarmLead Marketplace', year: '2016', status: 'archived', at: 'combyne', url: null,
+        desc: 'Mobile-friendly search marketplace front-end built without jQuery/Bootstrap. Part-time work pre-FT.',
+        skills: ['javascript', 'html5', 'css3'] },
+      { id: 'combyne-admin', name: 'Combyne Admin (×2)', year: '2017–19', status: 'archived', at: 'combyne', url: null,
+        desc: 'Two admin systems — PHP7/MySQL + JS/HTML5/CSS3, and Node.js/Express + Vue.js.',
+        skills: ['php', 'mysql', 'nodejs', 'express', 'vue', 'javascript', 'html5', 'css3'] },
+      { id: 'combyne-sf', name: 'Combyne × Salesforce', year: '2018', status: 'archived', at: 'combyne', url: null,
+        desc: 'Learned Salesforce in 1 month, then designed + integrated SF workflows into the platform.',
+        skills: ['python'] },
+
+      // ── i-Sight clients ──
+      { id: 'wipro', name: 'Wipro Hotline', year: '2016', status: 'archived', at: 'isight',
+        url: 'https://wipro.i-sightuat.com/landing-page',
+        desc: 'Global whistleblower reporting + call-center service. Lead dev pairing with tech head, team of 3, shipped in 6 weeks.',
+        skills: ['backbone', 'nodejs', 'postgres', 'jquery', 'javascript', 'express'] },
+      { id: 'gsk', name: 'GSK Reports', year: '2016', status: 'archived', at: 'isight', url: null,
+        desc: 'GlaxoSmithKline — online report forms on i-Sight platform v5. Core developer, team of 3.',
+        skills: ['backbone', 'nodejs', 'postgres', 'javascript', 'express'] },
+      { id: 'michigan', name: 'MI Medicaid DHHS', year: '2016', status: 'archived', at: 'isight', url: null,
+        desc: 'State of Michigan healthcare app on i-Sight v5. Lead dev pairing with tech head, teams of 4 and 7.',
+        skills: ['backbone', 'nodejs', 'postgres', 'jquery', 'javascript', 'express'] },
+
+      // ── Events.com ──
+      { id: 'gmc', name: 'GMC Fundraiser', year: '2015', status: 'archived', at: 'events', url: null,
+        desc: 'Get Movin\' Crew — large-scale school fundraising, 1M+ users in the US. Front-end (school/classroom/student), email + admin.',
+        skills: ['php', 'mysql', 'javascript', 'jquery', 'bootstrap', 'codeigniter'] },
+      { id: 'mudhero', name: 'Mud Hero 2016', year: '2016', status: 'archived', at: 'events', url: null,
+        desc: '11-location Canadian event series. Customizations + Google Analytics + Facebook tracking. Team of 2.',
+        skills: ['php', 'mysql', 'javascript', 'jquery', 'bootstrap', 'codeigniter'] },
+
+      // ── Personal / OSS (older) ──
       { id: 'paypaw', name: 'PayPaw', year: '2019–21', status: 'archived', at: 'personal', url: null,
         desc: 'Payment service for Bytom Blockchain. Won first place at a dev challenge — USD $30K prize.',
         skills: ['bytom'] },
@@ -1572,43 +1747,113 @@
     /* Simple Icons slugs for tech logos (via cdn.simpleicons.org).
        Non-brand techs (LoRA, eval loops, etc.) fall back to a text badge. */
     const SKILL_ICONS = {
+      // ── AI / LLM ──
       lora:          { text: 'LoRA' },
       gemini:        { slug: 'googlegemini' },
       embeddings:    { text: 'EMB' },
-      tanstack:      { slug: 'reactquery' },
-      supabase:      { slug: 'supabase' },
-      postgres:      { slug: 'postgresql' },
+      claude_api:    { slug: 'anthropic' },
+      openai_api:    { slug: 'openai' },
+      // ── Languages ──
       python:        { slug: 'python' },
+      typescript:    { slug: 'typescript' },
+      javascript:    { slug: 'javascript' },
+      ruby:          { slug: 'ruby' },
+      php:           { slug: 'php' },
+      cpp:           { slug: 'cplusplus' },
+      // ── Markup / Styling ──
+      html5:         { slug: 'html5' },
+      css3:          { slug: 'css3' },
+      tailwind:      { slug: 'tailwindcss' },
+      chakra:        { slug: 'chakraui' },
+      bootstrap:     { slug: 'bootstrap' },
+      // ── Frontend frameworks / libs ──
       react:         { slug: 'react' },
       nextjs:        { slug: 'nextdotjs' },
-      typescript:    { slug: 'typescript' },
-      chakra:        { slug: 'chakraui' },
-      tailwind:      { slug: 'tailwindcss' },
+      remix:         { slug: 'remixrun' },
+      reactrouter:   { slug: 'reactrouter' },
+      tanstack:      { slug: 'reactquery' },
+      vue:           { slug: 'vuedotjs' },
+      angular:       { slug: 'angular' },
+      backbone:      { slug: 'backbonedotjs' },
+      jquery:        { slug: 'jquery' },
       threejs:       { slug: 'threedotjs' },
-      ruby:          { slug: 'ruby' },
+      chartjs:       { slug: 'chartdotjs' },
+      storybook:     { slug: 'storybook' },
+      // ── Backend frameworks ──
+      nodejs:        { slug: 'nodedotjs' },
       rails:         { slug: 'rubyonrails' },
+      express:       { slug: 'express' },
+      codeigniter:   { slug: 'codeigniter' },
+      // ── Data ──
+      postgres:      { slug: 'postgresql' },
+      mysql:         { slug: 'mysql' },
       redis:         { slug: 'redis' },
       elasticsearch: { slug: 'elasticsearch' },
-      aws:           { slug: 'amazonwebservices' },
-      nodejs:        { slug: 'nodedotjs' },
-      backbone:      { slug: 'backbonedotjs' },
-      php:           { slug: 'php' },
-      mysql:         { slug: 'mysql' },
-      angular:       { slug: 'angular' },
-      codeigniter:   { slug: 'codeigniter' },
-      firebase:      { slug: 'firebase' },
+      sequelize:     { slug: 'sequelize' },
+      graphql:       { slug: 'graphql' },
+      // ── Cloud / Ops ──
+      supabase:      { slug: 'supabase' },
       gcp:           { slug: 'googlecloud' },
-      cpp:           { slug: 'cplusplus' },
+      aws:           { slug: 'amazonwebservices' },
+      azure:         { slug: 'microsoftazure' },
+      firebase:      { slug: 'firebase' },
+      heroku:        { slug: 'heroku' },
+      digitalocean:  { slug: 'digitalocean' },
+      vercel:        { slug: 'vercel' },
+      netlify:       { slug: 'netlify' },
+      nginx:         { slug: 'nginx' },
+      datadog:       { slug: 'datadog' },
       cuda:          { slug: 'nvidia' },
+      // ── Tooling / Design ──
+      npm:           { slug: 'npm' },
+      pnpm:          { slug: 'pnpm' },
+      figma:         { slug: 'figma' },
+      adobecc:       { slug: 'adobecreativecloud' },
+      // ── Legacy / other ──
       bytom:         { text: 'BTM' },
     };
+
+    /* Weak / exploratory tech — rendered as light-gray "background" nodes in
+       the system map. These are things I've touched or follow but don't claim
+       deep expertise in. They sit in an outer orbit, faint, with no edges. */
+    const WEAK_SKILLS = [
+      { id: 'go',          slug: 'go',                 name: 'Go' },
+      { id: 'rust',        slug: 'rust',               name: 'Rust' },
+      { id: 'kotlin',      slug: 'kotlin',             name: 'Kotlin' },
+      { id: 'swift',       slug: 'swift',              name: 'Swift' },
+      { id: 'dart',        slug: 'dart',               name: 'Dart' },
+      { id: 'docker',      slug: 'docker',             name: 'Docker' },
+      { id: 'kubernetes',  slug: 'kubernetes',         name: 'K8s' },
+      { id: 'terraform',   slug: 'terraform',          name: 'Terraform' },
+      { id: 'mongodb',     slug: 'mongodb',            name: 'MongoDB' },
+      { id: 'kafka',       slug: 'apachekafka',        name: 'Kafka' },
+      { id: 'prisma',      slug: 'prisma',             name: 'Prisma' },
+      { id: 'svelte',      slug: 'svelte',             name: 'Svelte' },
+      { id: 'astro',       slug: 'astro',              name: 'Astro' },
+      { id: 'solidjs',     slug: 'solid',              name: 'Solid.js' },
+      { id: 'qwik',        slug: 'qwik',               name: 'Qwik' },
+      { id: 'bun',         slug: 'bun',                name: 'Bun' },
+      { id: 'deno',        slug: 'deno',               name: 'Deno' },
+      { id: 'vite',        slug: 'vite',               name: 'Vite' },
+      { id: 'turborepo',   slug: 'turborepo',          name: 'Turborepo' },
+      { id: 'nestjs',      slug: 'nestjs',             name: 'NestJS' },
+      { id: 'fastify',     slug: 'fastify',            name: 'Fastify' },
+      { id: 'playwright',  slug: 'playwright',         name: 'Playwright' },
+      { id: 'cypress',     slug: 'cypress',            name: 'Cypress' },
+      { id: 'pytorch',     slug: 'pytorch',            name: 'PyTorch' },
+      { id: 'huggingface', slug: 'huggingface',        name: 'HF' },
+      { id: 'langchain',   slug: 'langchain',          name: 'LangChain' },
+      { id: 'flutter',     slug: 'flutter',            name: 'Flutter' },
+      { id: 'webflow',     slug: 'webflow',            name: 'Webflow' },
+    ];
 
     const SKILLS = {
       'AI / LLM':   [
         { name: 'LoRA', heat: 'hot' }, { name: 'Gemini API', heat: 'hot' },
+        { name: 'Claude API', heat: 'hot' }, { name: 'OpenAI API', heat: 'hot' },
         { name: 'Embeddings', heat: 'hot' }, { name: 'Eval loops', heat: 'hot' },
-        { name: 'Claude', heat: 'warm' }, { name: 'ChatGPT', heat: 'warm' },
-        { name: 'Cursor', heat: 'warm' }, { name: 'Grok', heat: 'cool' },
+        { name: 'Claude Code', heat: 'warm' }, { name: 'Cursor', heat: 'warm' },
+        { name: 'ChatGPT', heat: 'warm' }, { name: 'Grok', heat: 'cool' },
       ],
       'FRONTEND':   [
         { name: 'React', heat: 'hot' }, { name: 'Next.js', heat: 'hot' },
@@ -1628,9 +1873,9 @@
       ],
       'CLOUD':      [
         { name: 'Supabase', heat: 'hot' }, { name: 'GCP', heat: 'hot' },
-        { name: 'AWS', heat: 'warm' }, { name: 'Vercel', heat: 'warm' },
-        { name: 'Netlify', heat: 'cool' }, { name: 'Firebase', heat: 'cool' },
-        { name: 'Tencent', heat: 'cool' },
+        { name: 'AWS', heat: 'warm' }, { name: 'Azure', heat: 'warm' },
+        { name: 'Vercel', heat: 'warm' }, { name: 'Netlify', heat: 'cool' },
+        { name: 'Firebase', heat: 'cool' }, { name: 'Tencent', heat: 'cool' },
       ],
       'FRAMEWORKS': [
         { name: 'Next.js', heat: 'hot' }, { name: 'Remix', heat: 'warm' },
@@ -1642,14 +1887,34 @@
     };
 
     const SKILL_ID = {
-      lora: 'LoRA', gemini: 'Gemini API', embeddings: 'Embeddings',
-      supabase: 'Supabase', tanstack: 'TanStack Q', postgres: 'PostgreSQL',
-      python: 'Python', react: 'React', nextjs: 'Next.js', typescript: 'TypeScript',
-      chakra: 'Chakra UI', tailwind: 'Tailwind', threejs: 'Three.js',
-      ruby: 'Ruby', rails: 'Rails', redis: 'Redis', elasticsearch: 'Elasticsearch',
-      aws: 'AWS', nodejs: 'Node.js', backbone: 'Backbone', php: 'PHP',
-      mysql: 'MySQL', angular: 'Angular', codeigniter: 'CodeIgniter',
-      firebase: 'Firebase', gcp: 'GCP', cpp: 'C++', cuda: 'CUDA', bytom: 'Bytom',
+      // AI
+      lora: 'LoRA', gemini: 'Gemini', embeddings: 'Embeddings',
+      claude_api: 'Claude API', openai_api: 'OpenAI API',
+      // Languages
+      python: 'Python', typescript: 'TS', javascript: 'JS',
+      ruby: 'Ruby', php: 'PHP', cpp: 'C++',
+      // Markup / styling
+      html5: 'HTML5', css3: 'CSS3',
+      tailwind: 'Tailwind', chakra: 'Chakra', bootstrap: 'Bootstrap',
+      // Frontend
+      react: 'React', nextjs: 'Next.js', remix: 'Remix',
+      reactrouter: 'R. Router', tanstack: 'TanStack',
+      vue: 'Vue', angular: 'Angular', backbone: 'Backbone', jquery: 'jQuery',
+      threejs: 'Three.js', chartjs: 'Chart.js', storybook: 'Storybook',
+      // Backend
+      nodejs: 'Node.js', rails: 'Rails', express: 'Express', codeigniter: 'CodeIgniter',
+      // Data
+      postgres: 'Postgres', mysql: 'MySQL', redis: 'Redis',
+      elasticsearch: 'ES', sequelize: 'Sequelize', graphql: 'GraphQL',
+      // Cloud / Ops
+      supabase: 'Supabase', gcp: 'GCP', aws: 'AWS', azure: 'Azure',
+      firebase: 'Firebase', heroku: 'Heroku', digitalocean: 'D.Ocean',
+      vercel: 'Vercel', netlify: 'Netlify', nginx: 'Nginx',
+      datadog: 'Datadog', cuda: 'CUDA',
+      // Tools / Design
+      npm: 'npm', pnpm: 'pnpm', figma: 'Figma', adobecc: 'Adobe CC',
+      // Legacy
+      bytom: 'Bytom',
     };
 
     /* ─── Office floor: the actual Parker AI agent crew ─── */
@@ -1977,8 +2242,8 @@
     function renderAgents() {
       const list = document.getElementById('agents-list');
       list.innerHTML = ROLES.map(r => `
-        <article class="agent ${r.status === 'archived' ? 'archived' : ''} ${r.status === 'live' ? 'open' : ''}" data-id="${r.id}">
-          <div class="head" role="button" tabindex="0" aria-expanded="${r.status === 'live' ? 'true' : 'false'}">
+        <article class="agent ${r.status === 'archived' ? 'archived' : ''} ${r.status === 'live' && r.id !== 'hinature' ? 'open' : ''}" data-id="${r.id}">
+          <div class="head" role="button" tabindex="0" aria-expanded="${r.status === 'live' && r.id !== 'hinature' ? 'true' : 'false'}">
             <div>
               <div class="name">${r.name} <span class="title">· ${r.title}</span></div>
               <div class="meta">agent-${String(r.slot).padStart(3, '0')}</div>
@@ -2199,7 +2464,9 @@
       // ============ ROLES: invisible anchors only — the label IS the node ============
       ROLES.forEach(r => {
         const pos = ROLE_POSITIONS[r.id] || [0, 0, 0];
-        const geo = new THREE.SphereGeometry(0.4, 8, 8); // hit radius
+        // Bigger hit-sphere (was 0.4) so the cursor catches the role anywhere
+        // near the label, not just on a tiny invisible dot in the middle.
+        const geo = new THREE.SphereGeometry(1.0, 8, 8);
         const mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
         const mesh = new THREE.Mesh(geo, mat);
         mesh.position.set(...pos);
@@ -2290,55 +2557,124 @@
         let material;
         if (meta?.slug) {
           const tex = texLoader.load(`https://cdn.simpleicons.org/${meta.slug}/fbbf24`);
-          material = new THREE.SpriteMaterial({ map: tex, transparent: true, color: 0xffffff });
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true, color: 0xffffff, depthWrite: false });
         } else {
           const tex = makeTextBadge(meta?.text || s.toUpperCase().slice(0, 4), '#fbbf24');
-          material = new THREE.SpriteMaterial({ map: tex, transparent: true });
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
         }
         const sprite = new THREE.Sprite(material);
         sprite.position.set(...avg);
         sprite.scale.set(0.36, 0.36, 1);
+        sprite.renderOrder = 1;          // paint OVER edge lines so icons cover line tails cleanly
         sprite.userData = { type: 'skill', id: s, name: SKILL_ID[s] || s, color: 0xfbbf24, baseScale: 0.36 };
         SM.group.add(sprite);
         SM.nodes.push({ mesh: sprite, type: 'skill', id: s, name: SKILL_ID[s] || s, baseScale: 0.36, baseOpacity: 1 });
       });
 
+      // ============ WEAK SKILLS: peripheral, light-gray, no edges ============
+      // Tech I follow but haven't shipped in production — sit in an outer orbit
+      // as quiet scenery so the rich tech landscape feels broader without
+      // overstating expertise. Color = slate-400, smaller scale, lower opacity.
+      const WEAK_GRAY = '94a3b8';
+      const weakPlaced = [...placedSkillPositions];
+      const MIN_FROM_STRONG = 0.65;
+      const MIN_FROM_WEAK   = 0.50;
+      const phi = Math.PI * (3 - Math.sqrt(5)); // golden angle for even spread
+      WEAK_SKILLS.forEach((w, i) => {
+        // Fibonacci sphere distribution in an outer shell
+        const t = (i + 0.5) / WEAK_SKILLS.length;
+        const y = 1 - 2 * t;                    // [-1, 1]
+        const r = Math.sqrt(1 - y * y);
+        const theta = phi * i;
+        const R = 4.3 + (i % 3) * 0.45;          // outer radius 4.3–5.2
+        let pos = [
+          Math.cos(theta) * r * R,
+          y * R * 0.65,                          // squash vertically
+          Math.sin(theta) * r * R,
+        ];
+        // Repulsion from strong skills + already-placed weak (2 passes)
+        for (let iter = 0; iter < 2; iter++) {
+          placedSkillPositions.forEach(sp => {
+            const dx = pos[0]-sp[0], dy = pos[1]-sp[1], dz = pos[2]-sp[2];
+            const d = Math.hypot(dx, dy, dz);
+            if (d > 0 && d < MIN_FROM_STRONG) {
+              const k = MIN_FROM_STRONG / d;
+              pos = [sp[0] + dx * k, sp[1] + dy * k, sp[2] + dz * k];
+            }
+          });
+          weakPlaced.forEach(wp => {
+            const dx = pos[0]-wp[0], dy = pos[1]-wp[1], dz = pos[2]-wp[2];
+            const d = Math.hypot(dx, dy, dz);
+            if (d > 0 && d < MIN_FROM_WEAK) {
+              const k = MIN_FROM_WEAK / d;
+              pos = [wp[0] + dx * k, wp[1] + dy * k, wp[2] + dz * k];
+            }
+          });
+        }
+        weakPlaced.push(pos);
+
+        let material;
+        if (w.slug) {
+          const tex = texLoader.load(`https://cdn.simpleicons.org/${w.slug}/${WEAK_GRAY}`);
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true, color: 0xffffff, opacity: 0.5, depthWrite: false });
+        } else {
+          const tex = makeTextBadge(w.name.toUpperCase().slice(0, 4), '#' + WEAK_GRAY);
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.5, depthWrite: false });
+        }
+        const sprite = new THREE.Sprite(material);
+        sprite.position.set(...pos);
+        sprite.scale.set(0.22, 0.22, 1);
+        sprite.renderOrder = 1;
+        sprite.userData = { type: 'weakskill', id: w.id, name: w.name, color: 0x94a3b8, baseScale: 0.22 };
+        SM.group.add(sprite);
+        SM.nodes.push({ mesh: sprite, type: 'weakskill', id: w.id, name: w.name, baseScale: 0.22, baseOpacity: 0.5 });
+      });
+
       // ============ EDGES: hub → roles, role → its projects (less spaghetti) ============
       const HUB_RADIUS = 0.62;  // outer edge of the photo + glow ring
+      // Lines fly all the way to the SKILL SPRITE CENTER — they'd otherwise stop
+      // at the sprite's transparent bounding box and leave a visible gap from
+      // box-edge to icon-edge. With sprite depthWrite:false + sprite renderOrder
+      // higher than the line, the icon paints over the line tail, so the visible
+      // end of the line lands cleanly at the icon's edge. Only the HUB still
+      // gets trimmed (its photo is large and centered).
+      const NODE_RADIUS = { hub: HUB_RADIUS, skill: 0, weakskill: 0, role: 0, project: 0 };
       function addEdge(a, b, color, opacity) {
-        // Trim endpoint(s) sitting on the hub so the line doesn't cross the portrait
-        let pa = a.mesh.position.clone();
-        let pb = b.mesh.position.clone();
-        if (a.type === 'hub') {
-          const dir = pb.clone().sub(pa).normalize();
-          pa.add(dir.multiplyScalar(HUB_RADIUS));
-        }
-        if (b.type === 'hub') {
-          const dir = pa.clone().sub(pb).normalize();
-          pb.add(dir.multiplyScalar(HUB_RADIUS));
-        }
+        const pa = a.mesh.position.clone();
+        const pb = b.mesh.position.clone();
+        const ra = NODE_RADIUS[a.type] ?? 0;
+        const rb = NODE_RADIUS[b.type] ?? 0;
+        const dir = pb.clone().sub(pa);
+        const len = dir.length();
+        if (len <= ra + rb + 0.001) return;
+        dir.normalize();
+        pa.addScaledVector(dir,  ra);
+        pb.addScaledVector(dir, -rb);
         const geo = new THREE.BufferGeometry().setFromPoints([pa, pb]);
         const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
         const line = new THREE.Line(geo, mat);
+        line.renderOrder = 0;            // draw BEFORE skill sprites (which sit at 1)
         SM.group.add(line);
         SM.edges.push({ line, a, b, baseOpacity: opacity });
       }
       const hubNode = SM.nodes.find(n => n.type === 'hub');
       SM.nodes.filter(n => n.type === 'role').forEach(r => {
         const isLive = r.payload?.status === 'live';
-        addEdge(hubNode, r, 0x4ade80, isLive ? 0.55 : 0.22);
+        // Ghost-faint by default — only wakes up when the role is hovered.
+        // (was 0.22 / 0.10, before that 0.32 / 0.14, originally 0.55 / 0.22)
+        addEdge(hubNode, r, 0x4ade80, isLive ? 0.12 : 0.06);
       });
       // role → its projects
       PROJECTS.forEach(p => {
         if (p.at === 'personal') return; // personal projects connect to hub instead
         const role = SM.nodes.find(n => n.id === p.at);
         const proj = SM.nodes.find(n => n.id === p.id);
-        if (role && proj) addEdge(role, proj, 0x60a5fa, 0.45);
+        if (role && proj) addEdge(role, proj, 0x60a5fa, 0.16);   // was 0.45
       });
       // hub → personal projects (anchor cluster)
       PROJECTS.filter(p => p.at === 'personal').forEach(p => {
         const proj = SM.nodes.find(n => n.id === p.id);
-        if (proj) addEdge(hubNode, proj, 0x60a5fa, 0.30);
+        if (proj) addEdge(hubNode, proj, 0x60a5fa, 0.12);   // was 0.30
       });
       // role → its skills (faint — just for hover discovery)
       ROLES.forEach(r => {
@@ -2346,7 +2682,7 @@
         if (!role) return;
         r.skills.forEach(s => {
           const sk = SM.nodes.find(n => n.type === 'skill' && n.id === s);
-          if (sk) addEdge(role, sk, 0x4ade80, 0.10);
+          if (sk) addEdge(role, sk, 0x4ade80, 0.025);   // was 0.04
         });
       });
 
@@ -2465,6 +2801,27 @@
         div.className = `sm-label sm-label-${n.type}`;
         const sub = n.type === 'role' ? `<span class="sub">${(n.period||'').split(' → ')[0]}</span>` : '';
         div.innerHTML = `<span class="name">${n.name}</span>${sub}`;
+        // Role labels are pickable directly (CSS sets pointer-events:auto) —
+        // wire them to the same setHighlight flow as the canvas raycaster so
+        // hovering anywhere on the visible label box always lights up the role.
+        if (n.type === 'role') {
+          div.addEventListener('mouseenter', () => {
+            if (SM.selected) return;       // don't override an explicit lock
+            SM.hovered = n;
+            setHighlight(n);
+          });
+          div.addEventListener('mouseleave', () => {
+            if (SM.selected) return;
+            SM.hovered = null;
+            setHighlight(null);
+          });
+          div.addEventListener('click', e => {
+            e.stopPropagation();
+            if (SM.selected === n) { SM.selected = null; setHighlight(null); return; }
+            SM.selected = n;
+            setHighlight(n);
+          });
+        }
         labelLayer.appendChild(div);
         SM.labels[n.id] = div;
       });
@@ -2507,10 +2864,11 @@
         const x = (v.x + 1) * 0.5 * w;
         const y = (1 - v.y) * 0.5 * h;
         // Role/project labels CENTER on the anchor (label IS the node);
-        // skill labels sit BELOW the sprite icon
+        // skill labels sit BELOW the sprite icon; weak skills closer in
         let offset;
         if (n.type === 'role' || n.type === 'project') offset = ' translate(-50%, -50%)';
         else if (n.type === 'skill')                   offset = ' translate(-50%, 22px)';
+        else if (n.type === 'weakskill')               offset = ' translate(-50%, 16px)';
         else                                           offset = '';
         label.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)${offset}`;
         label.style.display = '';
@@ -2617,7 +2975,8 @@
 
       SM.edges.forEach(e => {
         const isHi = !related || (related.has(e.a) && related.has(e.b));
-        e.line.material.opacity = isHi ? Math.max(e.baseOpacity, 0.75) : 0.03;
+        // Softer highlight cap (was 0.75) so the green doesn't punch through
+        e.line.material.opacity = isHi ? Math.max(e.baseOpacity, 0.55) : 0.025;
       });
 
       // Dim the ghost network too so the path really pops
@@ -2709,16 +3068,17 @@
         hideTip();
       });
 
+      // Click = lock current hover-highlight in place (so user can move the
+      // mouse away to read the card without losing the path). No more
+      // flashCardFor / scrollIntoView — hover alone gives full visual feedback.
       canvas.addEventListener('click', e => {
         const node = pickNode(e);
         if (!node || node.type === 'hub') {
-          // Click empty space or hub → clear selection
           SM.selected = null;
           SM.hovered = null;
           setHighlight(null);
           return;
         }
-        // Toggle: clicking already-selected node clears it
         if (SM.selected === node) {
           SM.selected = null;
           setHighlight(null);
@@ -2726,9 +3086,9 @@
         }
         SM.selected = node;
         setHighlight(node);
-        flashCardFor(node);
       });
 
+      // Double-click still scrolls to the card for users who want to dive in.
       canvas.addEventListener('dblclick', e => {
         const node = pickNode(e);
         if (!node || node.type === 'hub') return;
@@ -2762,7 +3122,9 @@
     function applyFilters() {
       SM.nodes.forEach(n => {
         if (n.type === 'hub') return;
-        const visible = !!SM.filters[n.type];
+        // Weak skills ride the 'skill' filter — same family, same toggle.
+        const filterKey = n.type === 'weakskill' ? 'skill' : n.type;
+        const visible = !!SM.filters[filterKey];
         n.mesh.visible = visible;
         const label = SM.labels?.[n.id];
         if (label) label.style.visibility = visible ? '' : 'hidden';
@@ -2774,12 +3136,15 @@
 
     function setSearchHighlight(node) {
       if (!node) {
-        SM.nodes.forEach(n => { n.mesh.material.opacity = 1; });
+        // Restore each node to its baseline opacity (weak skills sit at ~0.5).
+        SM.nodes.forEach(n => { n.mesh.material.opacity = n.baseOpacity ?? 1; });
         SM.edges.forEach(e => { e.line.material.opacity = e.baseOpacity; });
         return;
       }
       SM.nodes.forEach(n => {
-        n.mesh.material.opacity = (n === node) ? 1 : 0.20;
+        const base = n.baseOpacity ?? 1;
+        // Matched node always pops to full opacity (even weak skills' base 0.5).
+        n.mesh.material.opacity = (n === node) ? 1 : base * 0.20;
       });
       SM.edges.forEach(e => {
         e.line.material.opacity = (e.a === node || e.b === node) ? 0.75 : 0.05;
