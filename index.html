@@ -1048,6 +1048,30 @@
     @media (max-width: 900px) { .services { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px) { .services { grid-template-columns: 1fr; } }
 
+    /* Show-more collapse: only the most recent N stay visible until clicked. */
+    .svc.svc-hidden { display: none; }
+    .svc-toggle {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+      background: var(--bg);
+      border: 1px dashed var(--rule);
+      border-radius: 4px;
+      padding: 11px 14px;
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 180ms ease-out, color 180ms ease-out, background 180ms ease-out;
+      text-align: center;
+    }
+    .svc-toggle:hover {
+      border-color: var(--accent-link);
+      color: var(--accent-link);
+      background: rgba(96, 165, 250, 0.05);
+    }
+
     /* ─── Capabilities ─── */
     .capabilities { display: flex; flex-direction: column; gap: 4px; }
     .cap-row {
@@ -1713,16 +1737,16 @@
 
       // ── 2016 ──
       { id: 'wipro', name: 'Wipro Hotline', year: '2016', status: 'archived', at: 'isight', url: null,
-        desc: 'Global whistleblower reporting + call-center service. Lead dev pairing with tech head, team of 3, shipped in 6 weeks.',
+        desc: 'Global whistleblower reporting + call-center service. Lead dev — shipped in 6 weeks.',
         skills: ['backbone', 'nodejs', 'postgres', 'jquery', 'javascript', 'express'] },
       { id: 'gsk', name: 'GSK Reports', year: '2016', status: 'archived', at: 'isight', url: null,
-        desc: 'GlaxoSmithKline — online report forms on i-Sight platform v5. Core developer, team of 3.',
+        desc: 'GlaxoSmithKline — online report forms on i-Sight platform v5.',
         skills: ['backbone', 'nodejs', 'postgres', 'javascript', 'express'] },
       { id: 'michigan', name: 'MI Medicaid DHHS', year: '2016', status: 'archived', at: 'isight', url: null,
-        desc: 'State of Michigan healthcare app on i-Sight v5. Lead dev pairing with tech head, teams of 4 and 7.',
+        desc: 'State of Michigan healthcare app on i-Sight v5. Lead dev pairing with tech head.',
         skills: ['backbone', 'nodejs', 'postgres', 'jquery', 'javascript', 'express'] },
       { id: 'mudhero', name: 'Mud Hero 2016', year: '2016', status: 'archived', at: 'events', url: null,
-        desc: '11-location Canadian event series. Customizations + Google Analytics + Facebook tracking. Team of 2.',
+        desc: '11-location Canadian event series. Customizations + Google Analytics + Facebook tracking.',
         skills: ['php', 'mysql', 'javascript', 'jquery', 'bootstrap', 'codeigniter'] },
       { id: 'farmlead-mp', name: 'FarmLead Marketplace', year: '2016', status: 'archived', at: 'combyne', url: null,
         desc: 'Mobile-friendly search marketplace front-end built without jQuery/Bootstrap. Part-time work pre-FT.',
@@ -2287,8 +2311,10 @@
 
     function renderServices() {
       const list = document.getElementById('services-list');
-      list.innerHTML = PROJECTS.map(p => `
-        <article class="svc ${p.status}" data-id="${p.id}">
+      const VISIBLE = 9;   // most-recent 9 by default; rest tucked behind toggle
+      const hiddenCount = Math.max(0, PROJECTS.length - VISIBLE);
+      const cards = PROJECTS.map((p, i) => `
+        <article class="svc ${p.status}${i >= VISIBLE ? ' svc-hidden' : ''}" data-id="${p.id}">
           <span class="dot-svc"></span>
           <div class="name">
             ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener">${p.name}</a>` : p.name}
@@ -2298,7 +2324,23 @@
           ${p.url ? `<div class="visit">→ VISIT ↗</div>` : ''}
         </article>
       `).join('');
+      const toggle = hiddenCount > 0
+        ? `<button class="svc-toggle" id="svc-toggle" type="button" aria-expanded="false">↓ Show ${hiddenCount} older endpoints</button>`
+        : '';
+      list.innerHTML = cards + toggle;
       document.getElementById('services-count').textContent = `· ${PROJECTS.length} endpoints`;
+
+      const btn = document.getElementById('svc-toggle');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          list.querySelectorAll('.svc-hidden').forEach(el => el.style.display = expanded ? '' : 'flex');
+          btn.setAttribute('aria-expanded', String(!expanded));
+          btn.textContent = expanded
+            ? `↓ Show ${hiddenCount} older endpoints`
+            : `↑ Show fewer`;
+        });
+      }
     }
 
     function renderCapabilities() {
