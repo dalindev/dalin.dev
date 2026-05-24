@@ -690,6 +690,16 @@
     .desk-chair svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.20)); }
     .desk.offline .desk-chair-back { opacity: 0.85; }
 
+    /* Offline desk: chair turned slightly + pushed right (someone left it) */
+    .desk.offline .desk-chair {
+      transform: translateX(calc(-50% + 18px)) rotate(18deg);
+      transform-origin: center 80%;
+    }
+    .desk.offline .desk-chair-back {
+      transform: translateX(calc(-50% + 16px)) rotate(14deg);
+      transform-origin: center bottom;
+    }
+
     /* ─── Effects: zZz, wrench, etc. ─── */
     .desk-fx {
       position: absolute;
@@ -875,7 +885,7 @@
       70%      { transform: translateX(1px); }
     }
 
-    /* ─── Desk info block — single line, name + status only ─── */
+    /* ─── Desk info block — single line, role + status (same size) ─── */
     .desk-info {
       padding: 8px 4px 0;
       text-align: center;
@@ -883,11 +893,12 @@
     }
     .desk-info .name {
       color: #1a1f2b; font-weight: 800; font-size: 11px;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
       white-space: nowrap;
     }
     .desk-info .status {
-      font-size: 8px; letter-spacing: 0.15em; font-weight: 800;
+      font-size: 11px; letter-spacing: 0.10em; font-weight: 800;
       white-space: nowrap;
     }
     .desk-info .status.busy    { color: #16a34a; }
@@ -1345,7 +1356,7 @@
       <h2 class="section-head">OFFICE FLOOR <span class="count" id="office-count">· crew loading…</span></h2>
       <div class="office" id="office-floor"></div>
       <!-- Ambient (minimal) -->
-      <span class="office-ambient plant-bigl">🌴</span>
+      <span class="office-ambient plant-bigl">🐢</span>
       <span class="office-ambient plant-bigr">🪴</span>
     </section>
 
@@ -1809,7 +1820,8 @@
       </svg>
     `;
 
-    /* Sleeping bot — side view, head tilted forward, eye closed, peaceful smile.
+    /* Sleeping bot — side view, head tilted forward + slumped down/left,
+       eye closed, peaceful smile. No brand patch (back-of-head isn't visible from side).
        Used for idle agents (GPT 5.5 backup, Whisper v4 audio). */
     const SVG_BOT_SLEEP = (uid) => `
       <svg viewBox="0 0 80 96" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
@@ -1824,8 +1836,8 @@
             <stop offset="100%" stop-color="#11141b"/>
           </linearGradient>
         </defs>
-        <!-- Head tilted forward + to the side; rendered as a group with rotation -->
-        <g transform="rotate(-22 40 32)">
+        <!-- Head: tilted forward AND slumped down-left (sleeping at desk) -->
+        <g transform="translate(-14 15) rotate(-22 40 32)">
           <!-- Antenna -->
           <line x1="40" y1="6" x2="40" y2="14" stroke="#1a1f2b" stroke-width="1.6" stroke-linecap="round"/>
           <circle cx="40" cy="6" r="3.5" fill="currentColor" opacity="0.30" class="led-glow"/>
@@ -1835,12 +1847,10 @@
           <!-- Side ear visible -->
           <rect x="56" y="26" width="7" height="14" rx="2" fill="#1a1f2b"/>
           <circle cx="59.5" cy="33" r="1.5" fill="currentColor" opacity="0.55"/>
-          <!-- CLOSED EYE on visible side of face (smile curve) -->
+          <!-- CLOSED EYE on visible side of face -->
           <path d="M 30 32 Q 36 35 42 32" stroke="#ffffff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.85"/>
           <!-- Tiny peaceful smile -->
           <path d="M 36 42 Q 39 44 42 42" stroke="rgba(255,255,255,0.5)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
-          <!-- Brand patch on visible side of head -->
-          <rect x="24" y="42" width="12" height="5" rx="1.6" fill="currentColor" opacity="0.7"/>
         </g>
         <!-- Slumped shoulders + body (relaxed) -->
         <path d="M 13 96 Q 17 64 28 58 Q 40 60 52 58 Q 63 64 67 96 Z"
@@ -1931,7 +1941,7 @@
             <div class="desk-monitor"><div class="monitor-bezel"><div class="screen ${a.status}">${renderScreen(a)}</div></div></div>
           </div>
           <div class="desk-info">
-            <span class="name">${a.name}</span>
+            <span class="name">${a.role}</span>
             <span class="status ${a.status}">● ${a.status.toUpperCase()}</span>
           </div>
         </article>
