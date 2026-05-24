@@ -3252,15 +3252,21 @@
     }
 
     /* ─── Terminal stream + KPI count-up ─── */
+    /* No hardcoded timestamp — each line gets stamped with the visitor's
+       actual wall-clock time when it's appended, so it feels live. */
     const TERM_LINES = [
-      { ts: '12:04:01', key: 'agent.parker',    status: 'ok',   tail: '· batch 482 · 12.4M embeddings' },
-      { ts: '12:04:03', key: 'finetune.v17',    status: 'key',  tail: '· step 1240/2000', statusLabel: 'LoRA' },
-      { ts: '12:04:05', key: 'scraper.adset',   status: 'ok',   tail: '· 87 sources synced' },
-      { ts: '12:04:07', key: 'dashboard.ttq',   status: '',     tail: '· 38ms p50 · 124ms p95' },
-      { ts: '12:04:09', key: '',                status: 'warn', tail: '[!] rate-limit · backoff 2s · retry · ok' },
-      { ts: '12:04:11', key: 'f1.score',        status: '',     tail: '= <span class="ok">0.794</span> ↑' },
-      { ts: '12:04:13', key: 'postgres.rollup', status: '',     tail: '· daily · 18.2M rows' },
-      { ts: '12:04:15', key: 'ingest.media',    status: '',     tail: '· 2.1TB queued' },
+      { key: 'agent.parker',    status: 'ok',   tail: '· batch 482 · 12.4M embeddings' },
+      { key: 'finetune.v17',    status: 'key',  tail: '· step 1240/2000', statusLabel: 'LoRA' },
+      { key: 'scraper.adset',   status: 'ok',   tail: '· 87 sources synced' },
+      { key: 'dashboard.ttq',   status: '',     tail: '· 38ms p50 · 124ms p95' },
+      { key: '',                status: 'warn', tail: '[!] rate-limit · backoff 2s · retry · ok' },
+      { key: 'f1.score',        status: '',     tail: '= <span class="ok">0.794</span> ↑' },
+      { key: 'postgres.rollup', status: '',     tail: '· daily · 18.2M rows' },
+      { key: 'ingest.media',    status: '',     tail: '· 2.1TB queued' },
+      { key: 'gemini.batch',    status: 'ok',   tail: '· 1,248 jobs · 6m ETA' },
+      { key: 'embed.cosine',    status: '',     tail: '· top-50 · 0.92 sim' },
+      { key: 'agent.classify',  status: 'key',  tail: '· 482 ads · 96.4% acc', statusLabel: 'AGENT' },
+      { key: 'supabase.read',   status: '',     tail: '· replica-2 · 14ms' },
     ];
 
     function startTerminalLoop() {
@@ -3268,6 +3274,11 @@
       if (!stream) return;
       let i = 0;
       const MAX_LINES = 8;
+      const pad2 = n => String(n).padStart(2, '0');
+      const nowTs = () => {
+        const d = new Date();
+        return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+      };
 
       function addLine() {
         const L = TERM_LINES[i % TERM_LINES.length];
@@ -3280,14 +3291,14 @@
         if (L.status === 'warn') statusHtml = '';
         const keyHtml = L.key ? '<span class="key">' + L.key + '</span> ' : '';
         const tailHtml = L.status === 'warn' ? `<span class="warn">${L.tail}</span>` : L.tail;
-        line.innerHTML = `<span class="dim">[${L.ts}]</span> ${keyHtml}${statusHtml} ${tailHtml}`;
+        line.innerHTML = `<span class="dim">[${nowTs()}]</span> ${keyHtml}${statusHtml} ${tailHtml}`;
         stream.appendChild(line);
         requestAnimationFrame(() => line.classList.add('show'));
         while (stream.children.length > MAX_LINES) stream.removeChild(stream.firstChild);
       }
 
       addLine();
-      setInterval(addLine, 1800);
+      setInterval(addLine, 500);   // 2 lines per second
     }
 
     /* ─── Fine-tune training monitor (faux LoRA run, fast ticks) ─── */
