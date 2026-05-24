@@ -1642,8 +1642,11 @@
       },
     ];
 
+    /* Sorted newest → oldest by END year (so 2022–23 ranks as 2023). Same
+       year keeps a stable hand-picked order. Personal/OSS that are still
+       live come first within their year. */
     const PROJECTS = [
-      // ── Personal / OSS ──
+      // ── 2024 ──
       { id: 'xnohub', name: 'xnohub.com', year: '2024', status: 'live', at: 'personal',
         url: 'https://xnohub.com',
         desc: 'Real-time visualizer for the Nano currency network on a 3D globe.',
@@ -1652,8 +1655,6 @@
         url: 'https://localxno.com',
         desc: 'Nano marketplace on Next.js + Supabase + PostgreSQL, with Google API integrations.',
         skills: ['nextjs', 'supabase', 'postgres', 'react', 'typescript', 'tailwind', 'vercel'] },
-
-      // ── Parker AI (incl. legacy RSL products: dashboards, payments, backend) ──
       { id: 'rsl-redesign', name: 'Site Redesign', year: '2024', status: 'archived', at: 'parker-ai', url: null,
         desc: 'Migrated a Flutter web app to Next.js + React + TS — 80% smaller bundle, 5× faster load, 10× first-render, Lighthouse 99.',
         skills: ['nextjs', 'react', 'typescript', 'tailwind', 'vercel'] },
@@ -1664,45 +1665,54 @@
         desc: 'Rebuilt Firebase + Express into Supabase Postgres + Next.js. Strategy/CoR/Command/Template patterns + tests → 80% coverage in weeks.',
         skills: ['nextjs', 'supabase', 'postgres', 'typescript', 'nodejs'] },
 
-      // ── Orium ──
+      // ── 2023 (incl. ranges ending in 2023) ──
       { id: 'composable', name: 'Composable UI', year: '2022–23', status: 'oss', at: 'orium',
         url: 'https://composable.com/composable-ui',
         desc: 'Open-source headless-commerce starter kit (React/Next.js). UI library + Figma kit + Algolia/Stripe. MACH Alliance award.',
         skills: ['react', 'nextjs', 'typescript', 'chakra', 'tanstack', 'storybook', 'figma', 'tailwind'] },
-      { id: 'harry-rosen', name: 'Harry Rosen Checkout', year: '2022', status: 'archived', at: 'orium', url: null,
-        desc: 'Headless checkout shipped in 6 weeks. Productized into Composable UI for additional enterprise clients.',
-        skills: ['react', 'nextjs', 'typescript', 'chakra', 'tanstack'] },
       { id: 'theme-system', name: 'Figma → Chakra Theme', year: '2022–23', status: 'archived', at: 'orium', url: null,
         desc: 'Custom library that converts Figma design tokens into dynamic Chakra UI themes — design-to-code from days to real-time.',
         skills: ['react', 'typescript', 'chakra', 'figma', 'storybook'] },
 
-      // ── HiNature ──
+      // ── 2022 ──
+      { id: 'harry-rosen', name: 'Harry Rosen Checkout', year: '2022', status: 'archived', at: 'orium', url: null,
+        desc: 'Headless checkout shipped in 6 weeks. Productized into Composable UI for additional enterprise clients.',
+        skills: ['react', 'nextjs', 'typescript', 'chakra', 'tanstack'] },
+
+      // ── 2021 (ranges ending in 2021) ──
+      { id: 'paypaw', name: 'PayPaw', year: '2019–21', status: 'archived', at: 'personal', url: null,
+        desc: 'Payment service for Bytom Blockchain. Won first place at a dev challenge — USD $30K prize.',
+        skills: ['bytom'] },
+
+      // ── 2020 ──
+      { id: 'gpu-miner', name: 'GPU Miner Opt', year: '2020', status: 'archived', at: 'personal', url: null,
+        desc: 'Optimized C++ GPU mining; +30% efficiency through caching.',
+        skills: ['cpp', 'cuda'] },
+      { id: 'bytom-dice', name: 'Bytom Dice', year: '2019–20', status: 'archived', at: 'personal', url: null,
+        desc: 'On-chain cryptocurrency betting site on Bytom.',
+        skills: ['bytom'] },
+
+      // ── 2019 (incl. ranges ending in 2019) ──
       { id: 'hi-scanner', name: 'Microbiome Scanner', year: '2019', status: 'archived', at: 'hinature', url: null,
         desc: 'WeChat scanner mini-app — analyzes 35,000+ cosmetic ingredients with ~95% accuracy. Built ingestion + classifier.',
         skills: ['python', 'firebase', 'javascript', 'chartjs', 'gcp'] },
-
-      // ── Shopify Capital ──
       { id: 'starter-loans', name: 'Starter Loans', year: '2019', status: 'archived', at: 'shopify', url: null,
         desc: 'Launched the Capital "starter loans" offer program — recognized by CEO. Tree refactor was the enabler.',
         skills: ['ruby', 'rails', 'postgres', 'datadog'] },
       { id: 'capital-tree', name: 'Decision Tree Refactor', year: '2019', status: 'archived', at: 'shopify', url: null,
         desc: 'Refactored the capital offer decision tree — daily loan generator. Faster, easier to test, simpler to update.',
         skills: ['ruby', 'rails', 'postgres', 'redis', 'datadog'] },
-
-      // ── Combyne / FarmLead ──
-      { id: 'farmlead-mp', name: 'FarmLead Marketplace', year: '2016', status: 'archived', at: 'combyne', url: null,
-        desc: 'Mobile-friendly search marketplace front-end built without jQuery/Bootstrap. Part-time work pre-FT.',
-        skills: ['javascript', 'html5', 'css3'] },
       { id: 'combyne-admin', name: 'Combyne Admin (×2)', year: '2017–19', status: 'archived', at: 'combyne', url: null,
         desc: 'Two admin systems — PHP7/MySQL + JS/HTML5/CSS3, and Node.js/Express + Vue.js.',
         skills: ['php', 'mysql', 'nodejs', 'express', 'vue', 'javascript', 'html5', 'css3'] },
+
+      // ── 2018 ──
       { id: 'combyne-sf', name: 'Combyne × Salesforce', year: '2018', status: 'archived', at: 'combyne', url: null,
         desc: 'Learned Salesforce in 1 month, then designed + integrated SF workflows into the platform.',
         skills: ['python'] },
 
-      // ── i-Sight clients ──
-      { id: 'wipro', name: 'Wipro Hotline', year: '2016', status: 'archived', at: 'isight',
-        url: 'https://wipro.i-sightuat.com/landing-page',
+      // ── 2016 ──
+      { id: 'wipro', name: 'Wipro Hotline', year: '2016', status: 'archived', at: 'isight', url: null,
         desc: 'Global whistleblower reporting + call-center service. Lead dev pairing with tech head, team of 3, shipped in 6 weeks.',
         skills: ['backbone', 'nodejs', 'postgres', 'jquery', 'javascript', 'express'] },
       { id: 'gsk', name: 'GSK Reports', year: '2016', status: 'archived', at: 'isight', url: null,
@@ -1711,25 +1721,17 @@
       { id: 'michigan', name: 'MI Medicaid DHHS', year: '2016', status: 'archived', at: 'isight', url: null,
         desc: 'State of Michigan healthcare app on i-Sight v5. Lead dev pairing with tech head, teams of 4 and 7.',
         skills: ['backbone', 'nodejs', 'postgres', 'jquery', 'javascript', 'express'] },
-
-      // ── Events.com ──
-      { id: 'gmc', name: 'GMC Fundraiser', year: '2015', status: 'archived', at: 'events', url: null,
-        desc: 'Get Movin\' Crew — large-scale school fundraising, 1M+ users in the US. Front-end (school/classroom/student), email + admin.',
-        skills: ['php', 'mysql', 'javascript', 'jquery', 'bootstrap', 'codeigniter'] },
       { id: 'mudhero', name: 'Mud Hero 2016', year: '2016', status: 'archived', at: 'events', url: null,
         desc: '11-location Canadian event series. Customizations + Google Analytics + Facebook tracking. Team of 2.',
         skills: ['php', 'mysql', 'javascript', 'jquery', 'bootstrap', 'codeigniter'] },
+      { id: 'farmlead-mp', name: 'FarmLead Marketplace', year: '2016', status: 'archived', at: 'combyne', url: null,
+        desc: 'Mobile-friendly search marketplace front-end built without jQuery/Bootstrap. Part-time work pre-FT.',
+        skills: ['javascript', 'html5', 'css3'] },
 
-      // ── Personal / OSS (older) ──
-      { id: 'paypaw', name: 'PayPaw', year: '2019–21', status: 'archived', at: 'personal', url: null,
-        desc: 'Payment service for Bytom Blockchain. Won first place at a dev challenge — USD $30K prize.',
-        skills: ['bytom'] },
-      { id: 'gpu-miner', name: 'GPU Miner Opt', year: '2020', status: 'archived', at: 'personal', url: null,
-        desc: 'Optimized C++ GPU mining; +30% efficiency through caching.',
-        skills: ['cpp', 'cuda'] },
-      { id: 'bytom-dice', name: 'Bytom Dice', year: '2019–20', status: 'archived', at: 'personal', url: null,
-        desc: 'On-chain cryptocurrency betting site on Bytom.',
-        skills: ['bytom'] },
+      // ── 2015 ──
+      { id: 'gmc', name: 'GMC Fundraiser', year: '2015', status: 'archived', at: 'events', url: null,
+        desc: 'Get Movin\' Crew — large-scale school fundraising, 1M+ users in the US. Front-end (school/classroom/student), email + admin.',
+        skills: ['php', 'mysql', 'javascript', 'jquery', 'bootstrap', 'codeigniter'] },
     ];
 
     /* Custom 3D positions — clusters around Dalin instead of concentric rings */
