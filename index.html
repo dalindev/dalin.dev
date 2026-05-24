@@ -690,14 +690,12 @@
     .desk-chair svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.20)); }
     .desk.offline .desk-chair-back { opacity: 0.85; }
 
-    /* Offline desk: chair turned slightly + pushed right (someone left it) */
+    /* Offline desk: chair shifted right (someone just got up and left) */
     .desk.offline .desk-chair {
-      transform: translateX(calc(-50% + 18px)) rotate(18deg);
-      transform-origin: center 80%;
+      transform: translateX(calc(-50% + 18px));
     }
     .desk.offline .desk-chair-back {
-      transform: translateX(calc(-50% + 16px)) rotate(14deg);
-      transform-origin: center bottom;
+      transform: translateX(calc(-50% + 16px));
     }
 
     /* ─── Effects: zZz, wrench, etc. ─── */
@@ -707,7 +705,7 @@
       pointer-events: none;
     }
     .desk-fx.zzz {
-      bottom: 50%; right: 24%;
+      bottom: 42%; right: 36%;
       font-family: var(--mono);
       font-size: 13px; font-weight: 800;
       color: #5a78c0;
@@ -1836,8 +1834,8 @@
             <stop offset="100%" stop-color="#11141b"/>
           </linearGradient>
         </defs>
-        <!-- Head: tilted forward AND slumped down-left (sleeping at desk) -->
-        <g transform="translate(-14 15) rotate(-22 40 32)">
+        <!-- Head: tilted forward + slumped left, raised slightly (10px up from previous) -->
+        <g transform="translate(-14 5) rotate(-22 40 32)">
           <!-- Antenna -->
           <line x1="40" y1="6" x2="40" y2="14" stroke="#1a1f2b" stroke-width="1.6" stroke-linecap="round"/>
           <circle cx="40" cy="6" r="3.5" fill="currentColor" opacity="0.30" class="led-glow"/>
