@@ -2,7 +2,7 @@
 
 Mission Control for an AI developer. Built around the Parker AI / AI agent platform work — billion-scale pipelines, LoRA fine-tunes, Gemini Batch API, one of the best Meta-ad dashboards on the market.
 
-<!-- 📹 Drop the .mp4/.mov/.webm into this PR's conversation tab; GitHub returns a https://github.com/user-attachments/assets/<uuid> URL — paste it on its own line right below this comment. -->
+https://github.com/user-attachments/assets/65ab1a49-e1a5-4be4-81cb-3916b7e0838d
 
 ### What's on the page
 
