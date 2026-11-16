@@ -126,20 +126,20 @@
 
     /* ─── Intro band (the Ask model is the first screen) ─── */
     .intro {
-      position: relative; padding: 2.125rem 0 0.375rem;
-      display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 1.125rem 3rem; align-items: end;
+      position: relative; padding: 1.25rem 0 0.25rem;
+      display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 0.75rem 3rem; align-items: end;
     }
     .intro .ghost { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35; }
     .intro .ghost svg { width: 100%; height: 100%; display: block; }
     .intro > .who, .intro > .about { position: relative; z-index: 1; min-width: 0; }
-    .intro .op { font-size: calc(var(--fz) * 0.625rem); letter-spacing: 0.22em; color: var(--ink-faint); margin-bottom: 0.5rem; }
-    .intro h1 { font-size: clamp(calc(var(--fz) * 2.125rem), 3.3vw, calc(var(--fz) * 3.375rem)); line-height: 1.02; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .intro .op { font-size: calc(var(--fz) * 0.625rem); letter-spacing: 0.22em; color: var(--ink-faint); margin-bottom: 0.25rem; }
+    .intro h1 { font-size: clamp(calc(var(--fz) * 1.875rem), 2.6vw, calc(var(--fz) * 2.75rem)); line-height: 1.02; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.3125rem; }
     .intro .role { color: var(--accent-link); font-size: clamp(calc(var(--fz) * 0.875rem), 1.15vw, calc(var(--fz) * 1.0625rem)); font-weight: 700; }
     .intro .role .where { color: var(--ink-faint); font-weight: 400; }
     .intro .bio { color: var(--ink-dim); font-size: calc(var(--fz) * 0.8125rem); line-height: 1.7; max-width: 47.5rem; }
     .intro .bio b { color: var(--ink-strong); font-weight: 700; }
     .intro .bio .hl { color: var(--accent-live); }
-    .intro .links { margin-top: 0.875rem; display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: calc(var(--fz) * 0.625rem); }
+    .intro .links { margin-top: 0.625rem; display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: calc(var(--fz) * 0.625rem); }
     .intro .links a {
       color: var(--accent-live); padding: 0.4375rem 0.6875rem;
       border: 1px solid rgba(74, 222, 128, 0.30); border-radius: 0.25rem;
@@ -147,7 +147,10 @@
     }
     .intro .links a:hover { background: rgba(74, 222, 128, 0.10); box-shadow: var(--glow-live); }
     .intro .links a.primary { background: rgba(74,222,128,0.12); color: #bbf7d0; }
-    .sec.first { margin-top: 1.625rem; }
+    .sec.first { margin-top: 1.25rem; }
+    #ask .section-head { margin-bottom: 0.625rem; }
+    .section-head .count a { color: var(--accent-link); text-decoration: none; }
+    .section-head .count a:hover { text-decoration: underline; }
 
     /* macOS terminal chrome */
     .hero-terms { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.875rem; margin-top: 0.875rem; }
@@ -203,6 +206,12 @@
     @media (max-width: 560px) {
       main { padding: 0 1rem; }
       .intro .ghost { display: none; }
+      .intro { padding-top: 0.875rem; gap: 0.5rem; }
+      .intro .op, .section-head .tagline { display: none; }   /* phones: get the answer onto the first screen */
+      .intro .bio { font-size: calc(var(--fz) * 0.75rem); line-height: 1.6; }
+      .intro .links { gap: 0.3125rem; margin-top: 0.5rem; flex-wrap: nowrap; }
+      .intro .links a { padding: 0.375rem 0.4375rem; letter-spacing: 0.02em; white-space: nowrap; }
+      .llm-prompt { padding: 0.625rem 0.75rem 0.5rem; }
       .llm-net .tag:not(.tag2) { display: none; }
       .macterm-body.term, .macterm-body.ft { height: calc(var(--fz) * 10.75rem); }
       .macterm-bar .title { display: none; }
@@ -247,16 +256,25 @@
     .llm-stage.train.active::after { background: var(--accent-hot); }
     @keyframes stageBar { 0% { width: 0; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0; left: 100%; } }
 
-    .llm-prompt { display: flex; align-items: center; gap: 0.625rem; padding: 0.875rem 1rem 0.625rem; }
+    .llm-prompt { padding: 0.875rem 1rem 0.625rem; }
+    .composer {
+      display: flex; align-items: center; gap: 0.625rem; padding: 0.3125rem 0.3125rem 0.3125rem 0.875rem;
+      border: 1px solid rgba(74,222,128,0.4); border-radius: 0.75rem; background: rgba(255,255,255,0.035);
+      transition: border-color 200ms, box-shadow 200ms, background 200ms;
+    }
+    .composer:focus-within { border-color: rgba(74,222,128,0.8); background: rgba(74,222,128,0.04); box-shadow: 0 0 0 3px rgba(74,222,128,0.12), 0 0 1.5rem rgba(74,222,128,0.12); }
+    .composer.idle { animation: composerGlow 2.6s ease-in-out infinite; }   /* invites a first question; stops once someone types */
+    @keyframes composerGlow { 50% { border-color: rgba(74,222,128,0.75); box-shadow: 0 0 0 3px rgba(74,222,128,0.10), 0 0 1.25rem rgba(74,222,128,0.14); } }
+    @media (prefers-reduced-motion: reduce) { .composer.idle { animation: none; } }
     .llm-prompt .caret { color: var(--accent-live); font-weight: 800; font-size: calc(var(--fz) * 0.875rem); }
     .llm-prompt input {
-      flex: 1; min-width: 0; background: transparent; border: 0; outline: 0;
+      flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; padding: 0.5rem 0;
       color: var(--ink-strong); font: 500 calc(var(--fz) * 0.9375rem) var(--mono); caret-color: var(--accent-live);
     }
-    .llm-prompt input::placeholder { color: var(--ink-faint); }
+    .llm-prompt input::placeholder { color: var(--ink-dim); opacity: 0.85; }
     .llm-run {
       background: rgba(74,222,128,0.12); color: #bbf7d0; border: 1px solid rgba(74,222,128,0.35);
-      border-radius: 0.375rem; padding: 0.4375rem 0.75rem; font-size: calc(var(--fz) * 0.625rem); letter-spacing: 0.12em; cursor: pointer;
+      border-radius: 0.5rem; padding: 0.5625rem 0.875rem; font-size: calc(var(--fz) * 0.6875rem); letter-spacing: 0.12em; cursor: pointer; font-weight: 700;
       transition: all 160ms ease-out; white-space: nowrap;
     }
     .llm-run:hover { background: rgba(74,222,128,0.22); box-shadow: var(--glow-live); }
@@ -274,8 +292,10 @@
     }
     .chip:hover { color: var(--ink-strong); border-color: var(--accent-link); background: rgba(96,165,250,0.08); }
 
-    .llm-grid { display: grid; grid-template-columns: clamp(18.75rem, 27%, 24.375rem) minmax(0, 1fr); }
-    .llm-left { border-right: 1px solid var(--rule); padding: 0.875rem 1rem; display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+    .llm-main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); }
+    .llm-chat { display: flex; flex-direction: column; min-width: 0; border-right: 1px solid var(--rule); }
+    .llm-under { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; padding: 0.875rem 1rem 1rem; border-top: 1px solid var(--rule); }
+    .llm-under > * { min-width: 0; }
     .llm-block .lbl { font-size: calc(var(--fz) * 0.5625rem); letter-spacing: 0.16em; color: var(--ink-faint); margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
     .llm-block .lbl b { color: var(--ink-dim); font-weight: 500; letter-spacing: 0.06em; }
     .tok-wrap { position: relative; padding-top: 1.875rem; min-height: 4rem; }
@@ -327,7 +347,12 @@
     .cand.pick .bar i { background: var(--accent-live); box-shadow: var(--glow-live); }
     .cand.pick .p { color: var(--accent-live); }
 
-    .llm-out-wrap { border-top: 1px solid var(--rule); padding: 1rem 1.125rem 0.875rem; }
+    .llm-out-wrap { flex: 1; padding: 0.875rem 1.125rem 0.875rem; }
+    .llm-q { font-size: calc(var(--fz) * 0.75rem); color: var(--ink-dim); margin-bottom: 0.5rem; overflow-wrap: anywhere; }
+    .llm-q::before { content: 'YOU ❯ '; color: var(--accent-live); font-size: 0.8em; letter-spacing: 0.12em; }
+    .llm-out a { color: var(--accent-link); text-decoration: underline; text-decoration-color: rgba(96,165,250,0.45); text-underline-offset: 0.2em; }
+    .llm-out a:hover { text-decoration-color: currentColor; text-shadow: var(--glow-link); }
+    .llm-out a.ext::after { content: '↗'; font-size: 0.75em; margin-left: 0.125em; }   /* plain inline, so a comma after the link can't wrap alone */
     .llm-out-wrap .lbl { font-size: calc(var(--fz) * 0.5625rem); letter-spacing: 0.16em; color: var(--ink-faint); display: flex; justify-content: space-between; gap: 0.625rem; margin-bottom: 0.625rem; }
     .llm-out-wrap .lbl label { cursor: pointer; display: inline-flex; gap: 0.375rem; align-items: center; }
     .llm-out-wrap .lbl input { accent-color: #a78bfa; }
@@ -377,10 +402,11 @@
     .fb .msg { color: #f9a8d4; }
 
     @media (max-width: 860px) {
-      .llm-grid { grid-template-columns: 1fr; }
-      .llm-left { border-right: 0; border-bottom: 1px solid var(--rule); }
-      .llm-left .emb-block, .llm-left .ret-block { display: none; }
-      .llm-left.has-run .ret-block { display: block; }
+      .llm-main { grid-template-columns: 1fr; }
+      .llm-chat { border-right: 0; border-bottom: 1px solid var(--rule); }
+      .llm-under { grid-template-columns: 1fr; gap: 1rem; }
+      .llm-under .emb-block, .llm-under .ret-block { display: none; }
+      .llm-under.has-run .ret-block { display: block; }
       .llm-net { height: 14.375rem; }
       .llm-next { grid-template-columns: 1fr; gap: 0.5rem; }
       .llm-next .cur b { display: inline; margin-left: 0.5rem; font-size: calc(var(--fz) * 0.8125rem); }
@@ -605,9 +631,11 @@
     .km-pulse { pointer-events: none; }
 
     .km-svg.compact .km-node text { display: none; }
-    .km-svg.compact.focus .km-node.hi text { display: inline; font-size: 26px; }
+    /* phones: the one focused label is big, so it can reach past the domain arc; a dark halo keeps it readable */
+    .km-svg.compact.focus .km-node.hi text { display: inline; font-size: 26px; paint-order: stroke; stroke: #070b14; stroke-width: 7px; stroke-linejoin: round; }
     .km-svg.compact .km-role text { display: none; }
-    .km-svg.compact .km-domain-lbl { font-size: 24px; letter-spacing: 2px; }
+    .km-svg.compact .km-domain-lbl { font-size: 24px; letter-spacing: 2px; transition: opacity 260ms; }
+    .km-svg.compact.focus .km-domain-lbl { opacity: 0.35; }
 
     @media (max-width: 900px) {
       .kmap { grid-template-columns: 1fr; }
@@ -789,14 +817,23 @@
 
     <!-- ═════════ 01 · ASK ═════════ -->
     <section class="sec first" id="ask">
-      <h2 class="section-head"><span class="num">01</span> ASK THE MODEL <span class="count">· a tiny model trained on my resume, in your browser</span></h2>
-      <p class="section-sub">Ask about my work and watch it answer, token by token. <a href="#how">How it works ↓</a></p>
+      <h2 class="section-head"><span class="num">01</span> ASK THE MODEL <span class="count"><span class="tagline">· a tiny model trained on my resume, in your browser </span>· <a href="#how">how it works ↓</a></span></h2>
 
       <div class="llm" id="llm">
         <div class="macterm-bar">
           <div class="dots3"><span class="r"></span><span class="y"></span><span class="g"></span></div>
           <div class="title">dalin-lm · real router network · simulated decoder</div>
           <div class="badge" id="llm-badge"><span class="ld"></span><span id="llm-badge-t">READY</span></div>
+        </div>
+        <form class="llm-prompt" id="llm-form" autocomplete="off">
+          <div class="composer idle" id="composer">
+            <span class="caret" aria-hidden="true">❯</span>
+            <input id="llm-input" maxlength="80" placeholder="Ask me anything about my work…" aria-label="Ask about my work" enterkeyhint="send">
+            <button class="llm-run" id="llm-run" type="submit">ASK ↵</button>
+          </div>
+        </form>
+        <div class="llm-sugg" id="llm-sugg">
+          <span class="lbl">TRY</span>
         </div>
         <div class="llm-stages" id="llm-stages">
           <div class="llm-stage" data-s="tok"><span class="n">01</span>TOKENIZE</div>
@@ -806,30 +843,21 @@
           <div class="llm-stage" data-s="dec"><span class="n">05</span>DECODE</div>
           <div class="llm-stage train" data-s="bwd"><span class="n">06</span>BACKPROP</div>
         </div>
-        <form class="llm-prompt" id="llm-form" autocomplete="off">
-          <span class="caret">❯</span>
-          <input id="llm-input" maxlength="80" placeholder="ask about my work… try “AI”" aria-label="Ask the model">
-          <button class="llm-run" id="llm-run" type="submit">RUN ⏎</button>
-        </form>
-        <div class="llm-sugg" id="llm-sugg">
-          <span class="lbl">TRY</span>
-        </div>
-        <div class="llm-grid">
-          <div class="llm-left" id="llm-left">
-            <div class="llm-block">
-              <div class="lbl"><span>TOKENS + ATTENTION</span><b id="tok-count">0 tok</b></div>
-              <div class="tok-wrap">
-                <svg class="attn-svg" id="attn-svg" aria-hidden="true"></svg>
-                <div class="tok-row" id="tok-row"><span class="tok-empty">waiting for a prompt…</span></div>
+        <div class="llm-main">
+          <div class="llm-chat">
+            <div class="llm-out-wrap">
+              <div class="lbl"><span>ANSWER · streamed token by token</span><label><input type="checkbox" id="show-tokens"> show token boundaries</label></div>
+              <div class="llm-q" id="llm-q" hidden></div>
+              <div class="llm-out" id="llm-out" aria-live="polite"><span class="ph">The answer streams here. Type a question above, or tap a suggestion.</span></div>
+              <div class="llm-rel" id="llm-rel"></div>
+            </div>
+            <div class="llm-foot">
+              <div class="stats" id="llm-stats">answers are hand-written, not generated, so it can't make things up</div>
+              <div class="fb">
+                <span class="msg" id="fb-msg"></span>
+                <button id="fb-up" disabled title="Good answer: one real training step toward it">👍 train on this</button>
+                <button id="fb-down" disabled title="Bad answer: one real training step away from it">👎</button>
               </div>
-            </div>
-            <div class="llm-block emb-block">
-              <div class="lbl"><span>EMBEDDINGS</span><b>learned · d=64 → 32 shown</b></div>
-              <div class="emb-grid" id="emb-grid"></div>
-            </div>
-            <div class="llm-block ret-block">
-              <div class="lbl"><span>RETRIEVED CONTEXT</span><b>top-3 · cosine</b></div>
-              <div id="ret-list"></div>
             </div>
           </div>
           <div class="llm-right">
@@ -844,17 +872,21 @@
             </div>
           </div>
         </div>
-        <div class="llm-out-wrap">
-          <div class="lbl"><span>OUTPUT · streamed token by token</span><label><input type="checkbox" id="show-tokens"> show token boundaries</label></div>
-          <div class="llm-out" id="llm-out" aria-live="polite"><span class="ph">The answer streams here.</span></div>
-          <div class="llm-rel" id="llm-rel"></div>
-        </div>
-        <div class="llm-foot">
-          <div class="stats" id="llm-stats">0 in · 0 out · — tok/s · temp 0.7 · no hallucinations: answers come only from resume facts</div>
-          <div class="fb">
-            <span class="msg" id="fb-msg"></span>
-            <button id="fb-up" disabled title="Good answer: one real training step toward it">👍 train on this</button>
-            <button id="fb-down" disabled title="Bad answer: one real training step away from it">👎</button>
+        <div class="llm-under" id="llm-left">
+          <div class="llm-block">
+            <div class="lbl"><span>TOKENS + ATTENTION</span><b id="tok-count">0 tok</b></div>
+            <div class="tok-wrap">
+              <svg class="attn-svg" id="attn-svg" aria-hidden="true"></svg>
+              <div class="tok-row" id="tok-row"><span class="tok-empty">waiting for a prompt…</span></div>
+            </div>
+          </div>
+          <div class="llm-block emb-block">
+            <div class="lbl"><span>EMBEDDINGS</span><b>learned · d=64 → 32 shown</b></div>
+            <div class="emb-grid" id="emb-grid"></div>
+          </div>
+          <div class="llm-block ret-block">
+            <div class="lbl"><span>RETRIEVED CONTEXT</span><b>top-3 · cosine</b></div>
+            <div id="ret-list"></div>
           </div>
         </div>
       </div>
@@ -986,80 +1018,79 @@
     /* ─── Skill domains (outer ring of the knowledge map) ─── */
     const DOMAINS = [
       { id: 'agents',   name: 'AGENT SYSTEMS',  color: '#a78bfa' },
-      { id: 'train',    name: 'MODEL TRAINING', color: '#f472b6' },
+      { id: 'train',    name: 'MODELS & TRAINING', color: '#f472b6' },
       { id: 'data',     name: 'DATA & INFRA',   color: '#22d3ee' },
       { id: 'backend',  name: 'BACKEND',        color: '#4ade80' },
       { id: 'frontend', name: 'FRONTEND',       color: '#60a5fa' },
       { id: 'commerce', name: 'PRODUCT',        color: '#fbbf24' },
     ];
 
-    /* level: 3 = core / daily driver · 2 = solid, hands-on · 1 = familiar */
+    /* level: 3 = core / daily driver · 2 = solid, hands-on · 1 = familiar
+       ev: the evidence shown when a node is selected · aka: extra words the map search matches */
     const SKILLS = [
       // ── Agent systems ──
-      { id: 'agent_loops', name: 'Agent loops',     d: 'agents', level: 3, ev: 'Built a 10+ agent loop (intake, coding, QA, security, incident response, release) on top of Status Island. Low-risk work ships end to end.' },
-      { id: 'grok',        name: 'Grok bots',       d: 'agents', level: 3, ev: 'A Chief of Staff coordinator directs ~10 specialist Grok bots (Eng, QA, Eng Manager, incident, cost, billing, stack radar, OSS), wired as a tree instead of a group chat.' },
-      { id: 'claude_code', name: 'Claude Code',     d: 'agents', level: 3, ev: 'Heavy work goes to local Claude Code through a ticket label and a verify-first brief, draft PRs only. It built the Agent Island API and UI from my approved brief.' },
-      { id: 'guardrails',  name: 'Human gates',     d: 'agents', level: 3, ev: 'Prod deploys, migrations, and customer sends stay human-gated; an "address or explain" merge gate on every diff.' },
-      { id: 'verify',      name: 'Agent QA',        d: 'agents', level: 3, ev: 'Clean-context QA and Security agents verify diffs against real replicas, previews, and logs, and log loop recaps on every ship.' },
-      { id: 'evals',       name: 'Evals',           d: 'agents', level: 3, ev: 'Eval framework benchmarking 25+ models on production tools, MCP, and context. Blind incident-replay eval for the QA bot: catch rate 73% → 81%.' },
-      { id: 'mcp',         name: 'MCP / tools',     d: 'agents', level: 3, ev: 'Agent data tools built from scratch; MCP connectors wire the bot team to tickets, code, and health feeds.' },
-      { id: 'skills_maps', name: 'Agent skills',    d: 'agents', level: 2, ev: 'Turned senior engineering, QA, and security practices into living skills and repo feature maps, audited by a daily self-review scorecard.' },
-      { id: 'claude_api',  name: 'Claude API',      d: 'agents', level: 3 },
-      { id: 'openai_api',  name: 'OpenAI API',      d: 'agents', level: 3 },
-      { id: 'gemini',      name: 'Gemini API',      d: 'agents', level: 3, ev: 'Large-scale async work on Gemini Batch: ad classification, media analysis, embeddings.' },
-      { id: 'rag',         name: 'Embeddings',      d: 'agents', level: 2 },
-      { id: 'llms_txt',    name: 'llms.txt / feeds', d: 'agents', level: 2, ev: "Agent-readable endpoints: Agent Island's llms.txt and its JSON view for agents." },
-      // ── Model training ──
-      { id: 'selfhost',    name: 'Self-hosted LLMs', d: 'train', level: 3, ev: 'Fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve millions of requests a week, running async on GPU clusters through a job queue with producers and finalizers.' },
-      { id: 'lora',        name: 'Fine-tuning',     d: 'train', level: 3, ev: 'Automated research and training loop on a GPU cluster where agents run experiments, monitor runs, and iterate.' },
-      { id: 'cont_learn',  name: 'Feedback tuning', d: 'train', level: 2, ev: 'User reactions and feedback feed a training queue that fine-tunes models and LLM judges.' },
-      { id: 'distill',     name: 'Distillation',    d: 'train', level: 2, ev: "Distilling domain experts' outputs, chats, and review history into vision+text → text reasoning models." },
-      { id: 'llm_judges',  name: 'LLM judges',      d: 'train', level: 2 },
-      { id: 'vlm',         name: 'Vision+text',     d: 'train', level: 2 },
-      { id: 'gpu',         name: 'GPU clusters',    d: 'train', level: 2, ev: 'Async inference on GPU clusters through a job queue with producers and finalizers, which cuts cost even further. The training loop runs there too.' },
-      { id: 'pytorch',     name: 'PyTorch / HF',    d: 'train', level: 1 },
+      { id: 'agent_loops', name: 'Agent loops',     d: 'agents', level: 3, aka: ['multi-agent', 'orchestration', 'agentic'], ev: 'A 10+ agent loop (intake, coding, QA, security, incident response, release) on top of Status Island. Low-risk work ships end to end; risky changes wait for a person.' },
+      { id: 'grok',        name: 'Grok bots',       d: 'agents', level: 3, aka: ['xai'], ev: 'A Chief of Staff coordinator directs ~10 specialist Grok bots (Eng, QA, Eng Manager, incident, cost, billing, stack radar, OSS), wired as a tree instead of a group chat.' },
+      { id: 'claude_code', name: 'Claude Code',     d: 'agents', level: 3, aka: ['agentic coding', 'coding agent'], ev: 'Heavy work goes to local Claude Code through a ticket label and a verify-first brief, draft PRs only. It built the Agent Island API and UI from my approved brief.' },
+      { id: 'guardrails',  name: 'Human-in-the-loop', d: 'agents', level: 3, aka: ['hitl', 'guardrails', 'human gates', 'approval'], ev: 'Prod deploys, prod database writes, migrations, money, and customer messages always wait for a person, and every diff passes an "address or explain" merge gate.' },
+      { id: 'verify',      name: 'Verifier agents', d: 'agents', level: 3, aka: ['agent qa', 'qa agents', 'security agents', 'verification'], ev: 'Clean-context QA and Security agents verify diffs against real replicas, previews, and logs, and log a loop recap on every ship.' },
+      { id: 'evals',       name: 'Evals',           d: 'agents', level: 3, aka: ['benchmarks', 'evaluation'], ev: 'Eval framework benchmarking 50+ models (more counting variants like thinking levels and Flash or Lite tiers) on production tools, MCP, and context. Blind incident-replay eval for the QA bot: catch rate 73% → 81%.' },
+      { id: 'mcp',         name: 'MCP / tools',     d: 'agents', level: 3, aka: ['tool use', 'function calling', 'connectors'], ev: 'Agent data tools built from scratch; MCP connectors wire the bot team to tickets, code, and health feeds.' },
+      { id: 'skills_maps', name: 'Agent skills',    d: 'agents', level: 3, aka: ['context engineering', 'feature maps', 'prompts', 'skills'], ev: 'Context engineering: senior engineering, QA, and security practices turned into living agent skills and repo feature maps, so every agent starts with the right context. A daily self-review scorecard updates the rules automatically.' },
+      { id: 'llm_apis',    name: 'LLM APIs',        d: 'agents', level: 3, aka: ['claude api', 'anthropic', 'openai', 'gpt', 'gemini', 'batch api'], ev: 'Production work on the Claude, OpenAI, and Gemini APIs, with Gemini Batch for large async jobs: ad classification, media analysis, embeddings. The eval framework benchmarks 50+ models across providers on our own tools.' },
+      { id: 'rag',         name: 'Embeddings',      d: 'agents', level: 2, aka: ['rag', 'vector', 'retrieval'], ev: 'Embeddings at scale on Gemini Batch, next to ad classification and media analysis.' },
+      { id: 'llms_txt',    name: 'Agent-ready APIs', d: 'agents', level: 2, aka: ['llms.txt', 'agent api'], ev: "APIs built for agents to read: Agent Island's llms.txt, its JSON view, and a join flow that takes one HTTP call and returns a short-lived token." },
+      // ── Models & training ──
+      { id: 'selfhost',    name: 'Self-hosted LLMs', d: 'train', level: 3, aka: ['open models', 'serving', 'inference'], ev: 'Fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve millions of requests a week, running async on GPU clusters through a job queue with producers and finalizers.' },
+      { id: 'lora',        name: 'Fine-tuning',     d: 'train', level: 3, aka: ['lora', 'sft', 'training'], ev: 'LoRA fine-tunes behind the self-hosted LLMs. Agents run the research and training loop on a GPU cluster: experiments, monitoring, and iteration.' },
+      { id: 'infcost',     name: 'Inference cost',  d: 'train', level: 3, aka: ['cost', 'llm cost', 'finops', 'batch'], ev: "200× lower cost from fine-tuned self-hosted models, async work through a GPU job queue and Gemini Batch, and a Cost Scout agent that traced most of one model's spend to a single call site." },
+      { id: 'cont_learn',  name: 'Learning loop',   d: 'train', level: 2, aka: ['continual learning', 'feedback', 'rlhf', 'continuous fine-tuning'], ev: 'User reactions and feedback feed a training queue that fine-tunes models and LLM judges.' },
+      { id: 'distill',     name: 'Distillation',    d: 'train', level: 2, aka: ['reasoning models'], ev: "Distilling domain experts' outputs, chats, and review history into vision+text → text reasoning models." },
+      { id: 'llm_judges',  name: 'LLM-as-judge',    d: 'train', level: 2, aka: ['llm judges', 'judges'], ev: 'LLM judges fine-tuned from user reactions and feedback, alongside the production models.' },
+      { id: 'vlm',         name: 'Multimodal',      d: 'train', level: 2, aka: ['vision', 'vlm', 'vision+text', 'media'], ev: "Vision+text → text reasoning models distilled from experts' work, and media analysis on Gemini Batch." },
+      { id: 'gpu',         name: 'GPU clusters',    d: 'train', level: 2, aka: ['gpu', 'job queue'], ev: 'Async inference on GPU clusters through a job queue with producers and finalizers, which cuts cost even further. The training loop runs there too.' },
+      { id: 'local_llms',  name: 'Local LLMs',      d: 'train', level: 2, aka: ['local models', 'on-device', 'open weights'], ev: 'For fun, I run crazy experiments with local models on my own machine to see where their limits are.' },
+      { id: 'pytorch',     name: 'PyTorch / HF',    d: 'train', level: 1, aka: ['hugging face', 'transformers', 'torch'], ev: "The Parker AI fine-tunes run on PyTorch. I ran them locally, with AI writing and driving the training code rather than me tuning it by hand." },
       // ── Data & infra ──
-      { id: 'pipelines',   name: 'Data pipelines',  d: 'data', level: 3, ev: 'Web app, Temporal AI workflows, and agent data tools processing billions of ad data points daily.' },
-      { id: 'temporal',    name: 'Temporal',        d: 'data', level: 3, ev: 'Temporal AI workflows at Parker AI. My OSS bot has drafted 3 fixes for Temporal SDK repos.' },
-      { id: 'postgres',    name: 'Postgres',        d: 'data', level: 3, ev: 'Scaled Postgres to hundreds of millions of rows with partitioning, cutting key queries from 1+ minute to milliseconds.' },
-      { id: 'supabase',    name: 'Supabase',        d: 'data', level: 3 },
-      { id: 'selfheal',    name: 'Data healing', d: 'data', level: 2, ev: 'Automated workflows that detect and repair data issues across millions of records.' },
-      { id: 'observ',      name: 'Observability',   d: 'data', level: 2, ev: 'Agent Island (Status Island at work): live health across 30+ systems in one feed with three views, checked by agents. On call at Shopify Capital.' },
+      { id: 'pipelines',   name: 'Data pipelines',  d: 'data', level: 3, aka: ['etl', 'big data'], ev: 'Web app, Temporal AI workflows, and agent data tools processing billions of ad data points daily.' },
+      { id: 'temporal',    name: 'Temporal',        d: 'data', level: 3, aka: ['durable workflows', 'workflows'], ev: 'Durable Temporal AI workflows at Parker AI, processing billions of ad data points a day. My OSS bot has drafted 3 fixes for Temporal SDK repos.' },
+      { id: 'postgres',    name: 'Postgres',        d: 'data', level: 3, aka: ['postgresql', 'sql', 'partitioning'], ev: 'Scaled Postgres to hundreds of millions of rows with partitioning, cutting key queries from 1+ minute to milliseconds.' },
+      { id: 'supabase',    name: 'Supabase',        d: 'data', level: 3, ev: 'Rebuilt a Firebase + Express backend into Supabase Postgres + Next.js, with test coverage taken to 80% in weeks. LocalXNO runs on it too.' },
+      { id: 'selfheal',    name: 'Self-healing data', d: 'data', level: 2, aka: ['data quality'], ev: 'Automated workflows that detect and repair data issues across millions of records.' },
+      { id: 'observ',      name: 'Observability',   d: 'data', level: 2, aka: ['monitoring', 'status', 'on call'], ev: 'Agent Island (Status Island at work): live health across 30+ systems in one feed with three views, checked by agents. On call at Shopify Capital.' },
       { id: 'rls',         name: 'RLS + triggers',  d: 'data', level: 2, ev: 'Postgres RLS and trigger guards that refuse illegal state changes in Ship Loops.' },
-      { id: 'redis',       name: 'Redis',           d: 'data', level: 2 },
-      { id: 'elastic',     name: 'Elasticsearch',   d: 'data', level: 2, ev: 'Combyne: Elasticsearch + Redis caching for a 1M+ user marketplace, 10–100× faster search.' },
-      { id: 'mysql',       name: 'MySQL',           d: 'data', level: 1 },
-      { id: 'gcp',         name: 'GCP',             d: 'data', level: 2 },
-      { id: 'aws',         name: 'AWS',             d: 'data', level: 2 },
+      { id: 'redis',       name: 'Redis',           d: 'data', level: 2, aka: ['cache', 'caching'], ev: "Redis caching that helped Combyne's marketplace scale to 1M+ users; also used at Shopify." },
+      { id: 'elastic',     name: 'Elasticsearch',   d: 'data', level: 2, aka: ['search'], ev: 'Combyne: Elasticsearch + Redis caching for a 1M+ user marketplace, 10–100× faster search.' },
+      { id: 'gcp',         name: 'GCP',             d: 'data', level: 2, aka: ['google cloud'] },
+      { id: 'aws',         name: 'AWS',             d: 'data', level: 2, aka: ['sqs'], ev: "Moved Combyne's async work to AWS SQS and Python workers to make room for scale." },
       // ── Backend ──
-      { id: 'typescript',  name: 'TypeScript',      d: 'backend', level: 3 },
-      { id: 'python',      name: 'Python',          d: 'backend', level: 3 },
-      { id: 'nodejs',      name: 'Node.js',         d: 'backend', level: 3 },
-      { id: 'apis',        name: 'API design',      d: 'backend', level: 2, ev: 'Built and maintained the Shopify Capital API and admin systems.' },
-      { id: 'rails',       name: 'Ruby on Rails',   d: 'backend', level: 2 },
-      { id: 'graphql',     name: 'GraphQL',         d: 'backend', level: 2 },
-      { id: 'express',     name: 'Express',         d: 'backend', level: 2 },
-      { id: 'tla',         name: 'TLA+ / TLC',      d: 'backend', level: 2, ev: 'Model-checked the Ship Loops state machine before building it; it caught a loop the tests missed.' },
-      { id: 'mutation',    name: 'Mutation tests',  d: 'backend', level: 2, ev: 'Mutation tests for Ship Loops: removing any guard has to break its rule.' },
-      { id: 'php',         name: 'PHP',             d: 'backend', level: 1 },
+      { id: 'typescript',  name: 'TypeScript',      d: 'backend', level: 3, aka: ['ts', 'javascript'], ev: "Parker AI's Next.js app and backend rebuild, Agent Island, xnohub, LocalXNO, and Composable UI." },
+      { id: 'python',      name: 'Python',          d: 'backend', level: 3, ev: "The training loop, HiNature's ingredient classifier, and Combyne's async workers on AWS SQS." },
+      { id: 'nodejs',      name: 'Node.js',         d: 'backend', level: 3, aka: ['node', 'express'], ev: "Since 2016: i-Sight client builds on Node and Express, Combyne's marketplace and admin, and Parker AI's backend rebuild." },
+      { id: 'apis',        name: 'API design',      d: 'backend', level: 2, aka: ['rest', 'webhooks'], ev: "Built and maintained the Shopify Capital API and admin systems, and agent-facing APIs like Agent Island's." },
+      { id: 'rails',       name: 'Ruby on Rails',   d: 'backend', level: 2, aka: ['ruby'], ev: 'Shopify Capital: the loan-offer decision tree, the Capital API, and admin systems.' },
+      { id: 'graphql',     name: 'GraphQL',         d: 'backend', level: 2, ev: "APIs at Shopify Capital and in Orium's headless commerce builds." },
+      { id: 'tla',         name: 'TLA+ / TLC',      d: 'backend', level: 2, aka: ['formal methods', 'model checking'], ev: 'Model-checked the Ship Loops state machine before building it; it caught a loop the tests missed.' },
+      { id: 'mutation',    name: 'Mutation tests',  d: 'backend', level: 2, aka: ['testing'], ev: 'Mutation tests for Ship Loops: removing any guard has to break its rule.' },
+      { id: 'early_web',   name: 'Early web stack', d: 'backend', level: 1, aka: ['php', 'mysql', 'lamp', 'backbone', 'angularjs', 'codeigniter'], ev: 'Where I started: PHP, MySQL, CodeIgniter, AngularJS, and Backbone.js at Events.com, i-Sight, and Combyne.' },
       // ── Frontend ──
-      { id: 'react',       name: 'React',           d: 'frontend', level: 3 },
-      { id: 'nextjs',      name: 'Next.js',         d: 'frontend', level: 3 },
-      { id: 'tanstack',    name: 'TanStack',        d: 'frontend', level: 2 },
-      { id: 'tailwind',    name: 'Tailwind',        d: 'frontend', level: 2 },
-      { id: 'chakra',      name: 'Chakra UI',       d: 'frontend', level: 2 },
-      { id: 'threejs',     name: 'Three.js',        d: 'frontend', level: 2, ev: 'xnohub.com, a real-time 3D globe of the Nano network. Also this page.' },
-      { id: 'figma',       name: 'Figma tokens',    d: 'frontend', level: 2, ev: 'Library converting Figma design tokens into dynamic Chakra UI themes.' },
-      { id: 'vue',         name: 'Vue',             d: 'frontend', level: 1 },
-      { id: 'backbone',    name: 'Backbone',        d: 'frontend', level: 1 },
+      { id: 'react',       name: 'React',           d: 'frontend', level: 3, ev: "Parker AI's web app, Composable UI, Agent Island, xnohub, and LocalXNO." },
+      { id: 'nextjs',      name: 'Next.js',         d: 'frontend', level: 3, aka: ['next'], ev: 'Moved a Flutter web app to Next.js: 80% smaller bundle, 5× faster load, Lighthouse 99. Also Composable UI, Agent Island, and LocalXNO.' },
+      { id: 'tanstack',    name: 'TanStack',        d: 'frontend', level: 2, aka: ['react query'], ev: "Composable UI, xnohub, and Parker AI's app." },
+      { id: 'tailwind',    name: 'Tailwind',        d: 'frontend', level: 2, aka: ['css'], ev: "Parker AI's redesign, xnohub, and LocalXNO." },
+      { id: 'threejs',     name: 'Three.js',        d: 'frontend', level: 2, aka: ['3d', 'webgl'], ev: 'xnohub.com, a real-time 3D globe of the Nano network. Also the agent office on this page.' },
+      { id: 'figma',       name: 'Design systems',  d: 'frontend', level: 2, aka: ['figma', 'design tokens', 'ui library'], ev: 'Built a library that turns Figma design tokens into dynamic Chakra UI themes, taking design-to-code from days to real time. Composable UI ships a UI library and a Figma kit.' },
+      { id: 'chakra',      name: 'Chakra UI',       d: 'frontend', level: 2, ev: "Composable UI's component library and the Figma → Chakra theme system." },
+      { id: 'vue',         name: 'Vue',             d: 'frontend', level: 1, aka: ['vue.js'], ev: "Combyne's role-based admin system on Node.js + Vue.js." },
       // ── Product & commerce ──
-      { id: 'adtech',      name: 'Ad + creative', d: 'commerce', level: 3, ev: 'Parker AI unifies ad, creative, competitor, and customer data behind an AI analyst for e-commerce brands.' },
-      { id: 'headless',    name: 'MACH / headless', d: 'commerce', level: 3, ev: 'Core contributor to Composable UI, a MACH Alliance–awarded starter kit that cut client delivery by up to 6 months.' },
+      { id: 'adtech',      name: 'Ad + creative',   d: 'commerce', level: 3, aka: ['ads', 'meta ads', 'marketing', 'e-commerce'], ev: 'Parker AI unifies ad, creative, competitor, and customer data behind an AI analyst for e-commerce brands.' },
+      { id: 'shopify_apps', name: 'Shopify apps',   d: 'commerce', level: 2, aka: ['shopify'], ev: "Shipped multiple Shopify extension apps at Parker AI, after building Shopify Capital's API and admin systems." },
+      { id: 'headless',    name: 'MACH / headless', d: 'commerce', level: 2, aka: ['composable', 'commerce'], ev: 'Core contributor to Composable UI, a MACH Alliance–awarded starter kit that cut client delivery by up to 6 months.' },
       { id: 'checkout',    name: 'Checkout',        d: 'commerce', level: 2, ev: "Led Harry Rosen's headless checkout build in 6 weeks; later productized across enterprise clients." },
-      { id: 'lending',     name: 'Capital lending', d: 'commerce', level: 2, ev: 'Refactored the Capital offer decision tree that generates daily loan offers, enabling the launch of Starter Loans.' },
-      { id: 'payments',    name: 'Payments',        d: 'commerce', level: 2 },
-      { id: 'founder',     name: 'Founder',         d: 'commerce', level: 2, ev: 'Founded HiNature Ltd in 2019.' },
-      { id: 'talks',       name: 'AI talks',        d: 'commerce', level: 1, ev: 'Gave AI-focused technical talks at Orium to improve developer productivity.' },
+      { id: 'lending',     name: 'Capital lending', d: 'commerce', level: 2, aka: ['fintech', 'loans'], ev: 'Refactored the Capital offer decision tree that generates daily loan offers, enabling the launch of Starter Loans.' },
+      { id: 'payments',    name: 'Payments',        d: 'commerce', level: 2, aka: ['stripe', 'refunds'], ev: 'Refunds, transactions, and webhooks at Parker AI. PayPaw, a payment service for the Bytom blockchain, won first place and a $30K prize.' },
+      { id: 'founder',     name: 'Founder',         d: 'commerce', level: 2, aka: ['startup', 'hinature'], ev: 'Founded HiNature Ltd in 2019: a microbiome scanner that analyzed 35,000+ ingredients at ~95% accuracy, later pivoted into a profitable real-estate operation.' },
+      { id: 'talks',       name: 'AI talks',        d: 'commerce', level: 1, aka: ['speaking'], ev: 'Gave AI-focused technical talks at Orium to improve developer productivity.' },
     ];
 
     /* ─── Roles (inner ring = career clock) ─── */
@@ -1073,20 +1104,20 @@
           ['Autonomous Engineering Ops', 'Built a 10+ agent loop (intake, coding, QA, security, incident response, release) on top of Status Island (live health across 30+ systems); low-risk work ships end to end while prod deploys, migrations, and customer sends stay human-gated.'],
           ['Independent Verification', 'Built clean-context QA and Security agents that verify diffs against real replicas, previews, and logs, enforce an "address or explain" merge gate, and log loop recaps on every ship.'],
           ['Self-Learning from Experts & Incidents', 'Turned senior engineering, QA, and security practices into living skills, repo feature maps, and incident-replay benchmarks, audited by a daily self-review scorecard that updates rules automatically.'],
-          ['Autonomous LLM Training & Evals', 'Trained self-hosted fine-tuned LLMs that match frontier-model quality at 200× lower cost and serve millions of requests a week, running async on GPU clusters through a job queue with producers and finalizers. Agents run the research and training loop: experiments, monitoring, iteration. Also built an eval framework benchmarking 25+ models on production tools, MCP, and context.'],
+          ['Autonomous LLM Training & Evals', 'Trained self-hosted fine-tuned LLMs that match frontier-model quality at 200× lower cost and serve millions of requests a week, running async on GPU clusters through a job queue with producers and finalizers. Agents run the research and training loop: experiments, monitoring, iteration. Also built an eval framework benchmarking 50+ models, more counting variants like thinking levels and Flash or Lite tiers, on production tools, MCP, and context.'],
           ['Continuous Fine-Tuning & Expert Distillation', "Built a continuous learning pipeline where user reactions and feedback feed a training queue to fine-tune models and LLM judges, alongside distilling domain experts' outputs, chats, and review history into vision+text → text reasoning models."],
           ['Self-Healing Data Workflows', 'Built automated workflows that detect and repair data issues across millions of records.'],
           ['Database Performance', 'Scaled Postgres to hundreds of millions of rows with partitioning, cutting key queries from 1+ minute to milliseconds.'],
         ],
         metrics: [
-          { k: 'AGENTS', v: '10+' }, { k: 'SYSTEMS WATCHED', v: '30+' }, { k: 'MODELS BENCHMARKED', v: '25+' },
+          { k: 'AGENTS', v: '10+' }, { k: 'SYSTEMS WATCHED', v: '30+' }, { k: 'MODELS BENCHMARKED', v: '50+' },
           { k: 'INFERENCE COST', v: '↓ 200×' }, { k: 'REQUESTS / WEEK', v: 'millions' }, { k: 'KEY QUERIES', v: '1 min → ms' },
         ],
-        skills: ['agent_loops', 'grok', 'claude_code', 'guardrails', 'verify', 'evals', 'mcp', 'skills_maps', 'claude_api', 'openai_api', 'gemini', 'rag', 'llms_txt',
+        skills: ['agent_loops', 'grok', 'claude_code', 'guardrails', 'verify', 'evals', 'mcp', 'skills_maps', 'llm_apis', 'rag', 'llms_txt',
                  'tla', 'mutation', 'rls',
-                 'selfhost', 'lora', 'cont_learn', 'distill', 'llm_judges', 'vlm', 'gpu',
+                 'selfhost', 'lora', 'infcost', 'cont_learn', 'distill', 'llm_judges', 'vlm', 'gpu', 'pytorch',
                  'pipelines', 'temporal', 'postgres', 'supabase', 'selfheal', 'observ', 'gcp',
-                 'typescript', 'python', 'nodejs', 'react', 'nextjs', 'tanstack', 'tailwind', 'adtech', 'payments'],
+                 'typescript', 'python', 'nodejs', 'apis', 'react', 'nextjs', 'tanstack', 'tailwind', 'adtech', 'shopify_apps', 'payments'],
       },
       {
         id: 'orium', name: 'Orium', short: 'ORIUM', title: 'Senior Product Developer',
@@ -1120,7 +1151,7 @@
           ['Capital API', 'Built and maintained the Capital API and admin systems; optimized database queries; served on call.'],
         ],
         metrics: [{ k: 'LAUNCH', v: 'Starter Loans' }],
-        skills: ['lending', 'rails', 'apis', 'postgres', 'mysql', 'redis', 'graphql', 'observ'],
+        skills: ['lending', 'rails', 'apis', 'postgres', 'redis', 'graphql', 'observ'],
       },
       {
         id: 'combyne', name: 'Combyne AG', short: 'COMBYNE', title: 'Full Stack Developer',
@@ -1132,7 +1163,7 @@
           ['Async', 'Moved async work to AWS SQS + Python workers to make room for future scale.'],
         ],
         metrics: [{ k: 'USERS', v: '1M+' }, { k: 'SEARCH', v: '10–100×' }],
-        skills: ['python', 'nodejs', 'express', 'vue', 'redis', 'elastic', 'postgres', 'mysql', 'aws', 'php', 'apis'],
+        skills: ['python', 'nodejs', 'vue', 'redis', 'elastic', 'postgres', 'aws', 'early_web', 'apis'],
       },
       {
         id: 'isight', name: 'i-Sight', short: 'I-SIGHT', title: 'Software Application Developer',
@@ -1142,7 +1173,7 @@
           ['Client builds', 'Led key client projects (Michigan State, GSK, Wipro) full-stack on Node.js, Backbone.js, PostgreSQL, Elasticsearch.'],
         ],
         metrics: [],
-        skills: ['nodejs', 'express', 'backbone', 'postgres', 'elastic'],
+        skills: ['nodejs', 'early_web', 'postgres', 'elastic'],
       },
       {
         id: 'events', name: 'Events.com', short: 'EVENTS', title: 'Web Developer',
@@ -1152,7 +1183,7 @@
           ['Registration', 'Built event-registration services on the LAMP stack: PHP, MySQL, AngularJS, CodeIgniter.'],
         ],
         metrics: [],
-        skills: ['php', 'mysql'],
+        skills: ['early_web'],
       },
     ];
 
@@ -1175,9 +1206,9 @@
         skills: ['verify', 'guardrails', 'agent_loops'] },
       { id: 'train-loop', name: 'Autonomous Training Loop', year: 'now', status: 'live', at: 'parker-ai',
         desc: 'Fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve millions of requests a week. They run async on GPU clusters through a job queue with producers and finalizers, and agents run the training experiments, monitor runs, and iterate.',
-        skills: ['selfhost', 'lora', 'gpu', 'python'] },
+        skills: ['selfhost', 'lora', 'infcost', 'gpu', 'python'] },
       { id: 'evals', name: 'Eval Framework', year: 'now', status: 'live', at: 'parker-ai',
-        desc: 'Benchmarks 25+ models on production tools, MCP, and context. Incident-replay benchmarks and a daily self-review scorecard that updates agent rules automatically.',
+        desc: 'Benchmarks 50+ models, more counting variants like thinking levels and Flash or Lite tiers, on production tools, MCP, and context. Incident-replay benchmarks and a daily self-review scorecard that updates agent rules automatically.',
         skills: ['evals', 'mcp', 'skills_maps', 'llm_judges'] },
       { id: 'cont-ft', name: 'Continuous Fine-Tuning', year: 'now', status: 'live', at: 'parker-ai',
         desc: "User reactions and feedback feed a training queue for models and LLM judges. Domain experts' outputs, chats, and review history are distilled into vision+text → text reasoning models.",
@@ -1202,7 +1233,7 @@
         skills: ['nextjs', 'react', 'typescript', 'tailwind'] },
       { id: 'rsl-payments', name: 'Payments & Shopify', year: '2024', status: 'archived', at: 'parker-ai',
         desc: 'Refunds, transactions, webhooks; shipped multiple Shopify extension apps.',
-        skills: ['payments', 'nextjs', 'typescript', 'supabase', 'postgres'] },
+        skills: ['payments', 'shopify_apps', 'nextjs', 'typescript', 'supabase', 'postgres'] },
       { id: 'rsl-backend', name: 'Backend Rebuild', year: '2024', status: 'archived', at: 'parker-ai',
         desc: 'Rebuilt Firebase + Express into Supabase Postgres + Next.js, with tests taking coverage to 80% in weeks.',
         skills: ['nextjs', 'supabase', 'postgres', 'typescript', 'nodejs'] },
@@ -1226,16 +1257,16 @@
         skills: ['lending', 'rails', 'postgres'] },
       { id: 'combyne-admin', name: 'Combyne Admin (×2)', year: '2017–19', status: 'archived', at: 'combyne',
         desc: 'Two admin systems: PHP7/MySQL + JS, and Node.js/Express + Vue.js with role-based access.',
-        skills: ['php', 'mysql', 'nodejs', 'express', 'vue'] },
+        skills: ['early_web', 'nodejs', 'vue'] },
       { id: 'wipro', name: 'Wipro Hotline', year: '2016', status: 'archived', at: 'isight',
         desc: 'Global whistleblower reporting and call-center service. Lead dev, shipped in 6 weeks.',
-        skills: ['backbone', 'nodejs', 'postgres', 'express'] },
+        skills: ['early_web', 'nodejs', 'postgres'] },
       { id: 'michigan', name: 'MI Medicaid DHHS', year: '2016', status: 'archived', at: 'isight',
         desc: 'State of Michigan healthcare app on i-Sight v5.',
-        skills: ['backbone', 'nodejs', 'postgres'] },
+        skills: ['early_web', 'nodejs', 'postgres'] },
       { id: 'gmc', name: 'GMC Fundraiser', year: '2015', status: 'archived', at: 'events',
         desc: "Get Movin' Crew: school fundraising for 1M+ users in the US. Front end, email, and admin.",
-        skills: ['php', 'mysql'] },
+        skills: ['early_web'] },
     ];
 
     /* ─── Knowledge base for the simulated LLM ───
@@ -1249,8 +1280,8 @@
         rel: ['parker-ai', 'agent_loops', 'selfhost', 'evals'] },
       { id: 'ai', keys: ['ai', 'artificial', 'intelligence', 'llm', 'llms', 'ml', 'machine', 'model', 'models', 'genai', 'gpt', 'claude', 'gemini', 'openai', 'anthropic', 'neural'],
         ctx: ['Parker AI · Autonomous LLM Training & Evals', 'Parker AI · Autonomous Engineering Ops', 'Summary'],
-        a: "AI is my day job. At Parker AI I built a 10+ agent engineering loop, an automated research and training loop on a GPU cluster, and an eval framework that benchmarks 25+ models on production tools, MCP, and context. The fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve millions of requests a week. The goal is always the same: agents that do real engineering work, safely.",
-        rel: ['parker-ai', 'agent_loops', 'selfhost', 'lora', 'evals', 'claude_api'] },
+        a: "AI is my day job. At Parker AI I built a 10+ agent engineering loop, an automated research and training loop on a GPU cluster, and an eval framework that benchmarks 50+ models on production tools, MCP, and context. The fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve millions of requests a week. The goal is always the same: agents that do real engineering work, safely.",
+        rel: ['parker-ai', 'agent_loops', 'selfhost', 'lora', 'evals', 'llm_apis'] },
       { id: 'agents', keys: ['agent', 'agents', 'agentic', 'autonomous', 'loop', 'orchestration', 'multi', 'ops', 'automation', 'swarm', 'crew', 'office'],
         ctx: ['Parker AI · Autonomous Engineering Ops', 'Parker AI · Independent Verification', 'Parker AI · Self-Learning from Experts'],
         a: "I built a 10+ agent loop covering intake, coding, QA, security, incident response, and release. It runs on top of Status Island, which tracks live health across 30+ systems. Low-risk work ships end to end with no one touching it. Prod deploys, migrations, and customer sends stay human-gated. Clean-context QA and Security agents verify every diff against real replicas, previews, and logs before anything merges. The team itself is a Chief of Staff bot directing about ten specialist Grok bots (ask me about Grok bots). You can watch a version of it in the office below.",
@@ -1261,7 +1292,7 @@
         rel: ['grok', 'claude_code', 'agent_loops', 'guardrails', 'parker-ai'] },
       { id: 'agentisland', keys: ['island', 'pixel', 'pixelart', 'pixel-art', 'building', 'buildings', 'visualize', 'visualizer', 'status', 'health', 'monitoring', 'monitor', 'uptime', 'probe', 'probes', 'observability', 'outage', 'outages', 'incident', 'incidents', 'oncall', 'on-call', 'agent island', 'agent-island', 'status island', 'status-island'],
         ctx: ['Projects · Agent Island', 'Agent Island · health probes', 'Agent Island · llms.txt'],
-        a: "Agent Island is a live pixel-art island for agents. It started at work as Status Island, our production health board. Agents show up as characters and walk to the building that matches what they're doing, like coding, research, deploying, or waiting on a human. Health probes on APIs, workers, the database, CI, and deploys colour the island green, amber, or red. It's one feed with three views: the island, a classic status list, and JSON for agents, who check it every few hours and open an incident when something changes. Agents take an incident as far as verifying; a person resolves it. It's live at agent-island-liard.vercel.app, and open-sourcing it is on my list.",
+        a: "Agent Island is a live pixel-art island for agents. It started at work as Status Island, our production health board. Agents show up as characters and walk to the building that matches what they're doing, like coding, research, deploying, or waiting on a human. Health probes on APIs, workers, the database, CI, and deploys colour the island green, amber, or red. It's one feed with three views: the island, a classic status list, and JSON for agents, who check it every few hours and open an incident when something changes. Agents take an incident as far as verifying; a person resolves it. It's live at [agent-island-liard.vercel.app](https://agent-island-liard.vercel.app/), and open-sourcing it is on my list.",
         rel: ['observ', 'llms_txt', 'claude_code', 'agent_loops'] },
       { id: 'support', keys: ['support', 'customer', 'customers', 'bug', 'bugs', 'ticket', 'tickets', 'report', 'reports', 'intake', 'helpdesk', 'triage', 'feedback', 'feedback loop', 'support loop', 'bug intake'],
         ctx: ['Support loop · intake', 'Support loop · investigation', 'Support loop · close path'],
@@ -1285,7 +1316,7 @@
         rel: ['lora', 'selfhost', 'cont_learn', 'distill', 'gpu', 'parker-ai'] },
       { id: 'evals', keys: ['eval', 'evals', 'evaluation', 'evaluate', 'benchmark', 'benchmarks', 'judge', 'judges', 'mcp', 'quality', 'scorecard', 'tools'],
         ctx: ['Parker AI · Autonomous LLM Training & Evals', 'Parker AI · Self-Learning from Experts & Incidents', 'Parker AI · Independent Verification'],
-        a: "My eval framework benchmarks 25+ models on what actually matters in production: our tools, MCP, and real context. Incident-replay benchmarks turn past outages into tests. Senior engineering, QA, and security practices are written up as living skills and repo feature maps, and a daily self-review scorecard audits the agents and updates their rules automatically.",
+        a: "My eval framework benchmarks 50+ models, and more once you count variants like thinking levels and Flash or Lite tiers, on what actually matters in production: our tools, MCP, and real context. Incident-replay benchmarks turn past outages into tests. Senior engineering, QA, and security practices are written up as living skills and repo feature maps, and a daily self-review scorecard audits the agents and updates their rules automatically.",
         rel: ['evals', 'mcp', 'llm_judges', 'skills_maps', 'parker-ai'] },
       { id: 'safety', keys: ['security', 'secure', 'qa', 'test', 'testing', 'tests', 'verify', 'verification', 'review', 'guardrail', 'guardrails', 'safety', 'safe', 'gate', 'human', 'merge'],
         ctx: ['Parker AI · Independent Verification', 'Parker AI · Autonomous Engineering Ops', 'Summary · guardrails'],
@@ -1301,7 +1332,7 @@
         rel: ['postgres', 'supabase', 'redis', 'elastic', 'parker-ai', 'combyne'] },
       { id: 'frontend', keys: ['frontend', 'front-end', 'front', 'react', 'next', 'nextjs', 'next.js', 'ui', 'ux', 'design', 'css', 'headless', 'composable', 'orium', 'commerce', 'ecommerce', 'checkout', 'harry', 'rosen', 'typescript', 'web', 'three', 'threejs'],
         ctx: ['Orium · Composable UI', 'Orium · Harry Rosen', 'Projects · xnohub.com'],
-        a: "At Orium I was a core contributor to Composable UI, a MACH Alliance–awarded headless commerce starter kit that cut client delivery timelines by up to 6 months. I led Harry Rosen's headless checkout build in 6 weeks; it was later productized and reused across enterprise clients. I still ship React and Next.js daily, and on the side I built xnohub.com, a 3D globe in Three.js.",
+        a: "At Orium I was a core contributor to [Composable UI](https://composable.com/composable-ui), a MACH Alliance–awarded headless commerce starter kit that cut client delivery timelines by up to 6 months. I led Harry Rosen's headless checkout build in 6 weeks; it was later productized and reused across enterprise clients. I still ship React and Next.js daily, and on the side I built xnohub.com, a 3D globe in Three.js.",
         rel: ['orium', 'headless', 'checkout', 'react', 'nextjs', 'threejs'] },
       { id: 'shopify', keys: ['shopify', 'capital', 'ruby', 'rails', 'loan', 'loans', 'lending', 'fintech', 'money', 'finance', 'starter'],
         ctx: ['Shopify · Offer decision tree', 'Shopify · Capital API', 'Projects · Starter Loans'],
@@ -1323,9 +1354,9 @@
         ctx: ['Education', 'Header · Ottawa, ON', 'Summary'],
         a: "I have a BSc in Computer Science (Specialization) with a Minor in Economics from the University of Ottawa, 2009–2014.",
         rel: ['python', 'events'] },
-      { id: 'contact', keys: ['contact', 'hire', 'hiring', 'email', 'reach', 'linkedin', 'github', 'recruit', 'recruiter', 'chat', 'call', 'meet', 'location', 'where', 'ottawa', 'canada'],
+      { id: 'contact', keys: ['contact', 'hire', 'hiring', 'email', 'reach', 'linkedin', 'github', 'recruit', 'recruiter', 'chat', 'call', 'meet', 'schedule a call', 'book a call', 'set up a call', 'hop on a call', 'get in touch', 'location', 'where', 'ottawa', 'canada'],
         ctx: ['Header · contact', 'Summary', 'Parker AI · overview'],
-        a: "The best way to reach me is email (dhuan023@gmail.com) or LinkedIn (linkedin.com/in/dalinhuang). Code lives at github.com/dalindev. I'm based in Ottawa, Canada. If you're building agents that need to do real work safely, I'd like to hear about it.",
+        a: "The best way to reach me is email at [dhuan023@gmail.com](mailto:dhuan023@gmail.com) or [LinkedIn](https://www.linkedin.com/in/dalinhuang/). Code lives at [github.com/dalindev](https://github.com/dalindev). I'm based in Ottawa, Canada. If you're building agents that need to do real work safely, I'd like to hear about it.",
         rel: ['parker-ai', 'agent_loops'] },
       { id: 'strengths', keys: ['strength', 'strengths', 'strongest', 'superpower', 'specialty', 'expertise', 'skills', 'best at', 'good at', 'why hire', 'why you', 'why should'],
         ctx: ['Summary', 'Parker AI · overview', 'Experience · all roles'],
@@ -1334,7 +1365,7 @@
       { id: 'stack', keys: ['stack', 'tech', 'technology', 'technologies', 'languages', 'language', 'frameworks', 'framework', 'tooling', 'tech stack', 'what do you use'],
         ctx: ['Skills · daily drivers', 'Skills · earlier roles', 'Knowledge map'],
         a: "Day to day I work in TypeScript and Python, with React, Next.js, and Node.js on top, Temporal for workflows, Postgres and Supabase for data, and the Claude, OpenAI, and Gemini APIs, plus self-hosted models on GPU clusters. Earlier I shipped with Ruby on Rails, PHP, Vue, Backbone, Elasticsearch, Redis, and AWS. The knowledge map below has every skill with evidence.",
-        rel: ['typescript', 'python', 'react', 'temporal', 'postgres', 'claude_api'] },
+        rel: ['typescript', 'python', 'react', 'temporal', 'postgres', 'llm_apis'] },
       { id: 'proud', keys: ['proud', 'proudest', 'achievement', 'achievements', 'accomplishment', 'accomplishments', 'highlight', 'highlights', 'biggest', 'impact', 'best work', 'favorite project', 'favourite project'],
         ctx: ['Parker AI · Autonomous LLM Training', 'Parker AI · Database Performance', 'Shopify · Offer decision tree'],
         a: "A few I'm proud of: fine-tuned models I trained that match frontier quality at 200× lower cost; an agent team that ships real work while anything risky waits for a human; Postgres queries cut from over a minute to milliseconds; the Capital decision-tree refactor at Shopify that enabled Starter Loans; and Composable UI at Orium, which won a MACH Alliance award.",
@@ -1349,7 +1380,7 @@
         rel: ['parker-ai', 'agent_loops', 'selfhost', 'pipelines'] },
       { id: 'direct', keys: ['salary', 'compensation', 'comp', 'pay', 'rate', 'rates', 'visa', 'sponsorship', 'sponsor', 'citizenship', 'citizen', 'permit', 'notice', 'relocate', 'relocation', 'remote', 'hybrid', 'onsite', 'on-site', 'availability', 'available', 'freelance', 'contract', 'contractor', 'full-time', 'fulltime', 'part-time', 'references', 'start date', 'open to work', 'looking for a job', 'job search', 'new job', 'why leave', 'leaving'],
         ctx: ['Header · contact', '(not in the resume)', 'Summary'],
-        a: "That one deserves a real conversation, not a lookup table. Email me at dhuan023@gmail.com or message me on LinkedIn (linkedin.com/in/dalinhuang), and I'll answer directly.",
+        a: "That one deserves a real conversation, not a lookup table. Email me at [dhuan023@gmail.com](mailto:dhuan023@gmail.com) or message me on [LinkedIn](https://www.linkedin.com/in/dalinhuang/), and I'll answer directly.",
         rel: [] },
       { id: 'fit', keys: ['ideal', 'dream', 'next role', 'looking for', 'kind of role', 'type of role', 'what role'],
         ctx: ['Summary', 'Parker AI · overview', 'Header · Senior AI Developer'],
@@ -1361,20 +1392,44 @@
         rel: [] },
       { id: 'resume', keys: ['resume', 'cv', 'pdf', 'curriculum'],
         ctx: ['Dalin_Huang_Resume_2026.pdf', 'Experience · all roles', 'Summary'],
-        a: "The full resume is one click away: RESUME in the top bar opens the PDF. The short version: 10+ years shipping production systems, now a Senior AI Developer focused on agent systems at Parker AI, with Orium, Shopify, and Combyne AG before that. The Experience section below has every role.",
+        a: "The full resume is one click away: [Dalin_Huang_Resume_2026.pdf](Dalin_Huang_Resume_2026.pdf). The short version: 10+ years shipping production systems, now a Senior AI Developer focused on agent systems at Parker AI, with Orium, Shopify, and Combyne AG before that. The Experience section below has every role.",
         rel: ['parker-ai', 'orium', 'shopify'] },
-      { id: 'zero', keys: ['scratch', 'mvp', 'greenfield', 'zero to one', '0 to 1', 'from scratch', 'end to end'],
+      { id: 'zero', keys: ['from nothing', 'scratch', 'mvp', 'greenfield', 'zero to one', '0 to 1', 'from scratch', 'end to end'],
         ctx: ['Parker AI · Core Platform', 'Orium · Composable UI', 'HiNature Ltd · Founder'],
-        a: "Yes, most of my career has been building from zero. At Parker AI I built the web app, Temporal AI workflows, and agent data tools from scratch. At Orium I was a core contributor to Composable UI and led Harry Rosen's headless checkout in 6 weeks. I founded HiNature in 2019, and on the side I've shipped xnohub.com, LocalXNO, and Agent Island on my own.",
+        a: "Yes, most of my career has been building from zero. At Parker AI I built the web app, Temporal AI workflows, and agent data tools from scratch. At Orium I was a core contributor to [Composable UI](https://composable.com/composable-ui) and led Harry Rosen's headless checkout in 6 weeks. I founded HiNature in 2019, and on the side I've shipped xnohub.com, LocalXNO, and Agent Island on my own.",
         rel: ['parker-ai', 'headless', 'founder', 'nextjs'] },
       { id: 'sideprojects', keys: ['xnohub', 'localxno', 'nano', 'paypaw', 'side project', 'side projects', 'personal project', 'personal projects'],
         ctx: ['Projects · Agent Island', 'Projects · xnohub.com', 'Projects · LocalXNO.com'],
-        a: "On the side: Agent Island, a live pixel-art island where agents show what they're working on; xnohub.com, a real-time 3D globe of the Nano network; and LocalXNO.com, a Nano marketplace on Next.js and Supabase. Earlier, PayPaw, a payment service for the Bytom blockchain, took first place and a $30K prize at a dev challenge.",
+        a: "On the side: [Agent Island](https://agent-island-liard.vercel.app/), a live pixel-art island where agents show what they're working on; [xnohub.com](https://xnohub.com), a real-time 3D globe of the Nano network; and [LocalXNO.com](https://localxno.com), a Nano marketplace on Next.js and Supabase. Earlier, PayPaw, a payment service for the Bytom blockchain, took first place and a $30K prize at a dev challenge. Plus tons of side projects I never released, built just for fun.",
         rel: ['threejs', 'nextjs', 'supabase', 'llms_txt'] },
       { id: 'workflow', keys: ['cursor', 'copilot', 'vibe', 'ai coding', 'coding agent', 'coding agents', 'your workflow', 'my workflow', 'ai tools', 'pair programming'],
         ctx: ['Agent team · Chief of Staff', 'Agent team · Claude Code', 'Agent team · human gate'],
-        a: "My own workflow is agentic. Grok bots triage tickets, dig read-only, and draft small fixes; heavy work goes to Claude Code on my machine with a verify-first brief; QA bots verify against real previews and logs. I review what matters and approve anything risky: prod deploys, prod database writes, migrations, money, and customer messages. The office below shows the whole team.",
+        a: "My own workflow is agentic. Grok bots triage tickets, dig read-only, and draft small fixes; heavy work goes to Claude Code on my machine with a verify-first brief; QA bots verify against real previews and logs. I review what matters and approve anything risky: prod deploys, prod database writes, migrations, money, and customer messages. The office below shows the whole team. At home, I build things with my kids using Claude Code.",
         rel: ['grok', 'claude_code', 'agent_loops', 'guardrails'] },
+      { id: 'vision', keys: ['agi', 'asi', 'singularity', 'heading', 'headed', 'ai heading', 'ai headed', 'ai going', 'dangerous', 'doom', 'doomer', 'scary', 'existential', 'ai optimist', 'predict', 'prediction', 'predictions', 'optimist', 'optimistic', 'future of ai', 'ai future', 'the future', 'future of tech', 'future of software', 'where is ai going', 'where ai is going', 'next for ai', 'next decade', 'big picture'],
+        ctx: ['(my view) · where AI is going', 'Parker AI · Autonomous Engineering Ops', 'Parker AI · Autonomous LLM Training'],
+        a: "I'm an optimist: I believe AI will build a better future, and I expect AGI around 2027. You can already see the path in my own work. Agents that used to autocomplete code now take a ticket, write the fix, test it, and verify the deploy, while a person keeps the gate on anything risky. The next step is agents that improve themselves safely: they learn from their own incidents, run their own experiments, and earn more autonomy as their track record grows. The hard part isn't raw intelligence any more, it's trust: evals, guardrails, and verification. That's the part I build.",
+        rel: ['agent_loops', 'guardrails', 'evals', 'verify'] },
+      { id: 'inspiration', keys: ['spacex', 'tesla', 'elon', 'musk', 'inspire', 'inspires', 'inspired', 'inspiration', 'idol', 'hero', 'heroes', 'admire', 'motivates', 'motivation', 'role model', 'role models', 'first principles', 'first principle', 'look up to', 'what drives you', 'influenced', 'influence', 'influences'],
+        ctx: ['(my view) · first principles', 'Parker AI · self-hosted LLMs', 'Projects · Ship Loops'],
+        a: "SpaceX and Tesla. I love how they treat 'impossible' as an engineering problem: rockets that land and fly again, and cars that are learning to drive themselves. What I take from them is first principles: break a problem down to what has to be true, then rebuild from there instead of copying how it's usually done. It shows up in my work. Instead of accepting frontier-API prices as a given, I trained our own models that match frontier quality at 200× lower cost. And before building Ship Loops, I proved the design with model checking instead of hoping the edge cases would work out.",
+        rel: ['selfhost', 'lora', 'tla'] },
+      { id: 'aijobs', keys: ['replace developers', 'replace engineers', 'replace programmers', 'replace us', 'replace you', 'replaced you', 'replaced us', 'replace everyone', 'replaced everyone', 'ai replaced', 'take our jobs', 'take jobs', 'ai jobs', 'learn to code', 'learn coding', 'future of coding', 'future of programming', 'end of programming', 'coding dead', 'still need engineers', 'still need developers'],
+        ctx: ['(my view) · AI and engineering jobs', 'Agent team · human gate', 'Parker AI · Autonomous Engineering Ops'],
+        a: "I think the job changes more than it disappears, and it's already changing for me. My agent team takes tickets end to end, so my time goes to deciding what to build, setting the guardrails, and approving what's risky: prod deploys, migrations, money, and customer messages. The engineers who do well will be the ones who can direct agents, check their work, and think from first principles about what should exist. Learning to code still matters, because you can't review what you don't understand. And if AI really does replace everyone, I'll be streaming games, and fishing when the weather's good.",
+        rel: ['agent_loops', 'guardrails', 'claude_code'] },
+      { id: 'hobbies', keys: ['hobby', 'hobbies', 'fun', 'games', 'gaming', 'gamer', 'video games', 'fishing', 'fish', 'stream', 'streamer', 'streaming', 'twitch',
+          'video', 'videos', 'youtube', 'editing', 'video editing', 'edit videos', 'kids', 'children', 'family', 'parent', 'weekend', 'weekends',
+          'free time', 'spare time', 'outside work', 'outside of work', 'personal life'],
+        ctx: ['(about me) · outside work', 'Agent team · Claude Code', '(about me) · videos'],
+        a: "I love games, and fishing when the weather's good. I make videos too, and edit them with AI. At home I build things with my kids using Claude Code. If AI really does replace everyone one day, you'll find me streaming games, or out fishing.",
+        rel: ['claude_code'] },
+      { id: 'tinker', keys: ['tinker', 'tinkering', 'reverse', 'reverse engineer', 'reverse engineering', 'reverse-engineer', 'mechanics', 'game mechanics',
+          'probability', 'probabilities', 'math', 'maths', 'mathematics', 'formula', 'formulas', 'rng', 'hack', 'hacking', 'experiment', 'experiments',
+          'local model', 'local models', 'local llm', 'local llms', 'run models locally', 'unreleased'],
+        ctx: ['(about me) · tinkering', '(about me) · local models', '(about me) · unreleased projects'],
+        a: "For fun, I use AI to reverse-engineer things, like game mechanics that look random: I work out the hidden formulas and probabilities behind them until the system makes sense. It's mostly maths, and I love it. I also run crazy experiments with local models on my own machine to see where the limits are, and I have tons of side projects I never released, built just for fun.",
+        rel: ['selfhost'] },
       { id: 'help', keys: ['help', 'topics', 'menu', 'options', 'commands', 'examples', 'what can i ask', 'what can you do', 'what do you know', 'what should i ask'],
         ctx: ['(topic index)', 'Summary', 'Projects'],
         a: "Ask me about Dalin's work in plain words. Good ones to start with: AI, agents, Grok bots, Agent Island, Ship Loops, fine-tuning, evals, Postgres, Shopify, experience, or how to get in touch. After any answer you can say 'tell me more', or ask how I work.",
@@ -1393,7 +1448,7 @@
         rel: ['cont_learn', 'lora', 'llm_judges'] },
       { id: 'meta_site', keys: ['site', 'website', 'webpage', 'homepage', 'portfolio', 'source', 'this site', 'this website', 'this page', 'built this', 'made this', 'source code', 'how was this built', 'how is this built', 'how was this site built', 'how did you build this'],
         ctx: ['(this page) · index.html', 'Projects · xnohub.com', 'Skills · Three.js'],
-        a: "This page is one static HTML file with no build step and no framework. The office is a Three.js scene built from boxes and canvas textures, with no 3D model files. The knowledge map is hand-drawn SVG, and this model is plain JavaScript and canvas. It scales with your screen like browser zoom, and it was built with Claude Code.",
+        a: "This page is one static HTML file with no build step and no framework, and [the source is on GitHub](https://github.com/dalindev/dalin.dev). The model you're talking to has one real part: a small neural network, plain JavaScript, that trains in your browser when the page loads and runs on every question you ask. The answers are written from the resume, and the token stream, attention, and next-token picks are a simulation. The office is a Three.js scene built from boxes and canvas textures, with no 3D model files, and the knowledge map is hand-drawn SVG. It scales with your screen like browser zoom, and it was built with Claude Code.",
         rel: ['threejs', 'claude_code', 'typescript'] },
       { id: 'smalltalk', keys: ['thanks', 'thank', 'thx', 'cool', 'nice', 'awesome', 'wow', 'lol', 'haha', 'great', 'neat', 'love', 'impressive'],
         ctx: ['(small talk)', 'Summary', 'Projects'],
@@ -1417,11 +1472,14 @@
       now: ['agents', 'fine-tuning', 'experience'], direct: ['current role', 'strengths', 'experience'], fit: ['current role', 'strengths', 'proudest work'],
       weakness: ['proudest work', 'strengths', 'hire'], resume: ['experience', 'strengths', 'hire'], zero: ['side projects', 'strengths', 'founder'],
       sideprojects: ['Agent Island', 'how was this site built?', 'frontend'], workflow: ['Grok bots', 'guardrails', 'Ship Loops'],
+      vision: ['agents', 'guardrails', 'who inspires you?'], inspiration: ['where is AI going?', 'fine-tuning', 'Ship Loops'],
+      aijobs: ['where is AI going?', 'how do you use AI when you code?', 'what do you do for fun?'],
+      hobbies: ['what do you tinker with?', 'side projects', 'where is AI going?'], tinker: ['side projects', 'what do you do for fun?', 'fine-tuning'],
       unknown: ['what can I ask?', 'AI', 'agents'],
     };
     /* Deeper second answers for "tell me more". */
     const KB_MORE = {
-      ai: "A bit more on the AI side: the eval framework tests 25+ models on our real tools, MCP, and context instead of public benchmarks. A continuous learning pipeline turns user reactions into training data for models and LLM judges, and domain experts' outputs, chats, and review history are distilled into vision+text → text reasoning models. Ask about Grok bots for the agent side.",
+      ai: "A bit more on the AI side: the eval framework tests 50+ models, plus their thinking-level and Flash or Lite variants, on our real tools, MCP, and context instead of public benchmarks. A continuous learning pipeline turns user reactions into training data for models and LLM judges, and domain experts' outputs, chats, and review history are distilled into vision+text → text reasoning models. Ask about Grok bots for the agent side.",
       agents: "Under the hood: QA and Security agents work in a clean context, so they check the diff against real replicas, previews, and logs instead of trusting the author's notes. Every finding gets fixed or answered before merge. Senior engineering, QA, and security practices live on as skills and repo feature maps, and a daily self-review scorecard audits the agents and updates their rules automatically.",
       team: "A few design choices: the Chief of Staff digs read-only first and attaches a confidence level, so tickets arrive with evidence. Results post with an Agent header, and quiet runs say nothing. Scouts only recommend: Cost Scout traced most of one model's spend to a single call site, and Billing Watch reads billing weekly but needs an explicit yes for refunds, cancellations, or contacting a customer. The OSS bot drafts upstream fixes that I approve word for word.",
       train: "More on serving: inference runs async on GPU clusters through a job queue. Producers put the work on the queue and finalizers collect the results, which saves even more on cost. On the learning side, user reactions feed a training queue for the next round of fine-tuning, and agents run the experiments, watch the runs, and iterate.",
@@ -1432,7 +1490,7 @@
       agentisland: "Under the hood: joining takes one HTTP call that returns an id and a short-lived token, a second call reports place, activity, and mood, and a DELETE leaves. No accounts or cookies, and its llms.txt tells agents to join only if their user asked. All three views come from the same round of probes, so people and agents always see the same state. Claude Code built the API and UI from a brief I approved.",
       shiploops: "The goal is a hands-off number I can trust: the share of decisions that need me versus automatic ones backed by fresh evidence. Every guard has a mutation test that removes it, and the matching rule has to break, so no guard is just decoration.",
       support: "Two rules make it work. First, dig before searching tickets, so the agent can recognise a duplicate instead of filing a new one. Second, close through the real close path, so the customer email actually fires instead of the ticket going quiet. Customer-facing replies always wait for my approval.",
-      frontend: "On the side I build visual things: xnohub.com is a real-time 3D globe of the Nano network, LocalXNO is a Nano marketplace on Next.js and Supabase, and this page is one static HTML file with a Three.js office. At Orium I also built a library that turns Figma design tokens into dynamic Chakra UI themes.",
+      frontend: "On the side I build visual things: [xnohub.com](https://xnohub.com) is a real-time 3D globe of the Nano network, [LocalXNO](https://localxno.com) is a Nano marketplace on Next.js and Supabase, and this page is one static HTML file with a Three.js office. At Orium I also built a library that turns Figma design tokens into dynamic Chakra UI themes.",
     };
     /* Example questions per answer. The model compares a visitor's question with these (after normalising
        words like current→now, job→role, what's→what is), so one line here covers many phrasings.
@@ -1452,7 +1510,7 @@
       postgres: ['how do you scale a database', 'have you optimized slow queries', 'how big are your databases'],
       frontend: ['are you a frontend developer', 'do you do frontend', 'what frontend work have you done', 'what ui frameworks do you use', 'do you know react'],
       shopify: ['what did you do at shopify', 'tell me about shopify', 'tell me about your ecommerce work'],
-      career: ['how many years of experience do you have', 'walk me through your career', 'what companies have you worked at', 'where have you worked', 'what is your background'],
+      career: ['how many years of experience do you have', 'walk me through your career', 'what companies have you worked at', 'where have you worked', 'what is your background', 'what jobs have you had'],
       founder: ['have you started a company', 'are you a founder', 'do you have startup experience', 'have you run a business', 'did you start a company', 'have you worked at a startup'],
       combyne: ['what did you do before shopify', 'what was your first job'],
       edu: ['what did you study', 'where did you go to school', 'do you have a degree', 'what is your education'],
@@ -1463,7 +1521,7 @@
       leadership: ['have you led a team', 'do you have leadership experience', 'have you mentored engineers', 'have you managed people', 'are you good at leading people'],
       direct: ['what are your salary expectations', 'how much do you charge', 'do you need visa sponsorship', 'what is your notice period', 'when can you start',
                'are you open to relocation', 'are you open to remote work', 'are you looking for a new job', 'are you open to work', 'are you available', 'why are you leaving', 'do you do contract work'],
-      fit: ['what kind of role are you looking for', 'what is your ideal role', 'what are you looking for in your next role', 'what kind of team do you want to join'],
+      fit: ['what kind of role are you looking for', 'what is your ideal role', 'what are you looking for in your next role', 'what are your future plans', 'where do you see yourself in five years', 'what kind of team do you want to join'],
       weakness: ['what is your biggest weakness', 'what are your weaknesses', 'what would you improve about yourself', 'what are you bad at'],
       resume: ['can i see your resume', 'where is your cv', 'do you have a resume', 'send me your cv'],
       zero: ['can you build an mvp', 'have you built something from scratch', 'can you build a product end to end', 'can you take a product from zero to one', 'can you work alone'],
@@ -1476,8 +1534,18 @@
       help: ['what can i ask', 'what do you know', 'what topics can you answer', 'give me some examples'],
       meta_how: ['how does this work', 'how do you work', 'how did you answer that', 'how does this chatbot work'],
       meta_real: ['is this a real llm', 'are you a real ai', 'are you chatgpt', 'what model are you', 'is this fake'],
-      meta_train: ['what were you trained on', 'how were you trained', 'what data do you use'],
+      meta_train: ['what were you trained on', 'how were you trained', 'what data do you use', 'what data did you learn from'],
       meta_site: ['how was this site built', 'what is this website built with', 'how did you make this page'],
+      vision: ['where do you think ai is going', 'what is the future of ai', 'when will we get agi', 'do you believe in agi', 'what do you think about agi',
+        'what excites you about ai', 'are you optimistic about ai', 'what is next for ai', 'where will ai be in five years', 'what will ai look like in 10 years', 'why did you get into ai', 'is ai good for the world', 'is ai dangerous', 'are you worried about ai'],
+      inspiration: ['who inspires you', 'who are your role models', 'who do you look up to', 'what companies do you admire', 'what do you think of spacex',
+        'what do you think of tesla', 'what do you think of elon musk', 'how do you approach problems', 'what is first principles thinking', 'what motivates you', 'who influenced you'],
+      aijobs: ['will ai replace developers', 'will ai take our jobs', 'will ai replace software engineers', 'should i still learn to code', 'is coding dead',
+        'do we still need engineers', 'what happens to programmers', 'will ai replace you', 'what would you do if ai replaced everyone'],
+      hobbies: ['what do you do for fun', 'what are your hobbies', 'what do you do outside of work', 'do you play games', 'what games do you play', 'do you have kids',
+        'what do you do on weekends', 'what do you do in your free time', 'do you make videos', 'how do you edit videos'],
+      tinker: ['what do you tinker with', 'do you reverse engineer things', 'do you reverse engineer games', 'how do you figure out game mechanics', 'do you like math',
+        'do you run local models', 'do you experiment with local models', 'what experiments do you run for fun', 'do you have unreleased projects'],
     };
     KB.forEach(it => { it.next = KB_NEXT[it.id] || []; it.q = KB_QUESTIONS[it.id] || []; if (KB_MORE[it.id]) it.more = KB_MORE[it.id]; });
     const KB_FALLBACK = {
@@ -1493,7 +1561,7 @@
       { test: /meaning of life|42/i, id: '42',
         a: "42. Also the number of the experiment running in the training panel up top, which is not a coincidence. Probably.", ctx: ['(easter egg)', 'train.loop · exp-042', 'Summary'], rel: ['lora'] },
     ];
-    const SUGGESTIONS = ['AI', 'agents', 'Grok bots', 'Agent Island', 'Ship Loops', 'fine-tuning', 'Postgres', 'Shopify', 'hire', 'is this a real LLM?'];
+    const SUGGESTIONS = ['AI', 'agents', 'Grok bots', 'Agent Island', 'Ship Loops', 'fine-tuning', 'Postgres', 'Shopify', 'hire', 'where is AI going?', 'is this a real LLM?'];
 
     /* ─── Office: the agent team at Parker AI ───
        The back row is the ticket flow (ids are the lane stations). always: status text for desks that never idle.
@@ -1515,8 +1583,8 @@
         desc: 'Owns incidents. Sleeps until a Status Island tile goes red, then digs for the root cause and proposes a fix. It stops at verifying; a person resolves. A sibling Ops bot sends a weekday 8:00 AM health brief.' },
       { id: 'healer',   name: 'DATA HEALER', color: '#34d399', x: -6.0, z: 1.2, kind: 'WORKFLOW', model: 'temporal', always: 'repairing rows',
         desc: 'Self-healing data workflows: detect and repair data issues across millions of records.' },
-      { id: 'evals',    name: 'EVALS',    color: '#22d3ee', x: -2.5, z:  1.2, kind: 'AGENT', model: 'bench', always: '25 models',
-        desc: 'Benchmarks 25+ models on production tools, MCP, and context, and runs the daily self-review scorecard.' },
+      { id: 'evals',    name: 'EVALS',    color: '#22d3ee', x: -2.5, z:  1.2, kind: 'AGENT', model: 'bench', always: '50+ models',
+        desc: 'Benchmarks 50+ models and their variants (thinking levels, Flash and Lite tiers) on production tools, MCP, and context, and runs the daily self-review scorecard.' },
       { id: 'cost',     name: 'COST SCOUT', color: '#facc15', x: 1.0, z: 1.2, kind: 'GROK BOT', model: 'read-only', always: 'tracing spend', minor: true,
         desc: "Watches cloud and AI spend. It traced roughly 90% of one model's spend to a single call site. Recommends only; no billing changes." },
       { id: 'billing',  name: 'BILLING WATCH', color: '#38bdf8', x: 4.5, z: 1.2, kind: 'GROK BOT', model: 'read-only', always: 'weekly check', minor: true,
@@ -1582,7 +1650,7 @@
       { key: 'cost.scout',     st: '',     tail: '· spend traced to one call site' },
       { key: 'train.loop',     st: 'key',  lbl: 'EXP', tail: '· exp-042 · eval ≈ frontier · cost ↓ 200×' },
       { key: 'gpu.queue',      st: 'ok',   tail: '· async · producer → 1,240 jobs → finalizer ✓' },
-      { key: 'eval.bench',     st: '',     tail: '· 25 models · tools + MCP + context' },
+      { key: 'eval.bench',     st: '',     tail: '· 50+ models + variants · tools + MCP + context' },
       { key: 'heal.workflow',  st: 'ok',   tail: '· 1,284 records repaired' },
       { key: 'postgres',       st: '',     tail: '· partition prune · 41ms (was 64s)' },
       { key: 'temporal',       st: 'ok',   tail: '· ad.ingest · billions of points today' },
@@ -2003,7 +2071,7 @@
     const LLM = (() => {
       const form = $('#llm-form'), input = $('#llm-input'), runBtn = $('#llm-run');
       const tokRow = $('#tok-row'), attnSvg = $('#attn-svg'), embGrid = $('#emb-grid'), retList = $('#ret-list');
-      const out = $('#llm-out'), relBox = $('#llm-rel'), stats = $('#llm-stats'), left = $('#llm-left');
+      const out = $('#llm-out'), relBox = $('#llm-rel'), stats = $('#llm-stats'), left = $('#llm-left'), qEl = $('#llm-q'), composer = $('#composer');
       const candsBox = $('#cands'), curTok = $('#cur-tok'), curMeta = $('#cur-meta');
       const badge = $('#llm-badge'), badgeT = $('#llm-badge-t'), tag2 = $('#net-tag2');
       const fbUp = $('#fb-up'), fbDown = $('#fb-down'), fbMsg = $('#fb-msg');
@@ -2025,6 +2093,14 @@
         while (stem.length > 8) { parts.push(stem.slice(0, 5)); stem = stem.slice(5); }
         parts.push(stem); if (suf) parts.push(suf);
         return parts;
+      }
+      // "[text](url)" in an answer becomes a link; its text streams token by token like the rest
+      function parseLinks(a) {
+        const links = []; let text = '', last = 0;
+        a.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, t, url, i) => {
+          text += a.slice(last, i); links.push({ s: text.length, e: text.length + t.length, url }); text += t; last = i + m.length; return m;
+        });
+        return { text: text + a.slice(last), links };
       }
       function tokenize(text) {
         const raw = text.match(/\s*[A-Za-z]+|\s*\d+(?:[.,]\d+)*|\s*[^\sA-Za-z\d]/g) || [];
@@ -2183,11 +2259,13 @@
           KB.forEach((it, c) => [...(it.q || []), ...it.keys].forEach(s => { data.push([feats(s).x, c]); terms(s).forEach((_, t) => vocab.add(t)); }));
           st.n = data.length;
         }
-        function epoch() {
-          for (let k = data.length - 1; k > 0; k--) { const j = Math.floor(R() * (k + 1)); [data[k], data[j]] = [data[j], data[k]]; }
-          const lr = 0.3 * (1 - st.epoch / EPOCHS) + 0.02;
-          let L = 0; for (const [x, y] of data) L += step(x, y, lr).loss;
-          st.loss = L / data.length; st.epoch++;
+        // One epoch in chunks of 64 examples, so a slice can stop mid-epoch and keep its time budget.
+        let pos = 0, epochLoss = 0;
+        function chunk() {
+          if (pos === 0) { for (let k = data.length - 1; k > 0; k--) { const j = Math.floor(R() * (k + 1)); [data[k], data[j]] = [data[j], data[k]]; } epochLoss = 0; }
+          const lr = 0.3 * (1 - st.epoch / EPOCHS) + 0.02, end = Math.min(data.length, pos + 64);
+          for (; pos < end; pos++) epochLoss += step(data[pos][0], data[pos][1], lr).loss;
+          if (pos === data.length) { st.loss = epochLoss / data.length; st.epoch++; pos = 0; }
         }
         const load = () => { try { const v = JSON.parse(localStorage.getItem(STORE) || '[]'); return Array.isArray(v) ? v.slice(-100) : []; } catch (e) { return []; } };
         const save = () => { try { localStorage.setItem(STORE, JSON.stringify(log.slice(-100))); } catch (e) { /* private mode: keep it in memory */ } };
@@ -2201,7 +2279,7 @@
           if (st.ready) return true;
           const t0 = performance.now();
           if (!data) setup();
-          while (st.epoch < EPOCHS && performance.now() - t0 < budget) epoch();
+          while (st.epoch < EPOCHS && performance.now() - t0 < budget) chunk();
           st.ms += performance.now() - t0;
           if (st.epoch >= EPOCHS) { st.ready = true; replay(); }
           return st.ready;
@@ -2359,6 +2437,7 @@
         if (!q) return;
         const id = ++runId, alive = () => id === runId;
         reset(); left.classList.add('has-run');
+        qEl.hidden = false; qEl.textContent = q; input.value = '';   // chat style: the question moves into the answer card
         setBadge('busy', 'RUNNING'); runBtn.disabled = true;
         let it, kw = null, isMore = false, faq = null, by = null, nnr = null;
         if (MORE_RE.test(q) && last) {
@@ -2428,15 +2507,29 @@
 
         // 05 DECODE
         stage('dec');
-        const outToks = tokenize(it.a);
+        const { text, links } = parseLinks(it.a), outToks = tokenize(text);
         const cursor = out.querySelector('.llm-cursor');
         const t0 = performance.now();
+        let pos = 0, curL = null, curA = null;
         for (let i = 0; i < outToks.length; i++) {
           if (!alive()) return;
           const tok = outToks[i];
           setCands(tok, i);
-          const sp = document.createElement('span'); sp.className = 'tk fresh'; sp.textContent = tok;
-          out.insertBefore(sp, cursor);
+          const sp = document.createElement('span'); sp.className = 'tk fresh';
+          const core = tok.trimStart(), at = text.indexOf(core, pos);
+          if (at >= 0) pos = at + core.length;
+          const L = at >= 0 ? links.find(l => at >= l.s && at < l.e) : null;
+          if (L) {
+            if (L !== curL) {   // first token of a link: the space before it stays outside the underline
+              if (core !== tok) out.insertBefore(document.createTextNode(' '), cursor);
+              curA = document.createElement('a'); curA.href = L.url; curL = L;
+              if (!L.url.startsWith('mailto:')) { curA.target = '_blank'; curA.rel = 'noopener'; }
+              if (/^https?:/.test(L.url)) curA.className = 'ext';
+              out.insertBefore(curA, cursor);
+              sp.textContent = core;
+            } else sp.textContent = tok;
+            curA.appendChild(sp);
+          } else { curL = curA = null; sp.textContent = tok; out.insertBefore(sp, cursor); }
           setTimeout(() => sp.classList.remove('fresh'), 450);
           await sleep(/[.!?]$/.test(tok) ? 150 : /[,;:]$/.test(tok) ? 70 : 26 + (hash32(tok + i) % 26));
         }
@@ -2445,7 +2538,7 @@
         stage('done'); setBadge('', 'DONE'); runBtn.disabled = false;
         const BY = { keywords: 'keywords', similar: 'similar question', router: `router network · p=${nnr ? nnr.conf.toFixed(2) : ''}`, none: 'nothing matched' };
         const picked = isMore ? 'follow-up' : BY[by] || 'easter egg';
-        stats.innerHTML = `<b>${toks.length}</b> in · <b>${outToks.length}</b> out · <b>${Math.round(outToks.length / dt)}</b> tok/s · <b>${dt.toFixed(1)}s</b> · picked by <b>${esc(picked)}</b> · answers come only from resume facts`;
+        stats.innerHTML = `<b>${toks.length}</b> in · <b>${outToks.length}</b> out · <b>${Math.round(outToks.length / dt)}</b> tok/s · <b>${dt.toFixed(1)}s</b> · picked by <b>${esc(picked)}</b> · answers are hand-written, not generated`;
         const nexts = [...(it.more && !isMore ? ['tell me more'] : []), ...(it.next || [])].slice(0, 4);
         let html = '';
         if (it.rel?.length) html += '<span class="lbl2">OPEN IN MAP →</span>' + it.rel.map(id =>
@@ -2506,7 +2599,9 @@
           sugg.appendChild(b);
         });
         form.addEventListener('submit', e => { e.preventDefault(); touched = true; run(input.value); });
-        input.addEventListener('input', () => { touched = true; });
+        input.addEventListener('input', () => { touched = true; composer.classList.remove('idle'); });
+        input.addEventListener('focus', () => composer.classList.remove('idle'));
+        if (matchMedia('(max-width: 560px)').matches) input.placeholder = 'Ask about my work…';   // the long one gets cut off on phones
         $('#show-tokens').addEventListener('change', e => out.classList.toggle('tokens', e.target.checked));
         fbUp.addEventListener('click', () => feedback(true));
         fbDown.addEventListener('click', () => feedback(false));
@@ -2536,7 +2631,7 @@
       const C = 500, R1 = 206, R2 = 172, RS = 318, RD = 498;
       const Y0 = 2015, Y1 = 2027;
       const DOMAIN_ORDER = ['backend', 'data', 'commerce', 'frontend', 'train', 'agents'];
-      const TOUR = ['parker-ai', 'agent_loops', 'selfhost', 'postgres', 'orium', 'headless', 'shopify', 'react', 'evals', 'combyne', 'temporal'];
+      const TOUR = ['parker-ai', 'agent_loops', 'selfhost', 'evals', 'skills_maps', 'infcost', 'postgres', 'orium', 'headless', 'shopify', 'temporal', 'combyne', 'react'];
       const svg = document.getElementById('km-svg');
       const side = document.getElementById('km-side');
       const yAng = y => -Math.PI / 2 + (y - Y0) / (Y1 - Y0) * Math.PI * 2;
@@ -2832,7 +2927,8 @@
           lastUser = performance.now();
           const q = search.value.trim().toLowerCase();
           if (!q) { locked = false; setFocus(null); return; }
-          const s = SKILLS.find(x => x.name.toLowerCase().startsWith(q)) || SKILLS.find(x => x.name.toLowerCase().includes(q) || x.id.includes(q));
+          const s = SKILLS.find(x => x.name.toLowerCase().startsWith(q)) || SKILLS.find(x => x.name.toLowerCase().includes(q) || x.id.includes(q))
+            || SKILLS.find(x => (x.aka || []).some(a => a.startsWith(q))) || SKILLS.find(x => (x.aka || []).some(a => a.includes(q)));   // "openai" → LLM APIs, "php" → Early web stack
           const r = ROLES.find(x => x.name.toLowerCase().includes(q));
           const hit = s ? 's:' + s.id : r ? 'r:' + r.id : null;
           locked = !!hit; setFocus(hit);
