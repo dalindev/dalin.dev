@@ -1559,7 +1559,7 @@
       { test: /^\s*(matrix|konami)\s*$/i, id: 'matrix',
         a: "Legacy mode engaged. Follow the white rabbit.", ctx: ['index_2024.html', 'index_2017.html', '(easter egg)'], rel: [], fx: 'matrix' },
       { test: /meaning of life|42/i, id: '42',
-        a: "42. Also the number of the experiment running in the training panel up top, which is not a coincidence. Probably.", ctx: ['(easter egg)', 'train.loop · exp-042', 'Summary'], rel: ['lora'] },
+        a: "42. Also the number of the experiment in the fine-tuning console at the bottom of this page, which is not a coincidence. Probably.", ctx: ['(easter egg)', 'train.loop · exp-042', 'Summary'], rel: ['lora'] },
     ];
     const SUGGESTIONS = ['AI', 'agents', 'Grok bots', 'Agent Island', 'Ship Loops', 'fine-tuning', 'Postgres', 'Shopify', 'hire', 'where is AI going?', 'is this a real LLM?'];
 
@@ -1660,23 +1660,23 @@
       if (!stream) return;
       let i = 0, timer = null;
       const pad2 = n => String(n).padStart(2, '0');
-      const ts = () => { const d = new Date(); return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`; };
-      function addLine() {
+      const ts = (ago = 0) => { const d = new Date(Date.now() - ago * 1000); return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`; };
+      function addLine(ago = 0) {
         const L = TERM_LINES[i++ % TERM_LINES.length];
         const line = document.createElement('div');
         line.className = 'line';
         const st = L.st === 'ok' ? '<span class="ok">ok</span> ' : L.st === 'key' ? `<span class="key">${L.lbl}</span> ` : '';
         const key = L.key ? `<span class="key">${L.key}</span> ` : '';
         const tail = L.st === 'warn' ? `<span class="warn">${L.tail}</span>` : L.tail;
-        line.innerHTML = `<span class="dim">[${ts()}]</span> ${key}${st}${tail}`;
+        line.innerHTML = `<span class="dim">[${ts(ago)}]</span> ${key}${st}${tail}`;
         stream.appendChild(line);
         requestAnimationFrame(() => line.classList.add('show'));
         while (stream.children.length > 9) stream.removeChild(stream.firstChild);
       }
-      for (let k = 0; k < 5; k++) addLine();
+      for (let k = 0; k < 5; k++) addLine((5 - k) * 2);   // backdate the first lines so they don't share one timestamp
       watchVisible(stream, v => {
         clearInterval(timer);
-        if (v) timer = setInterval(addLine, 650);
+        if (v) timer = setInterval(() => addLine(), 650);
       });
     }
 
@@ -1688,7 +1688,7 @@
       const el = document.getElementById('finetune-panel');
       if (!el) return;
       const EPOCHS = 3, PER_EPOCH = 750, TOTAL = EPOCHS * PER_EPOCH, WARMUP = 68, LR_MAX = 2e-4, EVAL_EVERY = 250, SEC_PER_STEP = 1.1;
-      let exp = 43, step = 1412, evalLoss = null, evalAt = 1250, best = Infinity, bestAt = 1000, pause = 0, timer = null;
+      let exp = 42, step = 1412, evalLoss = null, evalAt = 1250, best = Infinity, bestAt = 1000, pause = 0, timer = null;
       const logs = [];
       const lrAt = s => s < WARMUP ? LR_MAX * s / WARMUP : LR_MAX * 0.5 * (1 + Math.cos(Math.PI * (s - WARMUP) / (TOTAL - WARMUP)));
       const lossAt = s => 0.36 + 0.95 * Math.exp(-s / 160) - 0.055 * Math.floor((s - 1) / PER_EPOCH);
