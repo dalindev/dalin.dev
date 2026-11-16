@@ -1,4 +1,34 @@
-## Portfolio site 2026
+## Portfolio site 2026.2
+
+Refreshed from the Nov 2026 resume (Senior AI Developer, Agent Systems) plus notes on the agent team (Grok bots + Claude Code), Agent Island (Status Island at work), Ship Loops, the support loop, and the incident replay eval. Still one static `index.html` with no build step. Three.js r147 is lazy-loaded from jsDelivr when the office scrolls near; everything else is canvas, SVG, and plain JS. Works at phone width.
+
+### What's on the page
+
+- **Intro + 01 · Ask the model** (the first screen): a tiny model over the resume. Type `AI`, `Grok bots`, `Agent Island`, `Postgres`… and watch it tokenize (BPE-style splits, token ids, attention arcs with a ⟨bos⟩ sink), embed, retrieve the matching chunks, prefill, then decode token by token with a live top-5 softmax. Answers come only from the `KB` object (no API calls). Multi-word keys (`'agent island'`) match as phrases and outweigh single words. It auto-demos once with `AI`.
+- **Router network (real)**: a 68K-parameter neural network (hashed words, word pairs and letter triples → 64 ReLU units → softmax over the 39 answers), trained in plain JavaScript in the visitor's browser when the page loads: 8 passes over ~730 example questions and keywords, about 70ms on a laptop, run in slices so scrolling never stutters. The canvas draws it from its live weights, and the EMBEDDINGS panel shows each word's learned vector. It answers only when keywords and similar questions find nothing solid, and only if it knows one of the words; the picture shows its guess either way, and the stats line says what picked the answer. 👍/👎 run one real gradient step (learning rate 0.04, gradient clipped), saved in `localStorage` (`dalin-lm-feedback-v1`, last 100) and replayed after training on the next visit. On 40 new phrasings, measured before they were added as examples, keywords + similar questions got 27/40 and the network alone 20–26/40, which is why it answers last.
+- **Follow-ups**: every answer ends with "Ask next" chips (`KB_NEXT`), "tell me more" gives a deeper second answer where one exists (`KB_MORE`), and one-letter typos still route ("agnets" → agents).
+- **Similar questions**: each answer has example questions in `KB_QUESTIONS` (recruiter, HR, and founder questions included). A visitor's question is normalised (current→now, job→role, what's→what is, plurals) and compared to every example by idf-weighted cosine similarity; the closest one wins when it's similar enough and shows up in the RETRIEVE panel as "similar question". To cover a new phrasing, add one line to the right list. Salary, visa, notice period, relocation and similar questions get an honest "let's talk directly" answer.
+- **How this works**: collapsed into one bar by default. It stays hidden until someone asks how the model works, whether it's a real LLM, or what it was trained on (answers with `fx: 'how'`, which open it without moving the page), or clicks "How it works ↓" (which scrolls to it). Inside are six cards, one per stage, each saying what a real LLM does and what this page does instead (embed and backprop are real, on the router network; the rest is simulated); the card for the running stage lights up.
+- **02 · The agent office**: a procedural Three.js scene of my personal agent team (Grok bots + Claude Code, 14 desks), with no model files. Tickets flow inbox → Chief of Staff → Eng → QA → Security → Eng Manager; low-risk ones auto-ship, while prod deploys, prod DB writes, migrations, money and customer messages stop at the human gate. Second and third rows: Incident (wakes on a red Status Island tile), Data Healer, Evals, Research, Cost Scout, Billing Watch, Stack Scout, OSS, and local Claude Code. Drag (or swipe sideways) to rotate; click a desk for details.
+- **03 · Knowledge map**: a radial "career clock". The inner ring shows roles as arcs by date (2015 → now) and the outer ring shows 59 skills by domain and depth. Hover or tap to trace where a skill was used, with years, evidence and projects. It tours itself until touched. Chips in the Ask section jump straight into it.
+- **04 · Experience** and **05 · Projects** come from the same data objects (project status: live, oss, proto, archived).
+- **06 · Consoles** (last, labelled as a replay): the agent-team log, and a LoRA fine-tuning monitor shaped like a real run: 3 epochs × 750 steps, linear warmup then cosine learning rate peaking at 2e-4, eval every 250 steps keeping the best checkpoint, train loss stepping down at each epoch boundary, eval loss bottoming out in epoch 2, grad norm clipped at 1.0. The numbers are illustrative, not a real run.
+
+To update content, edit `ROLES`, `SKILLS`, `PROJECTS`, `KB` (answers), or `OFFICE_AGENTS` in the data `<script>` near the top of `index.html`. Office desks take `always` (status text for desks that never idle) and `minor` (label hidden on phones until tapped).
+
+### Sizing
+
+The page scales like browser zoom. All CSS sizes are in `rem`, and the root size grows with the window: 16px up to 1440px wide, about 19px at 1920, capped at 22px. Text sizes also multiply by `--fz` (1.18 on desktop, 1.08 on phones). The content column is `--maxw: 80rem` (1280px at the base size, about 1520px at 1920) and widens to `90rem` from 2200px. Text drawn on canvas uses `uiPx()` so it scales the same way.
+
+#### Easter eggs
+- Click `v2026.2` (top bar or footer) to cycle previous versions, now including `index_2026.html` (v2026.1).
+- Ask the model `matrix` or `42`, try a prompt injection on it, or press the Konami code.
+- Click the `● ONLINE` dot 5×. Click the turtle in the office lounge.
+- Append `?boot=1` to the URL to re-run the boot sequence.
+
+---
+
+## Portfolio site 2026.1
 
 Mission Control for an AI developer. Built around the Parker AI / AI agent platform work — billion-scale pipelines, LoRA fine-tunes, Gemini Batch API, one of the best Meta-ad dashboards on the market.
 

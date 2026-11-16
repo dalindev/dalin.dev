@@ -1,0 +1,3526 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dalin Huang — Senior Full Stack / AI Developer</title>
+  <meta name="description"
+        content="Dalin Huang — Senior Full Stack / AI Developer at Parker AI. AI agent platforms, LoRA fine-tuning, billion-scale pipelines. Eleven years shipping production systems.">
+  <meta name="keywords" content="Dalin Huang, AI Developer, Full Stack Developer, Parker AI, LoRA, Gemini, agents, Supabase, React, Next.js">
+  <meta property="og:title" content="Dalin Huang — Senior Full Stack / AI Developer">
+  <meta property="og:description" content="AI agent platforms, LoRA fine-tuning, billion-scale pipelines. Mission Control for an AI developer.">
+  <meta property="og:image" content="https://dalin.dev/img/og.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dalin.dev">
+  <link rel="canonical" href="https://dalin.dev">
+  <link rel="icon" href="img/favicon.ico">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-deep: #04060c;
+      --bg: #07090f;
+      --bg-elev: #0a0d14;
+      --ink-strong: #f5f7fa;
+      --ink: #e0e7ec;
+      --ink-dim: #94a3b8;
+      --ink-faint: #4b5563;
+      --accent-live: #4ade80;
+      --accent-link: #60a5fa;
+      --accent-warn: #fbbf24;
+      --accent-hub: #ffffff;
+      --rule: rgba(96, 165, 250, 0.10);
+      --rule-strong: rgba(96, 165, 250, 0.20);
+      --glow-live: 0 0 12px rgba(74, 222, 128, 0.45);
+      --glow-link: 0 0 12px rgba(96, 165, 250, 0.45);
+      --glow-warn: 0 0 12px rgba(251, 191, 36, 0.45);
+      --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Roboto Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg-deep);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    h1, h2, h3, h4, h5, h6 { font-weight: 700; color: var(--ink-strong); }
+    a { color: var(--accent-link); text-decoration: none; }
+    a:hover { text-shadow: var(--glow-link); }
+    button { font-family: inherit; }
+
+    .label-cap {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
+    /* ─── Top bar / footer ─── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 24px;
+      background: rgba(4, 6, 12, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--rule);
+      font-size: 10px; letter-spacing: 0.08em;
+    }
+    .topbar .left { display: flex; gap: 14px; align-items: center; }
+    .topbar .logo {
+      color: var(--accent-live); font-weight: 800;
+      letter-spacing: 0.25em; font-size: 11px;
+    }
+    .topbar .mono { color: var(--ink-faint); }
+    .topbar .v { color: var(--ink-dim); cursor: pointer; transition: color 180ms ease-out; }
+    .topbar .v:hover { color: var(--ink-strong); }
+    .topbar .right { display: flex; gap: 16px; }
+    .topbar .right a { color: var(--ink-dim); transition: color 180ms ease-out; }
+    .topbar .right a:hover { color: var(--accent-link); }
+
+    .dot {
+      display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-live); box-shadow: var(--glow-live);
+      animation: pulseDot 2s ease-in-out infinite;
+      vertical-align: middle; margin-right: 4px; cursor: pointer;
+    }
+    @keyframes pulseDot { 50% { opacity: .35; } }
+
+    .footer {
+      max-width: 1100px; margin: 40px auto 0; padding: 16px 24px;
+      border-top: 1px solid var(--rule);
+      display: flex; justify-content: space-between;
+      font-size: 10px; color: var(--ink-faint); letter-spacing: 0.10em;
+    }
+    .footer .v { cursor: pointer; transition: color 180ms ease-out; }
+    .footer .v:hover { color: var(--ink-dim); }
+
+    @media (max-width: 640px) {
+      .topbar { padding: 8px 14px; font-size: 9px; gap: 8px; flex-wrap: wrap; }
+      .topbar .logo { font-size: 10px; }
+      .topbar .right { gap: 10px; }
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      position: relative;
+      padding: 44px 0 40px;
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .hero .ghost {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      opacity: 0.35;
+    }
+    .hero .ghost svg { width: 100%; height: 100%; display: block; }
+    .hero > .body, .hero > .term { position: relative; z-index: 1; }
+
+    .hero .op {
+      font-size: 10px; letter-spacing: 0.20em;
+      color: var(--ink-faint); margin-bottom: 8px;
+    }
+    .hero h1 {
+      font-size: 40px; line-height: 1.05; font-weight: 800;
+      letter-spacing: -0.02em; color: var(--ink-strong); margin-bottom: 6px;
+    }
+    .hero .role {
+      color: var(--accent-link); font-size: 14px; font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .hero .bio {
+      color: var(--ink-dim); font-size: 12px; line-height: 1.7;
+      max-width: 420px;
+    }
+    .hero .bio b { color: var(--accent-link); font-weight: 700; }
+    .hero .links {
+      margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px;
+      font-size: 10px;
+    }
+    .hero .links a {
+      color: var(--accent-live);
+      padding: 6px 10px;
+      border: 1px solid rgba(74, 222, 128, 0.30);
+      border-radius: 3px;
+      letter-spacing: 0.08em;
+      transition: all 180ms ease-out;
+    }
+    .hero .links a:hover {
+      background: rgba(74, 222, 128, 0.10);
+      box-shadow: var(--glow-live);
+    }
+
+    /* ─── macOS Terminal chrome (Terminal.app feel) ─── */
+    .hero-terms { display: flex; flex-direction: column; gap: 14px; }
+    .macterm {
+      background: #0a0d14;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow:
+        0 12px 36px rgba(0,0,0,0.60),
+        0 1px 0 rgba(255,255,255,0.06) inset,
+        0 0 0 0.5px rgba(255,255,255,0.04);
+    }
+    .macterm-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 13px;
+      background: linear-gradient(180deg, #232a36 0%, #181d26 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      user-select: none;
+    }
+    .macterm-bar .dots { display: flex; gap: 6px; }
+    .macterm-bar .dots span {
+      width: 12px; height: 12px; border-radius: 50%;
+      box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.30), inset 0 -1px 0 rgba(0,0,0,0.20);
+    }
+    .macterm-bar .dots .r { background: #ff5f57; }
+    .macterm-bar .dots .y { background: #febc2e; }
+    .macterm-bar .dots .g { background: #28c840; }
+    .macterm-bar .title {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 11px; color: #b8c0ce; font-weight: 600;
+      letter-spacing: 0.02em;
+      pointer-events: none;
+    }
+    .macterm-bar .badge {
+      margin-left: auto;
+      font-size: 9px; letter-spacing: 0.15em;
+      color: var(--accent-live);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .macterm-bar .badge .ld {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-live); box-shadow: var(--glow-live);
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+    .macterm-body {
+      padding: 12px 14px;
+      font-size: 10px;
+      color: var(--ink-dim);
+      line-height: 1.55;
+      font-family: var(--mono);
+    }
+    /* Both terminal bodies get a locked height so streaming logs settle into
+       a fixed slot and never push the page down after first paint. Older lines
+       fall off the top (clipped by overflow:hidden). */
+    .macterm-body.term,
+    .macterm-body.ft {
+      height: 184px;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    /* System.live (preserves existing class names) */
+    .term .head { display: none; } /* old in-body title — replaced by macOS bar */
+    .term { background: transparent; border: 0; padding: 0; }
+    .term .stream { display: flex; flex-direction: column; gap: 4px; height: 100%; overflow: hidden; }
+    .term .line { opacity: 0; }
+    .term .line.show { opacity: 1; transition: opacity 220ms ease-out; }
+    .term .ok   { color: var(--accent-live); }
+    .term .warn { color: var(--accent-warn); }
+    .term .key  { color: var(--accent-link); }
+    .term .dim  { color: var(--ink-faint); }
+
+    /* Fine-tune panel — info-dense LoRA training monitor */
+    .ft { font-family: var(--mono); }
+    .ft-row { display: block; margin-bottom: 5px; font-size: 10px; white-space: nowrap; }
+    .ft-row b { color: var(--ink-strong); font-weight: 700; }
+    .ft .bar {
+      display: inline-block;
+      font-family: var(--mono);
+      letter-spacing: -0.5px;
+      color: var(--accent-live);
+      text-shadow: 0 0 4px rgba(74,222,128,0.4);
+    }
+    .ft .bar.cpu  { color: var(--accent-link); text-shadow: 0 0 4px rgba(96,165,250,0.4); }
+    .ft .bar.prog { color: var(--accent-warn); text-shadow: 0 0 4px rgba(251,191,36,0.4); }
+    .ft .ok      { color: var(--accent-live); }
+    .ft .warn    { color: var(--accent-warn); }
+    .ft .key     { color: var(--accent-link); }
+    .ft .delta   { color: var(--ink-faint); font-size: 9px; margin-left: 2px; }
+    .ft .delta.down { color: var(--accent-live); }
+    .ft-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+      margin: 7px 0;
+    }
+    .ft-recent { font-size: 9px; color: var(--ink-faint); }
+    .ft-log { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.85; }
+    .ft-log:first-child { color: var(--ink); opacity: 1; }
+
+    @media (max-width: 720px) {
+      .hero { grid-template-columns: 1fr; gap: 20px; padding: 28px 0 20px; }
+      .hero h1 { font-size: 32px; }
+      /* Tighter terminals on mobile — still capped so no layout shift */
+      .macterm-body.term,
+      .macterm-body.ft { height: 164px; }
+    }
+
+    /* ─── KPI strip ─── */
+    .kpis {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .kpi {
+      background: var(--bg);
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: background 180ms ease-out;
+    }
+    .kpi:hover { background: var(--bg-elev); }
+    .kpi .label {
+      font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--ink-faint); margin-bottom: 8px;
+    }
+    .kpi .value {
+      font-size: 30px; line-height: 1; font-weight: 800;
+      color: var(--accent-live); text-shadow: var(--glow-live);
+      letter-spacing: -0.01em;
+    }
+    .kpi .sub { font-size: 9px; color: var(--ink-dim); margin-top: 6px; }
+    .kpi .sub .up { color: var(--accent-live); }
+
+    @media (max-width: 720px) {
+      .kpis { grid-template-columns: repeat(2, 1fr); }
+      .kpi { padding: 14px; }
+      .kpi .value { font-size: 24px; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       OFFICE FLOOR — Marvis-inspired light office room
+       White desks · colored chair seats · bots sitting · soft shadows
+       ═══════════════════════════════════════════════════════════════ */
+    .office-room {
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,255,255,0.4), transparent 60%),
+        linear-gradient(180deg, #f4f3ed 0%, #e8e6dd 100%);
+      padding: 14px 22px 16px;
+      border-radius: 10px;
+      margin: 12px 0 0;
+      box-shadow:
+        inset 0 0 0 1px rgba(0,0,0,0.04),
+        0 12px 32px rgba(0,0,0,0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ambient office props — sit at edges/corners of the room */
+    .office-ambient {
+      position: absolute;
+      font-size: 26px;
+      filter: drop-shadow(0 3px 5px rgba(0,0,0,0.20));
+      pointer-events: none;
+      z-index: 0;
+    }
+    .office-ambient.plant-bigl { left: 6px;  bottom: 8px;  font-size: 32px; }
+    .office-ambient.plant-bigr { right: 6px; bottom: 8px;  font-size: 32px; }
+    .office-ambient.cooler     { right: 50px; bottom: 14px; font-size: 28px; }
+    .office-ambient.printer    { left: 60px; bottom: 14px; font-size: 24px; }
+    .office-ambient.clock      { right: 50%; top: 8px;     font-size: 18px; transform: translateX(50%); opacity: 0.45; }
+    .office-ambient.window-l   { left: 14px; top: 60px;    font-size: 32px; opacity: 0.4; }
+    .office-ambient.window-r   { right: 14px; top: 60px;   font-size: 32px; opacity: 0.4; }
+    /* Override the global section-head when inside .office-room */
+    .office-room .section-head {
+      color: #1a1f2b; margin: 0 0 4px 0; font-size: 10px;
+    }
+    .office-room .section-head::before {
+      background: #1a1f2b; box-shadow: none;
+    }
+    .office-room .section-head .count { color: #5a6275; font-weight: 400; }
+
+    .office { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 10px; row-gap: 0; }
+
+    .desk {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      position: relative;
+    }
+    .desk.offline .desk-scene { filter: saturate(0.4); }
+
+    .desk-scene {
+      position: relative;
+      height: 215px;
+      overflow: visible;
+    }
+    /* Tight floor shadow directly under the chair (close to wheels) */
+    .desk-scene::before {
+      content: "";
+      position: absolute;
+      bottom: 1%;
+      left: 30%; right: 30%;
+      height: 10px;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%,
+        rgba(20,24,31,0.42) 0%,
+        rgba(20,24,31,0.18) 50%,
+        transparent 80%);
+      filter: blur(4px);
+      z-index: 4;
+      border-radius: 50%;
+    }
+
+    /* ─── Apple Studio Display floats ABOVE everything ─── */
+    /* Body OVERLAPS desk so monitor sits ON the desk; high z-index keeps it in front */
+    .desk-monitor {
+      position: absolute;
+      top: 3%;
+      left: 18%; right: 18%;
+      height: 37%;
+      z-index: 50;
+      /* Aluminum body (silver brushed) */
+      background: linear-gradient(180deg, #d8dbe2 0%, #a8acb5 60%, #8a8e98 100%);
+      border-radius: 5px;
+      padding: 2.5px;          /* aluminum frame thickness */
+      z-index: 2;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.65),    /* top edge highlight */
+        inset 0 -1px 0 rgba(0,0,0,0.15),         /* bottom edge shadow */
+        0 8px 14px rgba(0,0,0,0.22);             /* drop shadow under monitor */
+    }
+    /* Inner black bezel */
+    .monitor-bezel {
+      width: 100%; height: 100%;
+      background: #0a0d14;
+      border-radius: 3px;
+      padding: 3px;
+      position: relative;
+    }
+    /* Tiny camera notch at top-center of bezel */
+    .monitor-bezel::before {
+      content: "";
+      position: absolute;
+      top: 1px; left: 50%; transform: translateX(-50%);
+      width: 2.5px; height: 2.5px;
+      background: rgba(70,80,90,0.9);
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.15);
+    }
+    /* Apple-style aluminum stand: shorter visible neck + wide oval base on desk surface */
+    .desk-monitor::after {
+      content: "";
+      position: absolute;
+      bottom: -13px; left: 50%; transform: translateX(-50%);
+      width: 12px; height: 12px;
+      background: linear-gradient(90deg, #4a5060 0%, #d8dbe2 50%, #4a5060 100%);
+      clip-path: polygon(15% 0%, 85% 0%, 95% 100%, 5% 100%);
+      z-index: 51;
+    }
+    .desk-monitor::before {
+      content: "";
+      position: absolute;
+      bottom: -19px; left: 50%; transform: translateX(-50%);
+      width: 70px; height: 7px;
+      background: linear-gradient(180deg, #d8dbe2 0%, #a8acb5 50%, #5e6470 100%);
+      border-radius: 50%;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.28);
+      z-index: 51;
+    }
+    .desk-monitor .screen {
+      width: 100%; height: 100%;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+      font-family: var(--mono);
+      font-size: 6.5px; line-height: 1.3;
+      color: var(--accent-live);
+    }
+    /* Glass reflection sheen + scanlines on every screen */
+    .desk-monitor .screen::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 30%),
+        repeating-linear-gradient(0deg, transparent 0 1.5px, rgba(0,0,0,0.18) 2px, transparent 2.5px);
+      mix-blend-mode: screen;
+      z-index: 10;
+    }
+
+    /* Working screen: macOS blue desktop with a floating terminal window */
+    .desk .screen.busy {
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.18), transparent 65%),
+        linear-gradient(180deg, #0e3a78 0%, #1f5fa8 50%, #4290dd 100%);
+    }
+    .desk .screen.busy .menubar {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: rgba(255,255,255,0.18);
+      display: flex; align-items: center; padding: 0 2px;
+    }
+    .desk .screen.busy .menubar::before {
+      content: ""; width: 2px; height: 2px; border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+    }
+    .desk .screen.busy .term-win {
+      position: absolute;
+      top: 18%; left: 8%; right: 8%; bottom: 12%;
+      background: rgba(20, 24, 31, 0.95);
+      border-radius: 2px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    .desk .screen.busy .win-bar {
+      height: 5px;
+      background: linear-gradient(180deg, #2a3040 0%, #1a1f2b 100%);
+      display: flex; align-items: center; padding: 0 3px;
+      gap: 1.5px;
+    }
+    .desk .screen.busy .win-bar span {
+      width: 1.5px; height: 1.5px; border-radius: 50%;
+    }
+    .desk .screen.busy .win-bar .r { background: #ff5f57; }
+    .desk .screen.busy .win-bar .y { background: #febc2e; }
+    .desk .screen.busy .win-bar .g { background: #28c840; }
+    .desk .screen.busy .win-content {
+      padding: 2px 3px;
+      font-size: 5px; line-height: 1.35;
+      color: var(--accent-live);
+      overflow: hidden;
+      height: calc(100% - 5px);
+    }
+
+    /* Idle screen: pure black (display sleeping) */
+    .desk .screen.idle {
+      background: #000;
+    }
+
+    /* Offline screen: dark with red error */
+    .desk .screen.offline {
+      background: linear-gradient(180deg, #1a0606 0%, #050000 100%);
+      padding: 5px 6px;
+      color: #ef4444;
+      font-size: 6px;
+    }
+    .desk.offline .desk-monitor { animation: monitorFlicker 1.6s steps(2) infinite; }
+    @keyframes monitorFlicker {
+      0%, 85%, 100% { opacity: 1; }
+      88%, 92%      { opacity: 0.45; }
+    }
+
+    /* ─── White desk — sits DIRECTLY under the monitor (monitor's stand rests on it) ─── */
+    /* z-index 2: bot+chair are IN FRONT of (lower in scene than) the desk */
+    .desk-top {
+      position: absolute;
+      top: 34%;
+      left: 4%; right: 4%;
+      height: 20%;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f5f3e8 55%, #c8c5b6 100%);
+      border-radius: 5px 5px 10px 10px;
+      box-shadow:
+        0 8px 14px rgba(20,24,31,0.22),
+        0 20px 28px -10px rgba(20,24,31,0.18),
+        inset 0 1px 0 rgba(255,255,255,1),
+        inset 0 -2px 4px rgba(0,0,0,0.10);
+      z-index: 2;
+    }
+    .desk-top::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -5px;
+      height: 5px;
+      background: linear-gradient(180deg, #8e8b7f 0%, #5e5b51 100%);
+      border-radius: 0 0 12px 12px;
+      z-index: -1;
+    }
+
+    /* 4 visible desk legs — front pair larger, back pair smaller (perspective) */
+    .desk-leg {
+      position: absolute;
+      background: linear-gradient(180deg, #b6b3a4 0%, #6e6b5e 100%);
+      z-index: 2;
+      box-shadow: 1px 0 2px rgba(0,0,0,0.20);
+      border-radius: 0 0 1px 1px;
+    }
+    /* Only the 2 OUTER (front) legs are visible — short legs (modern table style) */
+    .desk-leg.fl, .desk-leg.fr { top: 54%; width: 5px; height: 22%; }
+    .desk-leg.fl { left: 6%; }
+    .desk-leg.fr { right: 6%; }
+    /* Back legs disabled */
+    .desk-leg.bl, .desk-leg.br { display: none; }
+
+    /* ─── Apple Magic Keyboard with visible keys + spacebar ─── */
+    .desk-keyboard {
+      position: absolute;
+      top: 44%;
+      left: 28%; right: 28%;
+      height: 13px;
+      background:
+        linear-gradient(180deg, #f0f2f6 0%, #c0c4cc 70%, #8c9098 100%);
+      border-radius: 2.5px;
+      z-index: 3;
+      box-shadow:
+        0 2px 5px rgba(20,24,31,0.32),
+        inset 0 0.5px 0 rgba(255,255,255,1),
+        inset 0 -0.5px 0 rgba(0,0,0,0.20);
+    }
+    /* Top key rows — visible 2 rows of keys */
+    .desk-keyboard::before {
+      content: "";
+      position: absolute;
+      top: 1.5px; left: 3px; right: 3px;
+      height: 6.5px;
+      background:
+        /* Vertical key separators (gaps between keys) */
+        repeating-linear-gradient(90deg,
+          rgba(255,255,255,0.0) 0, rgba(255,255,255,0.0) 2px,
+          rgba(120,124,132,0.7) 2px, rgba(120,124,132,0.7) 2.6px),
+        /* Horizontal row gap */
+        linear-gradient(180deg,
+          rgba(50,55,64,0.6) 0, rgba(50,55,64,0.6) 2.6px,
+          rgba(255,255,255,0.5) 2.6px, rgba(255,255,255,0.5) 3.2px,
+          rgba(50,55,64,0.6) 3.2px, rgba(50,55,64,0.6) 5.8px);
+      border-radius: 1px;
+    }
+    /* Spacebar row */
+    .desk-keyboard::after {
+      content: "";
+      position: absolute;
+      bottom: 1.5px; left: 22%; right: 22%;
+      height: 2.6px;
+      background: rgba(50,55,64,0.65);
+      border-radius: 1.3px;
+      box-shadow: inset 0 -0.5px 0 rgba(255,255,255,0.18);
+    }
+
+    /* ─── Magic Trackpad next to keyboard ─── */
+    .desk-trackpad {
+      position: absolute;
+      top: 44%;
+      right: 17%;
+      width: 7%;
+      height: 9px;
+      background:
+        linear-gradient(180deg, #f8f9fb 0%, #d8dbe2 100%);
+      border-radius: 2px;
+      z-index: 3;
+      box-shadow:
+        0 2px 4px rgba(20,24,31,0.25),
+        inset 0 0.5px 0 rgba(255,255,255,1);
+    }
+
+    /* ─── Items on the desk, positioned to LEFT/RIGHT past the chair ─── */
+    .desk-items {
+      position: absolute;
+      top: 37%;
+      left: 0; right: 0;
+      display: flex; justify-content: space-between;
+      padding: 0 7%;
+      z-index: 4;
+      pointer-events: none;
+      font-size: 16px;
+    }
+    .desk-items .left, .desk-items .right { display: flex; gap: 6px; }
+    .desk-items .item {
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.22));
+      transform-origin: bottom;
+    }
+    .desk-items .item.steam-trigger { position: relative; }
+    .desk-items .item.steam-trigger::before {
+      content: '∿'; position: absolute;
+      top: -10px; left: 50%; transform: translateX(-50%);
+      font-size: 9px; color: rgba(0,0,0,0.4);
+      animation: steam 2.4s ease-in-out infinite;
+    }
+    @keyframes steam {
+      0%   { opacity: 0; transform: translateX(-50%) translateY(0) scale(0.7); }
+      40%  { opacity: 0.7; }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-14px) scale(1.15); }
+    }
+    .desk-items .item.notif-trigger { position: relative; }
+    .desk-items .item.notif-trigger::after {
+      content: ""; position: absolute;
+      top: -2px; right: -2px;
+      width: 6px; height: 6px; background: #ef4444; border-radius: 50%;
+      box-shadow: 0 0 5px #ef4444;
+      animation: pulseDot 1.2s ease-in-out infinite;
+    }
+
+    /* ─── Bot: head + shoulders + arms reaching to keyboard ─── */
+    /* z-index 4: in front of desk, behind chair back */
+    .desk-bot {
+      position: absolute;
+      top: 40%;
+      left: 50%; transform: translateX(-50%);
+      width: 72px; height: 80px;
+      z-index: 4;
+      color: var(--bot-color, var(--accent-warn));
+    }
+    .desk-bot svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+    .desk-bot .led-glow { animation: pulseDot 1.8s ease-in-out infinite; transform-origin: center; }
+    .desk.offline .desk-bot { display: none; }
+    /* ─── Short white chair back — FOREGROUND, covers bot's mid-body ─── */
+    /* z-index 5: closest to viewer (you stand BEHIND the chair) */
+    .desk-chair-back {
+      position: absolute;
+      top: 70%;
+      left: 50%; transform: translateX(-50%);
+      width: 22%; height: 12%;
+      background: linear-gradient(180deg, #f5f5f0 0%, #d8d4c4 100%);
+      border-radius: 6px 6px 4px 4px;
+      z-index: 5;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,1);
+    }
+
+    /* ─── Chair base: stem + 5-wheel — container sized to SVG natural aspect ─── */
+    /* z-index 5: same foreground level as the chair back */
+    .desk-chair {
+      position: absolute;
+      bottom: 3%;
+      left: 50%; transform: translateX(-50%);
+      width: 28%; height: 18%;
+      z-index: 5;
+    }
+    .desk-chair svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.20)); }
+    .desk.offline .desk-chair-back { opacity: 0.85; }
+
+    /* Offline desk: chair shifted right (someone just got up and left) */
+    .desk.offline .desk-chair {
+      transform: translateX(calc(-50% + 18px));
+    }
+    .desk.offline .desk-chair-back {
+      transform: translateX(calc(-50% + 16px));
+    }
+
+    /* ─── Effects: zZz, wrench, etc. ─── */
+    .desk-fx {
+      position: absolute;
+      z-index: 9;
+      pointer-events: none;
+    }
+    .desk-fx.zzz {
+      bottom: 42%; right: 36%;
+      font-family: var(--mono);
+      font-size: 20px; font-weight: 800;
+      color: #5a78c0;
+      animation: floatZ 3.6s ease-in-out infinite;
+    }
+    .desk-fx.zzz sub { font-size: 0.8em; vertical-align: sub; }
+    @keyframes floatZ {
+      0%   { opacity: 0; transform: translate(0, 4px); }
+      30%  { opacity: 1; }
+      100% { opacity: 0; transform: translate(10px, -14px); }
+    }
+    .desk-fx.tool {
+      bottom: 45%; right: 26%;
+      font-size: 18px; color: #d97706;
+      animation: wrenchWiggle 1.1s ease-in-out infinite;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+    .desk-fx.tool .sys {
+      display: block; font-size: 8px; color: #d97706;
+      letter-spacing: 0.18em; margin-top: 2px;
+      font-weight: 800;
+    }
+    @keyframes wrenchWiggle {
+      0%, 100% { transform: rotate(-15deg); }
+      50%      { transform: rotate(15deg); }
+    }
+
+    /* ─── Floor pets & clutter (makes office feel alive) ─── */
+    .desk-pet, .desk-floor-item {
+      position: absolute;
+      font-size: 18px;
+      z-index: 6;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+      pointer-events: none;
+    }
+    .desk-pet  { bottom: 5%; }
+    .desk-pet.left  { left: 8%; }
+    .desk-pet.right { right: 8%; }
+
+    /* Floor-level props (plant, trash, boxes, etc.) */
+    .desk-floor-item.plant       { bottom: 6%; left: 1%;  font-size: 22px; }
+    .desk-floor-item.trash       { bottom: 6%; right: 1%; font-size: 18px; }
+    .desk-floor-item.plant-small { bottom: 8%; left: 14%; font-size: 14px; opacity: 0.95; }
+    .desk-floor-item.boxes       { bottom: 6%; right: 16%; font-size: 16px; }
+    .desk-floor-item.books-floor { bottom: 6%; right: 16%; font-size: 16px; }
+    .desk-floor-item.bag         { bottom: 7%; left: 16%;  font-size: 16px; }
+    .desk-floor-item.caution {
+      bottom: 7%; right: 16%; font-size: 18px;
+      animation: pulseDot 1.5s ease-in-out infinite;
+    }
+    /* Roomba spins as it cleans */
+    .desk-pet.roomba {
+      bottom: 7%; right: 10%;
+      animation: roombaSpin 6s linear infinite;
+    }
+    @keyframes roombaSpin {
+      0%   { transform: rotate(0deg)   translateX(0); }
+      25%  { transform: rotate(180deg) translateX(-6px); }
+      50%  { transform: rotate(360deg) translateX(0); }
+      75%  { transform: rotate(540deg) translateX(6px); }
+      100% { transform: rotate(720deg) translateX(0); }
+    }
+    /* Dog wags tail (subtle bounce) */
+    .desk-pet.dog { animation: pulseDot 1.6s ease-in-out infinite; transform-origin: bottom; }
+    /* Bird flits */
+    .desk-pet.bird {
+      animation: birdFly 4s ease-in-out infinite;
+      bottom: 38%;
+    }
+    @keyframes birdFly {
+      0%, 100% { transform: translate(0, 0); }
+      25%      { transform: translate(8px, -10px); }
+      50%      { transform: translate(0, -16px); }
+      75%      { transform: translate(-8px, -10px); }
+    }
+    /* Sleeping cat curls (no animation, just sits) */
+    .desk-pet.cat-sleep { opacity: 0.85; }
+
+    /* ─── Screen content styles ─── */
+    /* Shared helpers across all screens for clean column alignment */
+    .desk .screen .mk  { display: inline-block; width: 11px; text-align: left; }
+    .desk .screen .lbl { display: inline-block; width: 28px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .desk .screen .dim { color: rgba(148,163,184,0.7); }
+    .desk .screen .ok  { color: var(--accent-live); }
+    .desk .screen .hi  { color: var(--accent-warn); font-weight: 700; }
+
+    .scr-orchestrate { color: var(--accent-warn); }
+    .scr-orchestrate .done { color: var(--accent-live); }
+    .scr-orchestrate .wip  { color: var(--accent-warn); animation: blink 1.2s steps(1) infinite; }
+    .scr-orchestrate .todo { color: var(--ink-faint); }
+    .scr-orchestrate .eta  { color: var(--ink-faint); font-size: 4.5px; letter-spacing: 0.05em; display: block; margin-top: 1px; }
+
+    .scr-progress .pct { color: var(--accent-warn); }
+    .scr-progress .bar { color: var(--accent-live); text-shadow: 0 0 3px rgba(74,222,128,0.5); }
+
+    .scr-chart { color: var(--accent-live); font-size: 11px; line-height: 1.05; }
+    .scr-chart .row { animation: barShift 2.4s ease-in-out infinite; transform-origin: left; }
+    .scr-chart .row:nth-child(2) { animation-delay: 0.7s; opacity: 0.85; }
+    .scr-chart .acc { color: var(--accent-warn); font-size: 6.5px; }
+    .scr-chart .acc.dim { color: var(--ink-faint); font-size: 5px; margin-top: 1px; }
+    @keyframes barShift {
+      0%, 100% { transform: scaleX(1); }
+      50%      { transform: scaleX(0.92); }
+    }
+
+    .scr-media { color: var(--accent-link); }
+    .scr-media .box1, .scr-media .box2 {
+      display: inline-block;
+      border: 1px solid var(--accent-warn);
+      color: var(--accent-warn);
+      padding: 0 2px; margin-right: 2px;
+      font-size: 5.5px;
+      animation: boxPulse 1.8s ease-in-out infinite;
+    }
+    .scr-media .box2 { border-color: var(--accent-live); color: var(--accent-live); animation-delay: 0.4s; }
+    @keyframes boxPulse {
+      0%, 100% { opacity: 0.6; }
+      50%      { opacity: 1; box-shadow: 0 0 4px currentColor; }
+    }
+
+    .scr-crawler { color: var(--accent-link); }
+    .scr-crawler .dots {
+      letter-spacing: 2px; display: inline-block;
+      animation: crawlDots 1.4s linear infinite;
+    }
+    @keyframes crawlDots {
+      0%   { transform: translateX(-6px); opacity: 0.3; }
+      50%  { opacity: 1; }
+      100% { transform: translateX(28px); opacity: 0.3; }
+    }
+
+    .scr-phone {
+      background: #050912; padding: 4px 6px;
+      color: var(--ink); font-size: 6px;
+    }
+    .scr-phone .time { color: var(--ink-strong); font-size: 7px; text-align: center; }
+    .scr-phone .row { display: flex; gap: 4px; align-items: center; margin-top: 2px; }
+    .scr-phone .badge {
+      background: #ef4444; color: #fff; padding: 0 3px; border-radius: 6px;
+      font-size: 5px; font-weight: 700;
+      box-shadow: 0 0 4px #ef4444;
+    }
+    .scr-phone .dot { animation: blink 1.5s steps(1) infinite; }
+
+    .scr-sleep {
+      color: var(--accent-link);
+      text-align: center;
+      font-size: 9px; line-height: 1.2;
+      padding-top: 4px;
+    }
+    .scr-sleep .dvd {
+      display: inline-block;
+      font-size: 8px;
+      color: var(--accent-live);
+      animation: dvdBounce 6s ease-in-out infinite;
+    }
+    .scr-sleep .z1, .scr-sleep .z2, .scr-sleep .z3 {
+      display: inline-block; opacity: 0;
+    }
+    .scr-sleep .z1 { animation: zFade 2.5s ease-in-out infinite; }
+    .scr-sleep .z2 { animation: zFade 2.5s ease-in-out 0.8s infinite; }
+    .scr-sleep .z3 { animation: zFade 2.5s ease-in-out 1.6s infinite; }
+    @keyframes zFade {
+      0%, 100% { opacity: 0; transform: translateY(0); }
+      40%      { opacity: 1; transform: translateY(-3px); }
+    }
+    @keyframes dvdBounce {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(40px, -8px); }
+      50%  { transform: translate(8px, 8px); }
+      75%  { transform: translate(-30px, -4px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .scr-error {
+      color: #ef4444; font-size: 6px;
+      animation: errShake 0.35s ease-in-out infinite;
+    }
+    .scr-error .blink { animation: blink 0.5s steps(1) infinite; }
+    .scr-error .trace { color: rgba(239,68,68,0.6); font-size: 5.5px; }
+    @keyframes errShake {
+      0%, 100% { transform: translateX(0); }
+      30%      { transform: translateX(-1px); }
+      70%      { transform: translateX(1px); }
+    }
+
+    /* ─── Desk info block — single line, role + status (compact) ─── */
+    .desk-info {
+      padding: 2px 4px 0;
+      text-align: center;
+      display: flex; justify-content: center; align-items: baseline; gap: 6px;
+    }
+    .desk-info .name {
+      color: #1a1f2b; font-weight: 800; font-size: 10px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .desk-info .status {
+      font-size: 10px; letter-spacing: 0.10em; font-weight: 800;
+      white-space: nowrap;
+    }
+    .desk-info .status.busy    { color: #16a34a; }
+    .desk-info .status.idle    { color: #2563eb; }
+    .desk-info .status.offline { color: #dc2626; }
+
+    @media (max-width: 1000px) { .office { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px)  { .office { grid-template-columns: 1fr; } }
+
+    /* ─── Section headers ─── */
+    .section-head {
+      margin: 32px 0 12px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; letter-spacing: 0.20em; text-transform: uppercase;
+      color: var(--accent-link); font-weight: 700;
+    }
+    .section-head::before {
+      content: ""; display: inline-block; width: 6px; height: 6px;
+      background: var(--accent-link); box-shadow: var(--glow-link);
+    }
+    .section-head .count { color: var(--ink-faint); font-weight: 400; letter-spacing: 0.12em; }
+
+    /* ─── Active Agents ─── */
+    .agents { display: flex; flex-direction: column; gap: 8px; }
+    .agent {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent-live);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: box-shadow 400ms ease-out, border-color 400ms ease-out;
+    }
+    .agent.archived { border-left-color: var(--ink-faint); opacity: 0.92; }
+    .agent.flash    { border-left-color: var(--accent-link); box-shadow: 0 0 0 1px var(--accent-link), var(--glow-link); }
+
+    .agent .head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 12px 16px;
+      cursor: pointer;
+      gap: 10px;
+    }
+    .agent .head .name { color: var(--ink-strong); font-weight: 700; font-size: 14px; }
+    .agent .head .name .title { color: var(--ink-dim); font-weight: 400; font-size: 11px; }
+    .agent .head .meta { color: var(--ink-faint); font-size: 9px; letter-spacing: 0.12em; margin-top: 2px; }
+    .agent .head .right { display: flex; gap: 10px; align-items: center; font-size: 10px; }
+    .agent .head .period { color: var(--accent-warn); letter-spacing: 0.08em; }
+    .agent .head .status {
+      display: inline-block; padding: 2px 6px; border-radius: 2px;
+      background: rgba(74,222,128,0.12); color: var(--accent-live);
+      font-size: 8px; letter-spacing: 0.15em; font-weight: 700;
+    }
+    .agent.archived .head .status { background: rgba(148,163,184,0.10); color: var(--ink-dim); }
+    .agent .head .jump {
+      color: var(--ink-faint); font-size: 9px; letter-spacing: 0.08em;
+      padding: 4px 8px; border: 1px solid var(--rule);
+      border-radius: 2px; cursor: pointer;
+      transition: all 180ms ease-out;
+    }
+    .agent .head .jump:hover { color: var(--accent-link); border-color: var(--accent-link); }
+    .agent .head .caret { color: var(--ink-faint); font-size: 9px; transition: transform 180ms ease-out; display: inline-block; }
+    .agent.open .head .caret { transform: rotate(90deg); }
+
+    .agent .body {
+      display: none;
+      padding: 0 16px 14px;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+    .agent.open .body { display: grid; }
+    .agent .body ul { padding-left: 16px; color: var(--ink); font-size: 11px; line-height: 1.65; }
+    .agent .body li { margin-bottom: 4px; }
+    .agent .body .metrics { display: flex; flex-direction: column; gap: 6px; }
+    .agent .body .metrics .row {
+      display: flex; justify-content: space-between; font-size: 9px;
+    }
+    .agent .body .metrics .k { color: var(--ink-faint); letter-spacing: 0.1em; }
+    .agent .body .metrics .v { color: var(--accent-live); font-weight: 700; }
+
+    @media (max-width: 640px) {
+      .agent .head { grid-template-columns: 1fr; }
+      .agent .head .right { justify-content: flex-start; flex-wrap: wrap; }
+      .agent .body { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Deployed Services ─── */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .svc {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 14px;
+      position: relative;
+      transition: transform 180ms ease-out, box-shadow 180ms ease-out, border-color 180ms ease-out;
+      display: flex; flex-direction: column;
+    }
+    .svc:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    .svc.live:hover    { border-color: var(--accent-live); box-shadow: 0 6px 20px rgba(0,0,0,0.4), var(--glow-live); }
+    .svc.oss:hover     { border-color: var(--accent-warn); box-shadow: 0 6px 20px rgba(0,0,0,0.4), var(--glow-warn); }
+    .svc.flash         { border-color: var(--accent-link); box-shadow: 0 0 0 1px var(--accent-link), var(--glow-link); }
+
+    .svc .dot-svc {
+      position: absolute; top: 14px; right: 14px;
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .svc.live    .dot-svc { background: var(--accent-live); box-shadow: var(--glow-live); animation: pulseDot 2s ease-in-out infinite; }
+    .svc.oss     .dot-svc { background: var(--accent-warn); box-shadow: var(--glow-warn); }
+    .svc.archived .dot-svc { background: var(--ink-faint); }
+
+    .svc .name { color: var(--accent-link); font-weight: 700; font-size: 13px; padding-right: 16px; }
+    .svc .name a { color: inherit; }
+    .svc .name a:hover { text-shadow: var(--glow-link); }
+    .svc .meta { color: var(--ink-faint); font-size: 8px; letter-spacing: 0.12em; margin: 2px 0 10px; }
+    .svc .desc { color: var(--ink-dim); font-size: 11px; line-height: 1.55; flex: 1; }
+    .svc .visit {
+      margin-top: 10px; font-size: 9px; letter-spacing: 0.10em;
+      color: var(--accent-live);
+    }
+
+    @media (max-width: 900px) { .services { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .services { grid-template-columns: 1fr; } }
+
+    /* Show-more collapse: only the most recent N stay visible until clicked. */
+    .svc.svc-hidden { display: none; }
+    .svc-toggle {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+      background: var(--bg);
+      border: 1px dashed var(--rule);
+      border-radius: 4px;
+      padding: 11px 14px;
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 180ms ease-out, color 180ms ease-out, background 180ms ease-out;
+      text-align: center;
+    }
+    .svc-toggle:hover {
+      border-color: var(--accent-link);
+      color: var(--accent-link);
+      background: rgba(96, 165, 250, 0.05);
+    }
+
+    /* ─── Capabilities ─── */
+    .capabilities { display: flex; flex-direction: column; gap: 4px; }
+    .cap-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+    .cap-row .cat {
+      color: var(--accent-link);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
+    }
+    .cap-row .cells { display: flex; flex-wrap: wrap; gap: 3px; }
+    .cap-cell {
+      padding: 5px 9px; border-radius: 2px;
+      font-size: 10px; color: var(--ink); white-space: nowrap;
+      background: rgba(74, 222, 128, 0.08);
+      border: 1px solid rgba(74, 222, 128, 0.10);
+      transition: all 180ms ease-out;
+      cursor: default;
+    }
+    .cap-cell.warm {
+      background: rgba(74, 222, 128, 0.22);
+      border-color: rgba(74, 222, 128, 0.30);
+      color: var(--ink-strong);
+    }
+    .cap-cell.hot {
+      background: rgba(74, 222, 128, 0.55);
+      border-color: rgba(74, 222, 128, 0.80);
+      color: #04220f;
+      font-weight: 700;
+    }
+    .cap-cell:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--glow-live);
+    }
+
+    @media (max-width: 640px) {
+      .cap-row { grid-template-columns: 1fr; gap: 4px; }
+      .cap-row .cat { font-size: 9px; }
+    }
+
+    /* ─── System Map ─── */
+    .systemmap {
+      margin: 0;
+      background: var(--bg-deep);
+      border: 1px solid var(--rule-strong);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .sm-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--rule);
+      font-size: 9px; color: var(--ink-faint); letter-spacing: 0.12em;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .sm-toolbar .title { color: var(--ink-dim); }
+    .sm-toolbar .right {
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
+    .sm-chip {
+      padding: 4px 9px; border: 1px solid var(--rule-strong);
+      border-radius: 2px; font-size: 9px; letter-spacing: 0.12em;
+      color: var(--ink-dim); cursor: pointer; user-select: none;
+      transition: all 180ms ease-out;
+    }
+    .sm-chip.role.on  { color: var(--accent-live); border-color: rgba(74,222,128,0.5); background: rgba(74,222,128,0.10); }
+    .sm-chip.proj.on  { color: var(--accent-link); border-color: rgba(96,165,250,0.5); background: rgba(96,165,250,0.10); }
+    .sm-chip.skill.on { color: var(--accent-warn); border-color: rgba(251,191,36,0.5); background: rgba(251,191,36,0.10); }
+    .sm-chip.off { opacity: 0.4; }
+
+    .sm-search {
+      background: var(--bg-elev); border: 1px solid var(--rule-strong);
+      border-radius: 2px; padding: 4px 8px; color: var(--ink); font-family: var(--mono);
+      font-size: 10px; width: 160px; outline: none;
+    }
+    .sm-search:focus { border-color: var(--accent-link); box-shadow: var(--glow-link); }
+    .sm-search::placeholder { color: var(--ink-faint); }
+
+    .sm-zoom { display: flex; gap: 2px; }
+    .sm-zoom button {
+      width: 24px; height: 22px;
+      background: var(--bg-elev); border: 1px solid var(--rule-strong);
+      color: var(--ink-dim); cursor: pointer; font-size: 12px;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: all 180ms ease-out;
+    }
+    .sm-zoom button:hover { color: var(--ink-strong); border-color: var(--accent-link); }
+
+    .sm-viewport {
+      position: relative;
+      height: 640px;
+      background:
+        radial-gradient(60% 60% at 50% 50%, rgba(96,165,250,0.06), transparent 70%),
+        var(--bg-deep);
+    }
+    .sm-viewport canvas { display: block; width: 100% !important; height: 100% !important; }
+    .sm-viewport .sm-fallback { width: 100%; height: 100%; }
+
+    .sm-tooltip {
+      position: absolute; pointer-events: none;
+      background: rgba(4,6,12,0.92);
+      border: 1px solid var(--accent-link);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-size: 10px; color: var(--ink);
+      max-width: 240px;
+      box-shadow: 0 4px 20px rgba(96,165,250,0.30);
+      opacity: 0; transform: translate(-50%, -110%);
+      transition: opacity 150ms ease-out;
+      z-index: 5;
+    }
+    .sm-tooltip.show { opacity: 1; }
+    .sm-tooltip h6 { color: var(--accent-link); font-size: 11px; margin-bottom: 3px; }
+    .sm-tooltip .meta { color: var(--ink-faint); font-size: 8px; letter-spacing: 0.12em; margin-bottom: 5px; }
+
+    .sm-hint {
+      padding: 6px 14px;
+      border-top: 1px solid var(--rule);
+      font-size: 8px; color: var(--ink-faint); letter-spacing: 0.12em;
+      display: flex; justify-content: space-between;
+    }
+
+    @media (max-width: 720px) {
+      .sm-viewport { height: 460px; }
+      .sm-search { width: 110px; }
+      .sm-toolbar .title { display: none; }
+    }
+
+    /* ─── System Map HTML labels (overlay positioned by JS) ─── */
+    .sm-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .sm-label {
+      position: absolute; top: 0; left: 0;
+      transform-origin: 50% 50%;
+      font-family: var(--mono);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 4px 9px;
+      background: rgba(4, 6, 12, 0.85);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      border-radius: 3px;
+      white-space: nowrap;
+      will-change: transform, font-size, opacity;
+      transition: opacity 220ms ease-out, font-size 220ms ease-out, padding 220ms ease-out, color 220ms ease-out, border-color 220ms ease-out, box-shadow 220ms ease-out, background 220ms ease-out;
+    }
+    .sm-label .name { display: inline-block; }
+    .sm-label .sub  { color: var(--ink-faint); margin-left: 6px; font-weight: 400; font-size: 9px; }
+
+    /* Roles read as the primary anchors — leading dot, bolder, soft halo.
+       pointer-events:auto so the LABEL itself is hoverable/clickable —
+       the underlying hit-sphere isn't always big enough to cover the label
+       text edges, so labels need to catch their own pointer events. */
+    .sm-label-role {
+      color: #bbf7d0;                                  /* green-200, brighter than accent-live */
+      background: rgba(74, 222, 128, 0.18);            /* was 0.10 */
+      border: 1px solid rgba(134, 239, 172, 0.85);     /* brighter green-300 at higher alpha */
+      font-size: 13px;
+      padding: 5px 12px;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      text-shadow: 0 0 4px rgba(74,222,128,0.35);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.55), 0 0 14px rgba(74,222,128,0.30);
+      pointer-events: auto;
+      cursor: pointer;
+    }
+    .sm-label-role:hover {
+      background: rgba(74, 222, 128, 0.28);
+      border-color: rgba(187, 247, 208, 0.95);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.55), 0 0 18px rgba(74,222,128,0.55);
+    }
+    .sm-label-role::before {
+      content: "● ";
+      color: #86efac;
+      text-shadow: 0 0 8px rgba(134,239,172,1);
+      margin-right: 4px;
+    }
+    /* Projects + skills are scaffolding by default — they don't compete with
+       the roles for attention. Hover on a role wakes them via .highlighted. */
+    .sm-label-project {
+      color: var(--accent-link);
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      font-size: 10px;
+      opacity: 0.55;
+    }
+    .sm-label-skill {
+      color: var(--accent-warn);
+      font-size: 9px;
+      padding: 2px 6px;
+      background: rgba(4, 6, 12, 0.55);
+      opacity: 0.55;
+    }
+    /* Weak / exploratory tech — peripheral nodes, intentionally low-key */
+    .sm-label-weakskill {
+      color: rgba(180, 190, 205, 0.55);
+      font-size: 7.5px;
+      padding: 1px 4px;
+      background: rgba(4, 6, 12, 0.3);
+      border: 1px solid rgba(148, 163, 184, 0.10);
+      letter-spacing: 0.04em;
+      font-weight: 400;
+      opacity: 0.7;
+    }
+    .sm-label-weakskill.highlighted {
+      color: rgba(220, 230, 245, 0.85);
+      background: rgba(148, 163, 184, 0.12);
+      border-color: rgba(148, 163, 184, 0.35);
+      box-shadow: 0 0 8px rgba(148, 163, 184, 0.30);
+    }
+
+    /* Highlight = brighter bg + glow at the SAME physical size — so neighbors
+       never collide. Stacking issue solved by not growing the box on hover. */
+    .sm-label.highlighted { z-index: 20; }
+    .sm-label-role.highlighted {
+      color: var(--ink-strong);
+      background: rgba(74,222,128,0.32);
+      border-color: var(--accent-live);
+      box-shadow: 0 0 14px rgba(74,222,128,0.65), 0 4px 16px rgba(0,0,0,0.55);
+    }
+    .sm-label-project.highlighted {
+      color: var(--ink-strong);
+      background: rgba(96,165,250,0.22);
+      border-color: var(--accent-link);
+      box-shadow: 0 0 12px rgba(96,165,250,0.55), 0 4px 16px rgba(0,0,0,0.5);
+      opacity: 1;
+    }
+    .sm-label-skill.highlighted {
+      color: var(--ink-strong);
+      background: rgba(251,191,36,0.22);
+      border: 1px solid var(--accent-warn);
+      box-shadow: 0 0 12px rgba(251,191,36,0.55);
+      opacity: 1;
+    }
+
+    /* Dim only via opacity — no size shrink, so layout stays stable. */
+    .sm-label.dimmed {
+      opacity: 0.16 !important;
+      filter: saturate(0.3);
+    }
+
+    /* ─── Boot sequence ─── */
+    .boot {
+      position: fixed; inset: 0; z-index: 1000;
+      background: var(--bg-deep);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      transition: opacity 300ms ease-out;
+    }
+    .boot.hide { opacity: 0; pointer-events: none; }
+    .boot .term-boot {
+      width: min(560px, 90vw);
+      padding: 24px;
+      color: var(--accent-live);
+      font-size: 13px; line-height: 1.8;
+      text-shadow: 0 0 8px rgba(74,222,128,0.35);
+    }
+    .boot .term-boot .line { opacity: 0; }
+    .boot .term-boot .line.show { opacity: 1; transition: opacity 140ms ease-out; }
+    .boot .term-boot .caret::after { content: '▍'; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ─── Matrix rain ─── */
+    .matrix-rain {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.6);
+      pointer-events: none;
+      font-family: var(--mono); color: var(--accent-live);
+      overflow: hidden;
+      transition: opacity 400ms ease-out;
+    }
+    .matrix-rain.hide { opacity: 0; }
+    .matrix-rain .col {
+      position: absolute; top: -10%;
+      font-size: 14px;
+      white-space: pre;
+      animation: rain linear forwards;
+      text-shadow: 0 0 8px var(--accent-live);
+      line-height: 1.15;
+    }
+    @keyframes rain { to { top: 110%; } }
+    .matrix-rain .tag {
+      position: absolute; bottom: 24px; right: 24px;
+      color: var(--accent-live); font-size: 11px; letter-spacing: 0.18em;
+      text-shadow: 0 0 8px var(--accent-live);
+    }
+
+    /* ─── Version cycler popup ─── */
+    .vpop {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 200;
+      background: var(--bg); border: 1px solid var(--accent-link);
+      border-radius: 6px; padding: 10px 14px;
+      font-size: 11px; color: var(--ink);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6), var(--glow-link);
+      display: flex; gap: 14px; align-items: center;
+    }
+    .vpop .label { color: var(--accent-link); font-weight: 700; letter-spacing: 0.1em; font-size: 10px; }
+    .vpop a { color: var(--accent-live); }
+    .vpop .close { color: var(--ink-faint); cursor: pointer; font-size: 9px; letter-spacing: 0.12em; }
+    .vpop .close:hover { color: var(--ink-strong); }
+  </style>
+</head>
+<body>
+  <div class="boot" id="boot" aria-hidden="true">
+    <div class="term-boot">
+      <div class="line">&gt; INITIALIZING DALIN.DEV v2026.1</div>
+      <div class="line">&gt; LOADING AGENTS [████████████░░░░] 7/7</div>
+      <div class="line">&gt; CONNECTING TO SERVICES [████████████████] 6/6</div>
+      <div class="line">&gt; SYNCING SKILL MATRIX  ............. OK</div>
+      <div class="line caret">&gt; READY </div>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <div class="left">
+      <span class="logo">DALIN.DEV</span>
+      <span class="mono v" id="version-top">v2026.1</span>
+      <span class="mono">·</span>
+      <span class="mono"><span class="dot" id="status-dot"></span><span id="status-text">ONLINE · OTTAWA</span></span>
+    </div>
+    <nav class="right" aria-label="External links">
+      <a href="https://www.linkedin.com/in/dalinhuang/" target="_blank" rel="noopener">LINKEDIN</a>
+      <a href="https://github.com/dalindev" target="_blank" rel="noopener">GITHUB</a>
+      <a href="mailto:dhuan023@gmail.com">EMAIL</a>
+      <a href="Dalin_Huang_Resume_2026.pdf" target="_blank" rel="noopener" id="resume-link">RESUME</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="ghost" aria-hidden="true">
+        <svg viewBox="0 0 800 240" preserveAspectRatio="xMidYMid slice">
+          <g fill="none" stroke="rgba(96,165,250,0.30)" stroke-width="0.7" stroke-dasharray="3 5">
+            <path d="M80,60 Q200,180 380,90"/>
+            <path d="M380,90 Q500,40 720,140"/>
+            <path d="M380,90 Q480,200 620,180"/>
+            <path d="M120,200 Q280,120 380,90"/>
+            <path d="M720,140 Q650,80 540,100"/>
+            <path d="M120,200 Q380,260 620,180"/>
+          </g>
+          <g>
+            <circle cx="80"  cy="60"  r="6" fill="#4ade80" opacity=".7"/>
+            <circle cx="380" cy="90"  r="9" fill="#60a5fa" opacity=".7"/>
+            <circle cx="720" cy="140" r="6" fill="#4ade80" opacity=".7"/>
+            <circle cx="120" cy="200" r="4" fill="#fbbf24" opacity=".7"/>
+            <circle cx="620" cy="180" r="4" fill="#fbbf24" opacity=".7"/>
+            <circle cx="540" cy="100" r="4" fill="#fbbf24" opacity=".7"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="body">
+        <div class="op">// OPERATOR</div>
+        <h1>Dalin Huang</h1>
+        <div class="role">Senior Full Stack Developer / AI Developer</div>
+        <p class="bio">
+          Building AI agent platforms at <b>Parker AI</b>. Async pipelines that process
+          billions of data points a day. Fine-tunes open-weight LLMs with LoRA.
+          Eleven years shipping production systems — backend, frontend, and the weird
+          stuff in between.
+        </p>
+        <div class="links">
+          <a href="https://www.linkedin.com/in/dalinhuang/" target="_blank" rel="noopener">→ LINKEDIN</a>
+          <a href="https://github.com/dalindev" target="_blank" rel="noopener">→ GITHUB</a>
+          <a href="mailto:dhuan023@gmail.com">→ EMAIL</a>
+          <a href="Dalin_Huang_Resume_2026.pdf" target="_blank" rel="noopener" id="hero-resume">→ RESUME.PDF</a>
+        </div>
+      </div>
+
+      <div class="hero-terms">
+        <div class="macterm">
+          <div class="macterm-bar">
+            <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+            <div class="title">dalin@parker-ai ~ — system.live</div>
+            <div class="badge"><span class="ld"></span>STREAMING</div>
+          </div>
+          <div class="macterm-body term" aria-live="polite">
+            <div class="stream" id="term-stream"></div>
+          </div>
+        </div>
+
+        <div class="macterm">
+          <div class="macterm-bar">
+            <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+            <div class="title">finetune.v17 — qwen-3.6-27b · A100</div>
+            <div class="badge"><span class="ld"></span>TRAINING</div>
+          </div>
+          <div class="macterm-body ft" id="finetune-panel"></div>
+        </div>
+      </div>
+    </section>
+    <section class="office-room">
+      <h2 class="section-head">OFFICE FLOOR <span class="count" id="office-count">· crew loading…</span></h2>
+      <div class="office" id="office-floor"></div>
+      <!-- Ambient (minimal) -->
+      <span class="office-ambient plant-bigl">🐢</span>
+      <span class="office-ambient plant-bigr">🪴</span>
+    </section>
+
+    <h2 class="section-head">SYSTEM MAP <span class="count">· roles ↔ projects ↔ skills</span></h2>
+    <section class="systemmap">
+      <div class="sm-toolbar">
+        <span class="title">// DRAG TO ROTATE · CLICK A NODE TO HIGHLIGHT BELOW · TYPE / TO SEARCH</span>
+        <div class="right">
+          <span class="sm-chip role on" data-filter="role">● ROLES</span>
+          <span class="sm-chip proj on" data-filter="project">● PROJECTS</span>
+          <span class="sm-chip skill on" data-filter="skill">● SKILLS</span>
+          <input class="sm-search" id="sm-search" placeholder="⌕ search nodes" aria-label="Search system map">
+          <div class="sm-zoom">
+            <button id="sm-zoom-in"  title="Zoom in" aria-label="Zoom in">+</button>
+            <button id="sm-zoom-out" title="Zoom out" aria-label="Zoom out">−</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sm-viewport" id="sm-viewport">
+        <svg class="sm-fallback" id="sm-fallback" viewBox="0 0 700 480" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <g fill="none" stroke="rgba(96,165,250,0.30)" stroke-width="0.8" stroke-dasharray="3 5">
+            <path d="M350,240 L150,140"/>
+            <path d="M350,240 L540,120"/>
+            <path d="M350,240 L600,340"/>
+            <path d="M350,240 L100,330"/>
+            <path d="M350,240 L240,400"/>
+            <path d="M150,140 L260,90"/>
+            <path d="M540,120 L430,80"/>
+            <path d="M600,340 L470,300"/>
+            <path d="M100,330 L290,360"/>
+          </g>
+          <circle cx="350" cy="240" r="14" fill="#fff" opacity="0.95"/>
+          <text x="370" y="245" fill="#fff" font-size="10" font-family="monospace" font-weight="700">DALIN</text>
+          <circle cx="150" cy="140" r="9" fill="#4ade80"/>
+          <text x="40" y="135" fill="#4ade80" font-size="9" font-family="monospace">PARKER AI</text>
+          <circle cx="540" cy="120" r="7" fill="#4ade80"/>
+          <text x="555" y="116" fill="#4ade80" font-size="9" font-family="monospace">ORIUM</text>
+          <circle cx="600" cy="340" r="6" fill="#4ade80"/>
+          <text x="612" y="336" fill="#4ade80" font-size="9" font-family="monospace">SHOPIFY</text>
+          <circle cx="100" cy="330" r="6" fill="#4ade80"/>
+          <text x="20" y="355" fill="#4ade80" font-size="9" font-family="monospace">COMBYNE</text>
+          <circle cx="240" cy="400" r="5" fill="#4ade80"/>
+          <text x="190" y="420" fill="#4ade80" font-size="8" font-family="monospace">i-sight · events</text>
+          <circle cx="430" cy="80" r="7" fill="#60a5fa"/>
+          <text x="445" y="76" fill="#60a5fa" font-size="9" font-family="monospace">COMPOSABLE UI</text>
+          <circle cx="260" cy="90" r="6" fill="#60a5fa"/>
+          <text x="218" y="78" fill="#60a5fa" font-size="9" font-family="monospace">HINATURE</text>
+          <circle cx="470" cy="300" r="6" fill="#60a5fa"/>
+          <text x="485" y="296" fill="#60a5fa" font-size="9" font-family="monospace">XNOHUB</text>
+          <circle cx="290" cy="360" r="5" fill="#60a5fa"/>
+          <text x="250" y="380" fill="#60a5fa" font-size="9" font-family="monospace">LOCALXNO</text>
+          <circle cx="220" cy="180" r="4" fill="#fbbf24"/>
+          <text x="195" y="200" fill="#fbbf24" font-size="8" font-family="monospace">LoRA</text>
+          <circle cx="280" cy="170" r="4" fill="#fbbf24"/>
+          <text x="260" y="162" fill="#fbbf24" font-size="8" font-family="monospace">Gemini</text>
+          <circle cx="400" cy="170" r="4" fill="#fbbf24"/>
+          <text x="378" y="162" fill="#fbbf24" font-size="8" font-family="monospace">React</text>
+          <circle cx="430" cy="240" r="4" fill="#fbbf24"/>
+          <text x="440" y="246" fill="#fbbf24" font-size="8" font-family="monospace">Supabase</text>
+        </svg>
+        <div class="sm-tooltip" id="sm-tooltip"></div>
+      </div>
+
+      <div class="sm-hint">
+        <span>● ROLE &nbsp; ● PROJECT &nbsp; ● SKILL &nbsp;— edges = "used at" / "shipped at"</span>
+        <span>POWERED BY THREE.JS</span>
+      </div>
+    </section>
+    <h2 class="section-head">ACTIVE AGENTS <span class="count" id="agents-count"></span></h2>
+    <section class="agents" id="agents-list"></section>
+    <h2 class="section-head">DEPLOYED SERVICES <span class="count" id="services-count"></span></h2>
+    <section class="services" id="services-list"></section>
+    <h2 class="section-head">SYSTEM CAPABILITIES <span class="count">· skill matrix</span></h2>
+    <section class="capabilities" id="cap-list"></section>
+  </main>
+
+  <footer class="footer">
+    <div>SYSTEM · BSc CompSci · Minor Econ · U of Ottawa · 2009–2014</div>
+    <div class="v" id="version-bottom">BUILD · 2026.1</div>
+  </footer>
+
+  <!-- Three.js (r147 — last version with UMD examples/js/OrbitControls) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js" defer></script>
+
+  <script>
+    const ROLES = [
+      {
+        id: 'parker-ai', name: 'Parker AI', title: 'Senior FS / AI Developer',
+        period: 'Dec 2023 → Present', status: 'live', tenure: 2.4, slot: 1,
+        bullets: [
+          'Architected AI agent platform for marketing/creative strategy.',
+          'Pipelines: billions of data pts/day · millions of ads · TBs of media.',
+          'LoRA fine-tunes + auto-research loop: F1 0.7% → 79% over 30 iter.',
+          'Supabase Postgres at scale: partitioning, indexing, rollups, read-replicas.',
+          'Shipped one of the best Meta ad dashboards on the market — fast, fully sortable, daily data up to 1 year, any range, trends + analytics.',
+          'Async batch on Gemini Batch API — large-scale ad classification, media analysis + reports, embeddings.',
+        ],
+        metrics: [
+          { k: 'DATA/DAY', v: '~B' }, { k: 'SCALE', v: '~100×' },
+          { k: 'ITER', v: '30+' }, { k: 'UPTIME', v: '99.9%' },
+        ],
+        skills: [
+          'lora', 'gemini', 'claude_api', 'openai_api', 'embeddings',
+          'python', 'typescript', 'react', 'nextjs', 'tanstack',
+          'supabase', 'postgres', 'gcp',
+        ],
+      },
+      {
+        id: 'hinature', name: 'HiNature Ltd', title: 'Founder',
+        period: 'Jun 2019 → Present', status: 'live', tenure: 7, slot: 2,
+        bullets: [
+          'Founded eco-friendly microbiome cosmetics; mobile scanner app analyzing 35,000+ ingredients with ~95% accuracy.',
+          'Led product, data ingestion, and ingredient classification pipelines.',
+          'Pivoted the company into a profitable Quebec real-estate / Airbnb operation.',
+        ],
+        metrics: [{ k: 'INGREDIENTS', v: '35K+' }, { k: 'ACCURACY', v: '~95%' }],
+        skills: [
+          'python', 'javascript', 'react', 'firebase', 'gcp',
+          'html5', 'css3', 'chartjs', 'figma', 'adobecc',
+        ],
+      },
+      {
+        id: 'orium', name: 'Orium', title: 'Senior Product Developer',
+        period: 'May 2022 → Dec 2023', status: 'archived', tenure: 1.6, slot: 3,
+        bullets: [
+          'Core contributor to Composable UI — MACH Alliance–awarded headless commerce starter kit. Reduced client delivery timelines by up to 6 months.',
+          'Designed Figma-synced theme system and performance-critical storefront features (PDP, checkout) with strong a11y and security.',
+          'Led Harry Rosen headless checkout in 6 weeks; later productized and reused across enterprise clients.',
+          'Built internal tooling and led AI-focused technical talks across the org.',
+        ],
+        metrics: [{ k: 'DELIVERY', v: '−6mo' }, { k: 'LIGHTHOUSE', v: '90+' }],
+        skills: [
+          'react', 'nextjs', 'remix', 'reactrouter', 'tanstack',
+          'typescript', 'javascript', 'chakra', 'tailwind',
+          'html5', 'css3', 'storybook', 'figma',
+          'vercel', 'netlify', 'graphql', 'nodejs',
+        ],
+      },
+      {
+        id: 'shopify', name: 'Shopify', title: 'Developer',
+        period: 'May 2019 → Feb 2020', status: 'archived', tenure: 0.8, slot: 4,
+        bullets: [
+          'Money/Capital team. Refactored the capital offer decision tree — a critical system generating daily loan offers — improving efficiency, maintainability, and flexibility. Enabled the "starter loans" launch.',
+          'Designed/maintained the backend Capital API + admin systems. Optimized DB queries, on-call rotation.',
+        ],
+        metrics: [],
+        skills: [
+          'ruby', 'rails', 'postgres', 'mysql', 'redis',
+          'datadog', 'nginx', 'graphql', 'javascript',
+        ],
+      },
+      {
+        id: 'combyne', name: 'Combyne Ag', title: 'Full Stack Developer',
+        period: 'Feb 2017 → May 2019', status: 'archived', tenure: 2.3, slot: 5,
+        bullets: [
+          'Scaled monolithic marketplace to 1M+ users: DB optimization, Redis caching, Elasticsearch (10–100× search speedup).',
+          'Built admin dashboard system with role-based access from scratch.',
+          'Refactored to AWS SQS + Python workers for async tasks, enabling future scale.',
+        ],
+        metrics: [],
+        skills: [
+          'python', 'nodejs', 'express', 'vue', 'javascript',
+          'redis', 'elasticsearch', 'mysql', 'postgres',
+          'aws', 'heroku', 'digitalocean', 'nginx',
+          'jquery', 'bootstrap', 'html5', 'css3',
+        ],
+      },
+      {
+        id: 'isight', name: 'i-sight.com', title: 'Software Application Developer',
+        period: 'Mar 2016 → Feb 2017', status: 'archived', tenure: 1, slot: 6,
+        bullets: [
+          'Led key client projects (Michigan State, GSK, Wipro) full-stack on Node.js, Backbone.js, PostgreSQL, Elasticsearch.',
+        ],
+        metrics: [],
+        skills: [
+          'nodejs', 'express', 'backbone', 'sequelize',
+          'postgres', 'mysql', 'elasticsearch',
+          'javascript', 'jquery', 'bootstrap', 'html5', 'css3',
+        ],
+      },
+      {
+        id: 'events', name: 'Events.com', title: 'Web Developer',
+        period: 'Mar 2015 → Mar 2016', status: 'archived', tenure: 1, slot: 7,
+        bullets: [
+          'Built event-registration services on the LAMP stack: PHP, MySQL, AngularJS, CodeIgniter.',
+        ],
+        metrics: [],
+        skills: [
+          'php', 'codeigniter', 'mysql', 'angular',
+          'javascript', 'jquery', 'bootstrap', 'html5', 'css3',
+        ],
+      },
+    ];
+
+    /* Sorted newest → oldest by END year (so 2022–23 ranks as 2023). Same
+       year keeps a stable hand-picked order. Personal/OSS that are still
+       live come first within their year. */
+    const PROJECTS = [
+      // ── 2024 ──
+      { id: 'xnohub', name: 'xnohub.com', year: '2024', status: 'live', at: 'personal',
+        url: 'https://xnohub.com',
+        desc: 'Real-time visualizer for the Nano currency network on a 3D globe.',
+        skills: ['threejs', 'react', 'nextjs', 'typescript', 'tanstack', 'tailwind', 'vercel'] },
+      { id: 'localxno', name: 'LocalXNO.com', year: '2024', status: 'live', at: 'personal',
+        url: 'https://localxno.com',
+        desc: 'Nano marketplace on Next.js + Supabase + PostgreSQL, with Google API integrations.',
+        skills: ['nextjs', 'supabase', 'postgres', 'react', 'typescript', 'tailwind', 'vercel'] },
+      { id: 'rsl-redesign', name: 'Site Redesign', year: '2024', status: 'archived', at: 'parker-ai', url: null,
+        desc: 'Migrated a Flutter web app to Next.js + React + TS — 80% smaller bundle, 5× faster load, 10× first-render, Lighthouse 99.',
+        skills: ['nextjs', 'react', 'typescript', 'tailwind', 'vercel'] },
+      { id: 'rsl-payments', name: 'Payments & Shopify', year: '2024', status: 'archived', at: 'parker-ai', url: null,
+        desc: 'Engineered refunds, transactions, webhooks; shipped multiple Shopify extension apps to broaden product surface.',
+        skills: ['nextjs', 'typescript', 'supabase', 'postgres'] },
+      { id: 'rsl-backend', name: 'Backend Rebuild', year: '2024', status: 'archived', at: 'parker-ai', url: null,
+        desc: 'Rebuilt Firebase + Express into Supabase Postgres + Next.js. Strategy/CoR/Command/Template patterns + tests → 80% coverage in weeks.',
+        skills: ['nextjs', 'supabase', 'postgres', 'typescript', 'nodejs'] },
+
+      // ── 2023 (incl. ranges ending in 2023) ──
+      { id: 'composable', name: 'Composable UI', year: '2022–23', status: 'oss', at: 'orium',
+        url: 'https://composable.com/composable-ui',
+        desc: 'Open-source headless-commerce starter kit (React/Next.js). UI library + Figma kit + Algolia/Stripe. MACH Alliance award.',
+        skills: ['react', 'nextjs', 'typescript', 'chakra', 'tanstack', 'storybook', 'figma', 'tailwind'] },
+      { id: 'theme-system', name: 'Figma → Chakra Theme', year: '2022–23', status: 'archived', at: 'orium', url: null,
+        desc: 'Custom library that converts Figma design tokens into dynamic Chakra UI themes — design-to-code from days to real-time.',
+        skills: ['react', 'typescript', 'chakra', 'figma', 'storybook'] },
+
+      // ── 2022 ──
+      { id: 'harry-rosen', name: 'Harry Rosen Checkout', year: '2022', status: 'archived', at: 'orium', url: null,
+        desc: 'Headless checkout shipped in 6 weeks. Productized into Composable UI for additional enterprise clients.',
+        skills: ['react', 'nextjs', 'typescript', 'chakra', 'tanstack'] },
+
+      // ── 2021 (ranges ending in 2021) ──
+      { id: 'paypaw', name: 'PayPaw', year: '2019–21', status: 'archived', at: 'personal', url: null,
+        desc: 'Payment service for Bytom Blockchain. Won first place at a dev challenge — USD $30K prize.',
+        skills: ['bytom'] },
+
+      // ── 2020 ──
+      { id: 'gpu-miner', name: 'GPU Miner Opt', year: '2020', status: 'archived', at: 'personal', url: null,
+        desc: 'Optimized C++ GPU mining; +30% efficiency through caching.',
+        skills: ['cpp', 'cuda'] },
+      { id: 'bytom-dice', name: 'Bytom Dice', year: '2019–20', status: 'archived', at: 'personal', url: null,
+        desc: 'On-chain cryptocurrency betting site on Bytom.',
+        skills: ['bytom'] },
+
+      // ── 2019 (incl. ranges ending in 2019) ──
+      { id: 'hi-scanner', name: 'Microbiome Scanner', year: '2019', status: 'archived', at: 'hinature', url: null,
+        desc: 'WeChat scanner mini-app — analyzes 35,000+ cosmetic ingredients with ~95% accuracy. Built ingestion + classifier.',
+        skills: ['python', 'firebase', 'javascript', 'chartjs', 'gcp'] },
+      { id: 'starter-loans', name: 'Starter Loans', year: '2019', status: 'archived', at: 'shopify', url: null,
+        desc: 'Launched the Capital "starter loans" offer program — recognized by CEO. Tree refactor was the enabler.',
+        skills: ['ruby', 'rails', 'postgres', 'datadog'] },
+      { id: 'capital-tree', name: 'Decision Tree Refactor', year: '2019', status: 'archived', at: 'shopify', url: null,
+        desc: 'Refactored the capital offer decision tree — daily loan generator. Faster, easier to test, simpler to update.',
+        skills: ['ruby', 'rails', 'postgres', 'redis', 'datadog'] },
+      { id: 'combyne-admin', name: 'Combyne Admin (×2)', year: '2017–19', status: 'archived', at: 'combyne', url: null,
+        desc: 'Two admin systems — PHP7/MySQL + JS/HTML5/CSS3, and Node.js/Express + Vue.js.',
+        skills: ['php', 'mysql', 'nodejs', 'express', 'vue', 'javascript', 'html5', 'css3'] },
+
+      // ── 2018 ──
+      { id: 'combyne-sf', name: 'Combyne × Salesforce', year: '2018', status: 'archived', at: 'combyne', url: null,
+        desc: 'Learned Salesforce in 1 month, then designed + integrated SF workflows into the platform.',
+        skills: ['python'] },
+
+      // ── 2016 ──
+      { id: 'wipro', name: 'Wipro Hotline', year: '2016', status: 'archived', at: 'isight', url: null,
+        desc: 'Global whistleblower reporting + call-center service. Lead dev — shipped in 6 weeks.',
+        skills: ['backbone', 'nodejs', 'postgres', 'jquery', 'javascript', 'express'] },
+      { id: 'gsk', name: 'GSK Reports', year: '2016', status: 'archived', at: 'isight', url: null,
+        desc: 'GlaxoSmithKline — online report forms on i-Sight platform v5.',
+        skills: ['backbone', 'nodejs', 'postgres', 'javascript', 'express'] },
+      { id: 'michigan', name: 'MI Medicaid DHHS', year: '2016', status: 'archived', at: 'isight', url: null,
+        desc: 'State of Michigan healthcare app on i-Sight v5. Lead dev pairing with tech head.',
+        skills: ['backbone', 'nodejs', 'postgres', 'jquery', 'javascript', 'express'] },
+      { id: 'mudhero', name: 'Mud Hero 2016', year: '2016', status: 'archived', at: 'events', url: null,
+        desc: '11-location Canadian event series. Customizations + Google Analytics + Facebook tracking.',
+        skills: ['php', 'mysql', 'javascript', 'jquery', 'bootstrap', 'codeigniter'] },
+      { id: 'farmlead-mp', name: 'FarmLead Marketplace', year: '2016', status: 'archived', at: 'combyne', url: null,
+        desc: 'Mobile-friendly search marketplace front-end built without jQuery/Bootstrap. Part-time work pre-FT.',
+        skills: ['javascript', 'html5', 'css3'] },
+
+      // ── 2015 ──
+      { id: 'gmc', name: 'GMC Fundraiser', year: '2015', status: 'archived', at: 'events', url: null,
+        desc: 'Get Movin\' Crew — large-scale school fundraising, 1M+ users in the US. Front-end (school/classroom/student), email + admin.',
+        skills: ['php', 'mysql', 'javascript', 'jquery', 'bootstrap', 'codeigniter'] },
+    ];
+
+    /* Custom 3D positions — clusters around Dalin instead of concentric rings */
+    const ROLE_POSITIONS = {
+      'parker-ai': [-2.0,  0.3,  1.6],   // front-left, prominent
+      'hinature':  [ 2.2, -0.5,  1.0],   // front-right
+      'orium':     [ 1.9,  1.4, -1.4],   // upper back-right
+      'shopify':   [-2.6, -1.0, -1.7],   // lower back-left
+      'combyne':   [-3.1,  0.9, -0.4],   // far left
+      'isight':    [ 0.4,  1.9, -3.0],   // far back, high
+      'events':    [ 2.9, -1.6, -2.2],   // far back-right, low
+    };
+    const PERSONAL_ANCHOR = [0, -2.0, 2.6];  // for personal/OSS projects
+
+    /* Simple Icons slugs for tech logos (via cdn.simpleicons.org).
+       Non-brand techs (LoRA, eval loops, etc.) fall back to a text badge. */
+    const SKILL_ICONS = {
+      // ── AI / LLM ──
+      lora:          { text: 'LoRA' },
+      gemini:        { slug: 'googlegemini' },
+      embeddings:    { text: 'EMB' },
+      claude_api:    { slug: 'anthropic' },
+      openai_api:    { slug: 'openai' },
+      // ── Languages ──
+      python:        { slug: 'python' },
+      typescript:    { slug: 'typescript' },
+      javascript:    { slug: 'javascript' },
+      ruby:          { slug: 'ruby' },
+      php:           { slug: 'php' },
+      cpp:           { slug: 'cplusplus' },
+      // ── Markup / Styling ──
+      html5:         { slug: 'html5' },
+      css3:          { slug: 'css3' },
+      tailwind:      { slug: 'tailwindcss' },
+      chakra:        { slug: 'chakraui' },
+      bootstrap:     { slug: 'bootstrap' },
+      // ── Frontend frameworks / libs ──
+      react:         { slug: 'react' },
+      nextjs:        { slug: 'nextdotjs' },
+      remix:         { slug: 'remixrun' },
+      reactrouter:   { slug: 'reactrouter' },
+      tanstack:      { slug: 'reactquery' },
+      vue:           { slug: 'vuedotjs' },
+      angular:       { slug: 'angular' },
+      backbone:      { slug: 'backbonedotjs' },
+      jquery:        { slug: 'jquery' },
+      threejs:       { slug: 'threedotjs' },
+      chartjs:       { slug: 'chartdotjs' },
+      storybook:     { slug: 'storybook' },
+      // ── Backend frameworks ──
+      nodejs:        { slug: 'nodedotjs' },
+      rails:         { slug: 'rubyonrails' },
+      express:       { slug: 'express' },
+      codeigniter:   { slug: 'codeigniter' },
+      // ── Data ──
+      postgres:      { slug: 'postgresql' },
+      mysql:         { slug: 'mysql' },
+      redis:         { slug: 'redis' },
+      elasticsearch: { slug: 'elasticsearch' },
+      sequelize:     { slug: 'sequelize' },
+      graphql:       { slug: 'graphql' },
+      // ── Cloud / Ops ──
+      supabase:      { slug: 'supabase' },
+      gcp:           { slug: 'googlecloud' },
+      aws:           { slug: 'amazonwebservices' },
+      azure:         { slug: 'microsoftazure' },
+      firebase:      { slug: 'firebase' },
+      heroku:        { slug: 'heroku' },
+      digitalocean:  { slug: 'digitalocean' },
+      vercel:        { slug: 'vercel' },
+      netlify:       { slug: 'netlify' },
+      nginx:         { slug: 'nginx' },
+      datadog:       { slug: 'datadog' },
+      cuda:          { slug: 'nvidia' },
+      // ── Tooling / Design ──
+      npm:           { slug: 'npm' },
+      pnpm:          { slug: 'pnpm' },
+      figma:         { slug: 'figma' },
+      adobecc:       { slug: 'adobecreativecloud' },
+      // ── Legacy / other ──
+      bytom:         { text: 'BTM' },
+    };
+
+    /* Weak / exploratory tech — rendered as light-gray "background" nodes in
+       the system map. These are things I've touched or follow but don't claim
+       deep expertise in. They sit in an outer orbit, faint, with no edges. */
+    const WEAK_SKILLS = [
+      { id: 'go',          slug: 'go',                 name: 'Go' },
+      { id: 'rust',        slug: 'rust',               name: 'Rust' },
+      { id: 'kotlin',      slug: 'kotlin',             name: 'Kotlin' },
+      { id: 'swift',       slug: 'swift',              name: 'Swift' },
+      { id: 'dart',        slug: 'dart',               name: 'Dart' },
+      { id: 'docker',      slug: 'docker',             name: 'Docker' },
+      { id: 'kubernetes',  slug: 'kubernetes',         name: 'K8s' },
+      { id: 'terraform',   slug: 'terraform',          name: 'Terraform' },
+      { id: 'mongodb',     slug: 'mongodb',            name: 'MongoDB' },
+      { id: 'kafka',       slug: 'apachekafka',        name: 'Kafka' },
+      { id: 'prisma',      slug: 'prisma',             name: 'Prisma' },
+      { id: 'svelte',      slug: 'svelte',             name: 'Svelte' },
+      { id: 'astro',       slug: 'astro',              name: 'Astro' },
+      { id: 'solidjs',     slug: 'solid',              name: 'Solid.js' },
+      { id: 'qwik',        slug: 'qwik',               name: 'Qwik' },
+      { id: 'bun',         slug: 'bun',                name: 'Bun' },
+      { id: 'deno',        slug: 'deno',               name: 'Deno' },
+      { id: 'vite',        slug: 'vite',               name: 'Vite' },
+      { id: 'turborepo',   slug: 'turborepo',          name: 'Turborepo' },
+      { id: 'nestjs',      slug: 'nestjs',             name: 'NestJS' },
+      { id: 'fastify',     slug: 'fastify',            name: 'Fastify' },
+      { id: 'playwright',  slug: 'playwright',         name: 'Playwright' },
+      { id: 'cypress',     slug: 'cypress',            name: 'Cypress' },
+      { id: 'pytorch',     slug: 'pytorch',            name: 'PyTorch' },
+      { id: 'huggingface', slug: 'huggingface',        name: 'HF' },
+      { id: 'langchain',   slug: 'langchain',          name: 'LangChain' },
+      { id: 'flutter',     slug: 'flutter',            name: 'Flutter' },
+      { id: 'webflow',     slug: 'webflow',            name: 'Webflow' },
+    ];
+
+    const SKILLS = {
+      'AI / LLM':   [
+        { name: 'LoRA', heat: 'hot' }, { name: 'Gemini API', heat: 'hot' },
+        { name: 'Claude API', heat: 'hot' }, { name: 'OpenAI API', heat: 'hot' },
+        { name: 'Embeddings', heat: 'hot' }, { name: 'Eval loops', heat: 'hot' },
+        { name: 'Claude Code', heat: 'warm' }, { name: 'Cursor', heat: 'warm' },
+        { name: 'ChatGPT', heat: 'warm' }, { name: 'Grok', heat: 'cool' },
+      ],
+      'FRONTEND':   [
+        { name: 'React', heat: 'hot' }, { name: 'Next.js', heat: 'hot' },
+        { name: 'TanStack Q', heat: 'hot' }, { name: 'TypeScript', heat: 'hot' },
+        { name: 'Tailwind', heat: 'warm' }, { name: 'Shadcn/UI', heat: 'warm' },
+        { name: 'Chakra UI', heat: 'warm' }, { name: 'HTML5/CSS3', heat: 'warm' },
+      ],
+      'BACKEND':    [
+        { name: 'Node.js', heat: 'hot' }, { name: 'Python', heat: 'hot' },
+        { name: 'Ruby', heat: 'cool' }, { name: 'PHP', heat: 'cool' },
+        { name: 'Java', heat: 'cool' }, { name: 'Perl', heat: 'cool' },
+      ],
+      'DATA':       [
+        { name: 'PostgreSQL', heat: 'hot' }, { name: 'Supabase', heat: 'hot' },
+        { name: 'Redis', heat: 'warm' }, { name: 'Elasticsearch', heat: 'warm' },
+        { name: 'MySQL', heat: 'cool' }, { name: 'Firebase', heat: 'cool' },
+      ],
+      'CLOUD':      [
+        { name: 'Supabase', heat: 'hot' }, { name: 'GCP', heat: 'hot' },
+        { name: 'AWS', heat: 'warm' }, { name: 'Azure', heat: 'warm' },
+        { name: 'Vercel', heat: 'warm' }, { name: 'Netlify', heat: 'cool' },
+        { name: 'Firebase', heat: 'cool' }, { name: 'Tencent', heat: 'cool' },
+      ],
+      'FRAMEWORKS': [
+        { name: 'Next.js', heat: 'hot' }, { name: 'Remix', heat: 'warm' },
+        { name: 'Rails', heat: 'cool' }, { name: 'Django', heat: 'cool' },
+        { name: 'Flask', heat: 'cool' }, { name: 'Vue', heat: 'cool' },
+        { name: 'Express', heat: 'cool' }, { name: 'Backbone', heat: 'cool' },
+        { name: 'CodeIgniter', heat: 'cool' },
+      ],
+    };
+
+    const SKILL_ID = {
+      // AI
+      lora: 'LoRA', gemini: 'Gemini', embeddings: 'Embeddings',
+      claude_api: 'Claude API', openai_api: 'OpenAI API',
+      // Languages
+      python: 'Python', typescript: 'TS', javascript: 'JS',
+      ruby: 'Ruby', php: 'PHP', cpp: 'C++',
+      // Markup / styling
+      html5: 'HTML5', css3: 'CSS3',
+      tailwind: 'Tailwind', chakra: 'Chakra', bootstrap: 'Bootstrap',
+      // Frontend
+      react: 'React', nextjs: 'Next.js', remix: 'Remix',
+      reactrouter: 'R. Router', tanstack: 'TanStack',
+      vue: 'Vue', angular: 'Angular', backbone: 'Backbone', jquery: 'jQuery',
+      threejs: 'Three.js', chartjs: 'Chart.js', storybook: 'Storybook',
+      // Backend
+      nodejs: 'Node.js', rails: 'Rails', express: 'Express', codeigniter: 'CodeIgniter',
+      // Data
+      postgres: 'Postgres', mysql: 'MySQL', redis: 'Redis',
+      elasticsearch: 'ES', sequelize: 'Sequelize', graphql: 'GraphQL',
+      // Cloud / Ops
+      supabase: 'Supabase', gcp: 'GCP', aws: 'AWS', azure: 'Azure',
+      firebase: 'Firebase', heroku: 'Heroku', digitalocean: 'D.Ocean',
+      vercel: 'Vercel', netlify: 'Netlify', nginx: 'Nginx',
+      datadog: 'Datadog', cuda: 'CUDA',
+      // Tools / Design
+      npm: 'npm', pnpm: 'pnpm', figma: 'Figma', adobecc: 'Adobe CC',
+      // Legacy
+      bytom: 'Bytom',
+    };
+
+    /* ─── Office floor: the actual Parker AI agent crew ─── */
+    const OFFICE_AGENTS = [
+      /* Professional agent group names — consistent X AGENT format */
+      { id: 'opus-main',  name: 'Claude 4.7 Opus',  role: 'Main Agent',         status: 'busy',
+        task: 'Orchestrating 24 subtasks',          screen: 'orchestrate', color: '#f59e0b',
+        items: { left: ['☕', '🪴'], right: ['📋'] }, floor: [] },
+      { id: 'opus-ft',    name: 'Claude 4.7 Opus',  role: 'Fine-tune Agent',    status: 'busy',
+        task: 'LoRA v17 · epoch 12 · 62%',          screen: 'progress',    color: '#f59e0b',
+        items: { left: ['☕'], right: ['⚡'] }, floor: [{ emoji: '🗑️', kind: 'trash' }] },
+      { id: 'gem-pro',    name: 'Gemini 3.1 Pro',   role: 'Classifier Agent',   status: 'busy',
+        task: 'Classify 482 ads · 96.4% acc',       screen: 'chart',       color: '#60a5fa',
+        items: { left: ['🌿'], right: ['📚'] }, floor: [] },
+      { id: 'gem-flash',  name: 'Gemini 3.0 Flash', role: 'Analyze Agent',      status: 'busy',
+        task: 'Analyze 8.4K images · 12ms p50',     screen: 'media',       color: '#60a5fa',
+        items: { left: [], right: ['📷'] }, floor: [{ emoji: '🗑️', kind: 'trash' }] },
+      { id: 'gem-search', name: 'Gemini 3.1 Pro',   role: 'Web Search Agent',   status: 'busy',
+        task: 'Live grounding · 87 sources',        screen: 'crawler',     color: '#60a5fa',
+        items: { left: ['📚'], right: ['🪴'] }, floor: [] },
+      { id: 'gpt55',      name: 'GPT 5.5',          role: 'Failover Agent',     status: 'idle',
+        task: 'On standby · doomscrolling',         screen: 'phone',       color: '#10b981',
+        items: { left: ['☕', '🧸'], right: ['📱'] }, floor: [] },
+      { id: 'whisper',    name: 'Whisper v4',       role: 'Transcribe Agent',   status: 'idle',
+        task: 'No audio queued · napping',          screen: 'sleep',       color: '#10b981',
+        items: { left: ['🎧'], right: [] }, floor: [{ emoji: '🗑️', kind: 'trash' }] },
+      { id: 'deepseek',   name: 'DeepSeek v4',      role: 'Overthink Agent',    status: 'offline',
+        task: 'OOM · reasoning chain too long',     screen: 'error',       color: '#ef4444',
+        items: { left: ['🔧'], right: ['⚠️'] }, floor: [] },
+    ];
+
+    function screenHtml(type) {
+      switch (type) {
+        case 'orchestrate': return `
+          <span class="mk done">[✓]</span> embed 12.4M docs<br>
+          <span class="mk done">[✓]</span> classify 482 ads<br>
+          <span class="mk wip">[⟳]</span> train LoRA r16<br>
+          <span class="mk todo">[ ]</span> eval F1 / EM<br>
+          <span class="mk todo">[ ]</span> deploy v17 → prod<br>
+          <span class="eta">─ eta 8m · 7 / 13 done</span>`;
+        case 'progress': return `
+          <span class="lbl">EPOCH</span><span class="pct">12 / 16</span> · ETA <span class="pct">14m</span><br>
+          <span class="lbl">STEP</span>1240 / 2000<br>
+          <span class="lbl">LOSS</span><span class="pct">0.341</span> ↓<br>
+          <span class="lbl">LR</span><span class="pct">2.4e-5</span><br>
+          <span class="bar">▓▓▓▓▓▓▓░░░</span> 62%<br>
+          <span class="lbl">GPU</span>A100 · 71GB · 73°C`;
+        case 'chart': return `
+          <div class="row">▆▃▅▇▄▆▂▇▃▅</div>
+          <div class="row">▃▅▇▄▆▂▇▅▇▄</div>
+          <div class="acc">F1 <span class="hi">96.4</span> · P 97.1 · R 95.6</div>
+          <div class="acc dim">batch 482 · 28ms · v17</div>`;
+        case 'media': return `
+          📷 <span class="lbl">batch</span>24 / 42<br>
+          <span class="box1">face·98</span><span class="box2">logo·87</span><br>
+          <span class="box1">text·94</span><span class="box2">nsfw·02</span><br>
+          <span class="lbl">queue</span>156 · 12ms p50<br>
+          <span class="lbl">embed</span><span class="ok">ok</span> · CLIP-L`;
+        case 'crawler': return `
+          <span class="lbl">GET</span>/api/v3/search<br>
+          87 sources · top-50<br>
+          <span class="dots">● ● ●</span> fetching…<br>
+          └─ <span class="dim">nytimes.com</span> <span class="ok">✓</span><br>
+          └─ <span class="dim">github.com</span> <span class="ok">✓</span><br>
+          └─ <span class="dim">arxiv.org</span> ⟳`;
+        case 'phone': return `
+          <div class="time">14:23</div>
+          <div class="row"><span class="badge">12</span> Slack <span class="dot">●</span></div>
+          <div class="row">📧 Email · 4</div>
+          <div class="row">📱 TikTok <span class="dot">●</span></div>
+          <div class="row">👀 ...</div>`;
+        case 'sleep': return `
+          <span class="z1">z</span>
+          <span class="z2">Z</span>
+          <span class="z3">z</span><br>
+          <br>
+          <span class="dvd">●</span>`;
+        case 'error': return `
+          <span class="blink">FATAL OOM</span><br>
+          chain depth: 4194 ↑<br>
+          <span class="trace">at reasoner::expand()</span><br>
+          <span class="trace">at think::deeper()</span><br>
+          <span class="trace">at think::even_deeper()</span><br>
+          core dumped · retry 14/∞`;
+        default: return '';
+      }
+    }
+
+    /* SVG illustrations — proper office chair (neutral) + bot (brand-colored).
+       Chair is drawn in two parts: BACK (rises behind bot) and BASE (visible
+       below the white desk). uid keeps gradient defs unique per agent. */
+
+    /* Chair base only — pneumatic stem + 5-wheel star (visible below desk).
+       The short white chair back is handled by .desk-chair-back CSS. */
+    const SVG_CHAIR = (uid) => `
+      <svg viewBox="0 0 100 66" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+        <defs>
+          <linearGradient id="ch-${uid}" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#9c9889"/>
+            <stop offset="50%"  stop-color="#e0ddcf"/>
+            <stop offset="100%" stop-color="#9c9889"/>
+          </linearGradient>
+        </defs>
+        <!-- Pneumatic stem -->
+        <rect x="46" y="0" width="8" height="32" fill="url(#ch-${uid})" rx="1.5"/>
+        <!-- 5-spoke radial base -->
+        <g stroke="#6e6b5e" stroke-width="5" stroke-linecap="round" fill="none">
+          <line x1="50" y1="32" x2="10" y2="58"/>
+          <line x1="50" y1="32" x2="50" y2="62"/>
+          <line x1="50" y1="32" x2="90" y2="58"/>
+          <line x1="50" y1="32" x2="28" y2="60"/>
+          <line x1="50" y1="32" x2="72" y2="60"/>
+        </g>
+        <!-- Wheels -->
+        <ellipse cx="10" cy="58" rx="4.5" ry="3" fill="#6e6b5e"/>
+        <ellipse cx="28" cy="60" rx="4.5" ry="3" fill="#6e6b5e"/>
+        <ellipse cx="50" cy="62" rx="4.5" ry="3" fill="#6e6b5e"/>
+        <ellipse cx="72" cy="60" rx="4.5" ry="3" fill="#6e6b5e"/>
+        <ellipse cx="90" cy="58" rx="4.5" ry="3" fill="#6e6b5e"/>
+        <ellipse cx="10" cy="57" rx="2.5" ry="0.8" fill="rgba(255,255,255,0.25)"/>
+        <ellipse cx="28" cy="59" rx="2.5" ry="0.8" fill="rgba(255,255,255,0.25)"/>
+        <ellipse cx="50" cy="61" rx="2.5" ry="0.8" fill="rgba(255,255,255,0.25)"/>
+        <ellipse cx="72" cy="59" rx="2.5" ry="0.8" fill="rgba(255,255,255,0.25)"/>
+        <ellipse cx="90" cy="57" rx="2.5" ry="0.8" fill="rgba(255,255,255,0.25)"/>
+      </svg>
+    `;
+
+    /* Wall-E inspired bot — boxy/square head, big eye-modules, two arms typing.
+       Back view: we see the back of the squarish head + back of body + arms reaching forward. */
+    const SVG_BOT = (uid) => `
+      <svg viewBox="0 0 80 96" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="bh-${uid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#5a6273"/>
+            <stop offset="55%"  stop-color="#2e3340"/>
+            <stop offset="100%" stop-color="#161b25"/>
+          </linearGradient>
+          <linearGradient id="bb-${uid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#2a3040"/>
+            <stop offset="100%" stop-color="#11141b"/>
+          </linearGradient>
+        </defs>
+        <!-- Antenna with brand-colored LED -->
+        <line x1="40" y1="2" x2="40" y2="11" stroke="#1a1f2b" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="40" cy="2" r="4.5" fill="currentColor" opacity="0.32" class="led-glow"/>
+        <circle cx="40" cy="2" r="2.5" fill="currentColor"/>
+        <!-- Wall-E SQUARE-ish head with rounded corners -->
+        <rect x="20" y="13" width="40" height="36" rx="7" fill="url(#bh-${uid})"/>
+        <!-- Top edge highlight ridge -->
+        <path d="M 24 17 L 56 17" stroke="rgba(255,255,255,0.15)" stroke-width="0.8" stroke-linecap="round"/>
+        <!-- Centerline seam down back of head -->
+        <line x1="40" y1="15" x2="40" y2="47" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <!-- Big chunky ear modules (Wall-E-style binocular ears) -->
+        <rect x="15" y="22" width="6" height="14" rx="2" fill="#1a1f2b"/>
+        <rect x="59" y="22" width="6" height="14" rx="2" fill="#1a1f2b"/>
+        <circle cx="18" cy="29" r="1.4" fill="currentColor"/>
+        <circle cx="62" cy="29" r="1.4" fill="currentColor"/>
+        <!-- Brand-colored ID patch on back -->
+        <rect x="29" y="34" width="22" height="7" rx="2" fill="currentColor" opacity="0.85"/>
+        <!-- Small bolts on corners (Wall-E construction style) -->
+        <circle cx="23" cy="16" r="0.8" fill="rgba(255,255,255,0.20)"/>
+        <circle cx="57" cy="16" r="0.8" fill="rgba(255,255,255,0.20)"/>
+        <circle cx="23" cy="46" r="0.8" fill="rgba(255,255,255,0.20)"/>
+        <circle cx="57" cy="46" r="0.8" fill="rgba(255,255,255,0.20)"/>
+        <!-- Neck (short rectangular) -->
+        <rect x="34" y="49" width="12" height="5" rx="1" fill="#1a1f2b"/>
+        <!-- Shoulders + body -->
+        <path d="M 11 96 Q 15 60 28 56 Q 40 58 52 56 Q 65 60 69 96 Z"
+              fill="url(#bb-${uid})"/>
+        <line x1="40" y1="58" x2="40" y2="90" stroke="rgba(255,255,255,0.05)" stroke-width="0.4"/>
+        <!-- Left arm reaching forward (toward keyboard) -->
+        <path d="M 16 70 Q 12 82 18 92 L 26 94 L 30 92 Q 28 82 26 72 Z"
+              fill="url(#bb-${uid})"/>
+        <!-- Right arm reaching forward -->
+        <path d="M 64 70 Q 68 82 62 92 L 54 94 L 50 92 Q 52 82 54 72 Z"
+              fill="url(#bb-${uid})"/>
+        <!-- Hands -->
+        <ellipse cx="26" cy="93" rx="4.5" ry="3" fill="#3a4150"/>
+        <ellipse cx="54" cy="93" rx="4.5" ry="3" fill="#3a4150"/>
+      </svg>
+    `;
+
+    /* Sleeping bot — side view, head tilted forward + slumped down/left,
+       eye closed, peaceful smile. No brand patch (back-of-head isn't visible from side).
+       Used for idle agents (GPT 5.5 backup, Whisper v4 audio). */
+    const SVG_BOT_SLEEP = (uid) => `
+      <svg viewBox="0 0 80 96" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="bhs-${uid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#5a6273"/>
+            <stop offset="55%"  stop-color="#2e3340"/>
+            <stop offset="100%" stop-color="#161b25"/>
+          </linearGradient>
+          <linearGradient id="bbs-${uid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#2a3040"/>
+            <stop offset="100%" stop-color="#11141b"/>
+          </linearGradient>
+        </defs>
+        <!-- Head: tilted forward + slumped left, raised slightly (10px up from previous).
+             SMIL animateTransform adds a tiny ±3° sway pivoting at the NECK (40,50) on top of
+             the static translate+rotate — looks like slow breathing during sleep. -->
+        <g transform="translate(-14 5) rotate(-22 40 32)">
+          <animateTransform attributeName="transform" type="rotate"
+            values="-3 40 50; 3 40 50; -3 40 50"
+            keyTimes="0; 0.5; 1"
+            dur="3.8s" repeatCount="indefinite"
+            additive="sum"
+            calcMode="spline" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1"/>
+          <!-- Antenna -->
+          <line x1="40" y1="6" x2="40" y2="14" stroke="#1a1f2b" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="40" cy="6" r="3.5" fill="currentColor" opacity="0.30" class="led-glow"/>
+          <circle cx="40" cy="6" r="2" fill="currentColor"/>
+          <!-- Square Wall-E head -->
+          <rect x="20" y="16" width="40" height="36" rx="7" fill="url(#bhs-${uid})"/>
+          <!-- Side ear visible -->
+          <rect x="56" y="26" width="7" height="14" rx="2" fill="#1a1f2b"/>
+          <circle cx="59.5" cy="33" r="1.5" fill="currentColor" opacity="0.55"/>
+          <!-- CLOSED EYE on visible side of face -->
+          <path d="M 30 32 Q 36 35 42 32" stroke="#ffffff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.85"/>
+          <!-- Tiny peaceful smile -->
+          <path d="M 36 42 Q 39 44 42 42" stroke="rgba(255,255,255,0.5)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- Slumped shoulders + body (relaxed) -->
+        <path d="M 13 96 Q 17 64 28 58 Q 40 60 52 58 Q 63 64 67 96 Z"
+              fill="url(#bbs-${uid})"/>
+        <!-- Arms relaxed at sides (NOT reaching forward) -->
+        <ellipse cx="18" cy="82" rx="4.5" ry="11" fill="url(#bbs-${uid})" transform="rotate(-8 18 82)"/>
+        <ellipse cx="62" cy="82" rx="4.5" ry="11" fill="url(#bbs-${uid})" transform="rotate(8 62 82)"/>
+      </svg>
+    `;
+
+    const SVG_CHAIR_BASE = (uid) => `
+      <svg viewBox="0 0 100 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
+        <defs>
+          <linearGradient id="cs-${uid}" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#3a4150"/>
+            <stop offset="50%"  stop-color="#7a8090"/>
+            <stop offset="100%" stop-color="#3a4150"/>
+          </linearGradient>
+        </defs>
+        <!-- Pneumatic stem (chrome metal) -->
+        <rect x="46" y="0" width="8" height="26" fill="url(#cs-${uid})" rx="1.5"/>
+        <!-- 5-spoke radial base -->
+        <g stroke="#1a1f2b" stroke-width="5.5" stroke-linecap="round" fill="none">
+          <line x1="50" y1="26" x2="10" y2="48"/>
+          <line x1="50" y1="26" x2="50" y2="54"/>
+          <line x1="50" y1="26" x2="90" y2="48"/>
+          <line x1="50" y1="26" x2="30" y2="52"/>
+          <line x1="50" y1="26" x2="70" y2="52"/>
+        </g>
+        <!-- Wheel caps -->
+        <ellipse cx="10" cy="48" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <ellipse cx="30" cy="52" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <ellipse cx="50" cy="54" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <ellipse cx="70" cy="52" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <ellipse cx="90" cy="48" rx="5" ry="3.5" fill="#1a1f2b"/>
+        <!-- Wheel highlights -->
+        <ellipse cx="10" cy="47" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
+        <ellipse cx="30" cy="51" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
+        <ellipse cx="50" cy="53" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
+        <ellipse cx="70" cy="51" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
+        <ellipse cx="90" cy="47" rx="3" ry="1" fill="rgba(255,255,255,0.10)"/>
+      </svg>
+    `;
+
+    function renderOffice() {
+      const root = document.getElementById('office-floor');
+      if (!root) return;
+
+      const item = (emoji) => {
+        const cls = emoji === '☕' ? 'item steam-trigger'
+                  : emoji === '📱' ? 'item notif-trigger'
+                  : 'item';
+        return `<span class="${cls}">${emoji}</span>`;
+      };
+
+      const renderScreen = (a) => {
+        if (a.status === 'idle')    return '';   // black sleeping screen
+        if (a.status === 'offline') return `<div style="padding:5px 6px;">${screenHtml('error')}</div>`;
+        // busy: macOS blue desktop with a terminal window inside
+        return `
+          <div class="menubar"></div>
+          <div class="term-win">
+            <div class="win-bar"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+            <div class="win-content scr-${a.screen}">${screenHtml(a.screen)}</div>
+          </div>`;
+      };
+
+      root.innerHTML = OFFICE_AGENTS.map(a => `
+        <article class="desk ${a.status}" data-id="${a.id}" style="--bot-color: ${a.color}">
+          <div class="desk-scene">
+            <!-- Order matters for stacking: monitor goes LAST so it sits on top of desk -->
+            <div class="desk-top"></div>
+            <div class="desk-leg fl"></div><div class="desk-leg fr"></div>
+            <div class="desk-leg bl"></div><div class="desk-leg br"></div>
+            <div class="desk-keyboard"></div>
+            <div class="desk-trackpad"></div>
+            <div class="desk-items">
+              <div class="left">${(a.items.left||[]).map(item).join('')}</div>
+              <div class="right">${(a.items.right||[]).map(item).join('')}</div>
+            </div>
+            <div class="desk-bot">${a.status === 'idle' ? SVG_BOT_SLEEP(a.id) : SVG_BOT(a.id)}</div>
+            <div class="desk-chair-back"></div>
+            <div class="desk-chair">${SVG_CHAIR(a.id)}</div>
+            ${a.status === 'idle'    ? '<div class="desk-fx zzz">z<sub>Z</sub>z</div>' : ''}
+            ${(a.floor || []).map(f => `<div class="desk-floor-item ${f.kind}">${f.emoji}</div>`).join('')}
+            <!-- Monitor LAST = renders on top of desk-top in DOM order -->
+            <div class="desk-monitor"><div class="monitor-bezel"><div class="screen ${a.status}">${renderScreen(a)}</div></div></div>
+          </div>
+          <div class="desk-info">
+            <span class="name">${a.role}</span>
+            <span class="status ${a.status}">● ${a.status.toUpperCase()}</span>
+          </div>
+        </article>
+      `).join('');
+
+      const busy    = OFFICE_AGENTS.filter(a => a.status === 'busy').length;
+      const idle    = OFFICE_AGENTS.filter(a => a.status === 'idle').length;
+      const offline = OFFICE_AGENTS.filter(a => a.status === 'offline').length;
+      document.getElementById('office-count').textContent =
+        `· crew of ${OFFICE_AGENTS.length} · ${busy} busy · ${idle} idle · ${offline} offline`;
+    }
+
+    /* ─── Renderers ─── */
+    function renderAgents() {
+      const list = document.getElementById('agents-list');
+      list.innerHTML = ROLES.map(r => `
+        <article class="agent ${r.status === 'archived' ? 'archived' : ''} ${r.status === 'live' && r.id !== 'hinature' ? 'open' : ''}" data-id="${r.id}">
+          <div class="head" role="button" tabindex="0" aria-expanded="${r.status === 'live' && r.id !== 'hinature' ? 'true' : 'false'}">
+            <div>
+              <div class="name">${r.name} <span class="title">· ${r.title}</span></div>
+              <div class="meta">agent-${String(r.slot).padStart(3, '0')}</div>
+            </div>
+            <div class="right">
+              <span class="period">${r.period}</span>
+              <span class="status">● ${r.status === 'live' ? 'LIVE' : 'ARCHIVED'}</span>
+              <span class="jump" data-jump="${r.id}">↑ MAP</span>
+              <span class="caret">▶</span>
+            </div>
+          </div>
+          <div class="body">
+            <ul>${r.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+            <div class="metrics">
+              ${r.metrics.map(m => `<div class="row"><span class="k">${m.k}</span><span class="v">${m.v}</span></div>`).join('')}
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      const live = ROLES.filter(r => r.status === 'live').length;
+      document.getElementById('agents-count').textContent = `· ${ROLES.length} deployed · ${live} live`;
+
+      list.querySelectorAll('.agent .head').forEach(head => {
+        const toggle = () => {
+          const a = head.closest('.agent');
+          a.classList.toggle('open');
+          head.setAttribute('aria-expanded', a.classList.contains('open'));
+        };
+        head.addEventListener('click', e => {
+          if (e.target.closest('[data-jump]')) return;
+          toggle();
+        });
+        head.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+        });
+      });
+    }
+
+    function renderServices() {
+      const list = document.getElementById('services-list');
+      const VISIBLE = 9;   // most-recent 9 by default; rest tucked behind toggle
+      const hiddenCount = Math.max(0, PROJECTS.length - VISIBLE);
+      const cards = PROJECTS.map((p, i) => `
+        <article class="svc ${p.status}${i >= VISIBLE ? ' svc-hidden' : ''}" data-id="${p.id}">
+          <span class="dot-svc"></span>
+          <div class="name">
+            ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener">${p.name}</a>` : p.name}
+          </div>
+          <div class="meta">${p.year} · ${p.status === 'live' ? 'LIVE' : p.status === 'oss' ? 'OSS' : 'ARCHIVED'}</div>
+          <div class="desc">${p.desc}</div>
+          ${p.url ? `<div class="visit">→ VISIT ↗</div>` : ''}
+        </article>
+      `).join('');
+      const toggle = hiddenCount > 0
+        ? `<button class="svc-toggle" id="svc-toggle" type="button" aria-expanded="false">↓ Show ${hiddenCount} older endpoints</button>`
+        : '';
+      list.innerHTML = cards + toggle;
+      document.getElementById('services-count').textContent = `· ${PROJECTS.length} endpoints`;
+
+      const btn = document.getElementById('svc-toggle');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          list.querySelectorAll('.svc-hidden').forEach(el => el.style.display = expanded ? '' : 'flex');
+          btn.setAttribute('aria-expanded', String(!expanded));
+          btn.textContent = expanded
+            ? `↓ Show ${hiddenCount} older endpoints`
+            : `↑ Show fewer`;
+        });
+      }
+    }
+
+    function renderCapabilities() {
+      const list = document.getElementById('cap-list');
+      list.innerHTML = Object.entries(SKILLS).map(([cat, items]) => `
+        <div class="cap-row">
+          <div class="cat">${cat}</div>
+          <div class="cells">
+            ${items.map(s => `<span class="cap-cell ${s.heat}" title="${s.name}">${s.name}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* ─── System Map (Three.js) ─── */
+    const SM = {
+      scene: null, camera: null, renderer: null, controls: null,
+      group: null,
+      nodes: [], edges: [],
+      raycaster: null, mouse: null,
+      hovered: null, selected: null,
+      autoRotate: true, autoRotateResumeAt: 0,
+      filters: { role: true, project: true, skill: true },
+      reducedMotion: false,
+    };
+
+    /* Generate a small canvas texture with bold text — used as fallback for
+       skills without a brand logo (LoRA, embeddings, BTM, etc.) */
+    function makeTextBadge(text, hex) {
+      const c = document.createElement('canvas');
+      c.width = 128; c.height = 128;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = 'rgba(4,6,12,0.9)';
+      ctx.beginPath(); ctx.arc(64, 64, 60, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = hex; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(64, 64, 58, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = hex;
+      const size = text.length > 3 ? 22 : 28;
+      ctx.font = `800 ${size}px "JetBrains Mono", monospace`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(text, 64, 66);
+      const tex = new THREE.CanvasTexture(c);
+      return tex;
+    }
+
+    function buildSystemMap() {
+      if (typeof THREE === 'undefined') {
+        console.warn('Three.js not loaded; SVG fallback stays.');
+        return;
+      }
+
+      SM.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const vp = document.getElementById('sm-viewport');
+      const fallback = document.getElementById('sm-fallback');
+
+      // Guard: if viewport hasn't laid out yet, defer init (give up after ~3s)
+      SM._initTries = (SM._initTries || 0) + 1;
+      if ((vp.clientWidth === 0 || vp.clientHeight === 0) && SM._initTries < 30) {
+        return setTimeout(buildSystemMap, 100);
+      }
+      if (vp.clientWidth === 0 || vp.clientHeight === 0) {
+        console.warn('System Map: viewport has zero dimensions after 3s, keeping SVG fallback.');
+        return;
+      }
+
+      fallback.style.display = 'none';
+
+      const w = vp.clientWidth, h = vp.clientHeight;
+
+      SM.scene = new THREE.Scene();
+      SM.group = new THREE.Group();
+      SM.scene.add(SM.group);
+
+      SM.camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 100);
+      SM.camera.position.set(5, 2.5, 6.5);
+      SM.camera.lookAt(0, 0, 0);
+
+      SM.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+      SM.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      SM.renderer.setSize(w, h);
+      SM.renderer.setClearColor(0x000000, 0);
+      vp.insertBefore(SM.renderer.domElement, fallback);
+
+      if (THREE.OrbitControls) {
+        SM.controls = new THREE.OrbitControls(SM.camera, SM.renderer.domElement);
+        SM.controls.enableDamping = true;
+        SM.controls.dampingFactor = 0.08;
+        SM.controls.enableZoom = false;
+        SM.controls.enablePan = false;
+        SM.controls.minDistance = 3;
+        SM.controls.maxDistance = 12;
+        SM.controls.addEventListener('start', () => {
+          SM.autoRotate = false;
+          SM.autoRotateResumeAt = performance.now() + 4000;
+        });
+      }
+
+      const texLoader = new THREE.TextureLoader();
+      texLoader.crossOrigin = 'anonymous';
+
+      // ============ HUB: Dalin's portrait, circular-masked w/ glow ring ============
+      const photoTex = (function makeCirclePhotoTexture(url, size, ringColor) {
+        const cnv = document.createElement('canvas');
+        cnv.width = size; cnv.height = size;
+        const t = new THREE.CanvasTexture(cnv);
+        const ctx = cnv.getContext('2d');
+        // Placeholder dark fill so we don't flash white
+        ctx.fillStyle = 'rgba(4,6,12,1)';
+        ctx.fillRect(0, 0, size, size);
+
+        const img = new Image();
+        img.onload = () => {
+          const cx = size/2, cy = size/2;
+          const r = size/2 - 18; // padding for glow
+
+          ctx.clearRect(0, 0, size, size);
+
+          // Outer glow (drawn first, behind)
+          for (let i = 0; i < 3; i++) {
+            ctx.save();
+            ctx.shadowColor = ringColor;
+            ctx.shadowBlur = 22 + i * 12;
+            ctx.strokeStyle = `rgba(96, 165, 250, ${0.55 - i * 0.18})`;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r + 4, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          // Photo cropped square → masked to circle
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.clip();
+          const minDim = Math.min(img.width, img.height);
+          const sx = (img.width - minDim) / 2;
+          const sy = (img.height - minDim) / 2;
+          ctx.drawImage(img, sx, sy, minDim, minDim, cx - r, cy - r, r * 2, r * 2);
+          ctx.restore();
+
+          // Crisp inner ring
+          ctx.strokeStyle = ringColor;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r + 1, 0, Math.PI * 2);
+          ctx.stroke();
+
+          t.needsUpdate = true;
+        };
+        img.onerror = e => console.warn('hd.jpg failed to load', e);
+        img.src = url;
+        return t;
+      })('img/hd.jpg', 512, '#60a5fa');
+
+      const hubMat = new THREE.SpriteMaterial({ map: photoTex, transparent: true });
+      const hub = new THREE.Sprite(hubMat);
+      hub.scale.set(1.1, 1.1, 1);
+      hub.position.set(0, 0, 0);
+      hub.userData = { type: 'hub', id: 'dalin', name: 'Dalin Huang' };
+      SM.group.add(hub);
+      SM.nodes.push({ mesh: hub, type: 'hub', id: 'dalin', name: 'Dalin Huang', baseScale: 1.1, baseOpacity: 1 });
+
+      // ============ ROLES: invisible anchors only — the label IS the node ============
+      ROLES.forEach(r => {
+        const pos = ROLE_POSITIONS[r.id] || [0, 0, 0];
+        // Bigger hit-sphere (was 0.4) so the cursor catches the role anywhere
+        // near the label, not just on a tiny invisible dot in the middle.
+        const geo = new THREE.SphereGeometry(1.0, 8, 8);
+        const mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(...pos);
+        mesh.userData = { type: 'role', id: r.id, name: r.name, period: r.period, payload: r, color: 0x4ade80 };
+        SM.group.add(mesh);
+        SM.nodes.push({ mesh, type: 'role', id: r.id, name: r.name, period: r.period, payload: r, baseScale: 1, baseOpacity: 0 });
+      });
+
+      // ============ PROJECTS: invisible anchors near parent role ============
+      const projAnchors = {};
+      PROJECTS.forEach((p, i) => {
+        const parentPos = ROLE_POSITIONS[p.at] || PERSONAL_ANCHOR;
+        const a = i * 1.7;
+        const offset = [Math.cos(a) * 0.75, Math.sin(a * 1.3) * 0.35, Math.sin(a) * 0.75];
+        const pos = parentPos.map((c, idx) => c + offset[idx]);
+        const geo = new THREE.SphereGeometry(0.28, 8, 8); // hit radius
+        const mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(...pos);
+        mesh.userData = { type: 'project', id: p.id, name: p.name, period: p.year, payload: p, color: 0x60a5fa };
+        SM.group.add(mesh);
+        SM.nodes.push({ mesh, type: 'project', id: p.id, name: p.name, period: p.year, payload: p, baseScale: 1, baseOpacity: 0 });
+        projAnchors[p.id] = pos;
+      });
+
+      // ============ SKILLS: tech logo sprites near roles/projects using them ============
+      const skillUsers = {};
+      ROLES.forEach(r => {
+        const pos = ROLE_POSITIONS[r.id]; if (!pos) return;
+        r.skills.forEach(s => (skillUsers[s] = skillUsers[s] || []).push(pos));
+      });
+      PROJECTS.forEach(p => {
+        const pos = projAnchors[p.id]; if (!pos) return;
+        p.skills.forEach(s => (skillUsers[s] = skillUsers[s] || []).push(pos));
+      });
+      const skillIds = Object.keys(skillUsers);
+
+      // Gather role positions for repulsion below
+      const rolePositionsArr = ROLES.map(r => ROLE_POSITIONS[r.id]).filter(Boolean);
+      const placedSkillPositions = [];
+      const MIN_DIST_FROM_ROLE   = 1.10;  // skills can't sit on top of role labels
+      const MIN_DIST_FROM_SKILL  = 0.55;  // skills can't overlap each other
+
+      skillIds.forEach((s, i) => {
+        const positions = skillUsers[s];
+        const avg = [0, 0, 0];
+        positions.forEach(p => p.forEach((c, idx) => avg[idx] += c));
+        avg.forEach((_, idx) => avg[idx] /= positions.length);
+        // Push outward so techs orbit OUTSIDE their parent roles
+        const dist = Math.hypot(avg[0], avg[1], avg[2]);
+        const push = 1.15;
+        if (dist > 0.4) {
+          const k = (dist + push) / dist;
+          avg[0] *= k; avg[1] *= k; avg[2] *= k;
+        }
+        // Deterministic jitter so co-located techs don't sit identically
+        const j = i * 0.831;
+        avg[0] += Math.cos(j) * 0.50;
+        avg[1] += Math.sin(j * 1.7) * 0.50;
+        avg[2] += Math.sin(j) * 0.50;
+
+        // Repulsion: push skill away from any role it's too close to (3 passes)
+        for (let iter = 0; iter < 3; iter++) {
+          rolePositionsArr.forEach(rp => {
+            const dx = avg[0] - rp[0], dy = avg[1] - rp[1], dz = avg[2] - rp[2];
+            const d = Math.hypot(dx, dy, dz);
+            if (d > 0 && d < MIN_DIST_FROM_ROLE) {
+              const k = MIN_DIST_FROM_ROLE / d;
+              avg[0] = rp[0] + dx * k;
+              avg[1] = rp[1] + dy * k;
+              avg[2] = rp[2] + dz * k;
+            }
+          });
+          placedSkillPositions.forEach(sp => {
+            const dx = avg[0] - sp[0], dy = avg[1] - sp[1], dz = avg[2] - sp[2];
+            const d = Math.hypot(dx, dy, dz);
+            if (d > 0 && d < MIN_DIST_FROM_SKILL) {
+              const k = MIN_DIST_FROM_SKILL / d;
+              avg[0] = sp[0] + dx * k;
+              avg[1] = sp[1] + dy * k;
+              avg[2] = sp[2] + dz * k;
+            }
+          });
+        }
+        placedSkillPositions.push([avg[0], avg[1], avg[2]]);
+
+        const meta = SKILL_ICONS[s];
+        let material;
+        if (meta?.slug) {
+          const tex = texLoader.load(`https://cdn.simpleicons.org/${meta.slug}/fbbf24`);
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true, color: 0xffffff, depthWrite: false });
+        } else {
+          const tex = makeTextBadge(meta?.text || s.toUpperCase().slice(0, 4), '#fbbf24');
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+        }
+        const sprite = new THREE.Sprite(material);
+        sprite.position.set(...avg);
+        sprite.scale.set(0.36, 0.36, 1);
+        sprite.renderOrder = 1;          // paint OVER edge lines so icons cover line tails cleanly
+        sprite.userData = { type: 'skill', id: s, name: SKILL_ID[s] || s, color: 0xfbbf24, baseScale: 0.36 };
+        SM.group.add(sprite);
+        SM.nodes.push({ mesh: sprite, type: 'skill', id: s, name: SKILL_ID[s] || s, baseScale: 0.36, baseOpacity: 1 });
+      });
+
+      // ============ WEAK SKILLS: peripheral, light-gray, no edges ============
+      // Tech I follow but haven't shipped in production — sit in an outer orbit
+      // as quiet scenery so the rich tech landscape feels broader without
+      // overstating expertise. Color = slate-400, smaller scale, lower opacity.
+      const WEAK_GRAY = '94a3b8';
+      const weakPlaced = [...placedSkillPositions];
+      const MIN_FROM_STRONG = 0.65;
+      const MIN_FROM_WEAK   = 0.50;
+      const phi = Math.PI * (3 - Math.sqrt(5)); // golden angle for even spread
+      WEAK_SKILLS.forEach((w, i) => {
+        // Fibonacci sphere distribution in an outer shell
+        const t = (i + 0.5) / WEAK_SKILLS.length;
+        const y = 1 - 2 * t;                    // [-1, 1]
+        const r = Math.sqrt(1 - y * y);
+        const theta = phi * i;
+        const R = 4.3 + (i % 3) * 0.45;          // outer radius 4.3–5.2
+        let pos = [
+          Math.cos(theta) * r * R,
+          y * R * 0.65,                          // squash vertically
+          Math.sin(theta) * r * R,
+        ];
+        // Repulsion from strong skills + already-placed weak (2 passes)
+        for (let iter = 0; iter < 2; iter++) {
+          placedSkillPositions.forEach(sp => {
+            const dx = pos[0]-sp[0], dy = pos[1]-sp[1], dz = pos[2]-sp[2];
+            const d = Math.hypot(dx, dy, dz);
+            if (d > 0 && d < MIN_FROM_STRONG) {
+              const k = MIN_FROM_STRONG / d;
+              pos = [sp[0] + dx * k, sp[1] + dy * k, sp[2] + dz * k];
+            }
+          });
+          weakPlaced.forEach(wp => {
+            const dx = pos[0]-wp[0], dy = pos[1]-wp[1], dz = pos[2]-wp[2];
+            const d = Math.hypot(dx, dy, dz);
+            if (d > 0 && d < MIN_FROM_WEAK) {
+              const k = MIN_FROM_WEAK / d;
+              pos = [wp[0] + dx * k, wp[1] + dy * k, wp[2] + dz * k];
+            }
+          });
+        }
+        weakPlaced.push(pos);
+
+        let material;
+        if (w.slug) {
+          const tex = texLoader.load(`https://cdn.simpleicons.org/${w.slug}/${WEAK_GRAY}`);
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true, color: 0xffffff, opacity: 0.5, depthWrite: false });
+        } else {
+          const tex = makeTextBadge(w.name.toUpperCase().slice(0, 4), '#' + WEAK_GRAY);
+          material = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.5, depthWrite: false });
+        }
+        const sprite = new THREE.Sprite(material);
+        sprite.position.set(...pos);
+        sprite.scale.set(0.22, 0.22, 1);
+        sprite.renderOrder = 1;
+        sprite.userData = { type: 'weakskill', id: w.id, name: w.name, color: 0x94a3b8, baseScale: 0.22 };
+        SM.group.add(sprite);
+        SM.nodes.push({ mesh: sprite, type: 'weakskill', id: w.id, name: w.name, baseScale: 0.22, baseOpacity: 0.5 });
+      });
+
+      // ============ EDGES: hub → roles, role → its projects (less spaghetti) ============
+      const HUB_RADIUS = 0.62;  // outer edge of the photo + glow ring
+      // Lines fly all the way to the SKILL SPRITE CENTER — they'd otherwise stop
+      // at the sprite's transparent bounding box and leave a visible gap from
+      // box-edge to icon-edge. With sprite depthWrite:false + sprite renderOrder
+      // higher than the line, the icon paints over the line tail, so the visible
+      // end of the line lands cleanly at the icon's edge. Only the HUB still
+      // gets trimmed (its photo is large and centered).
+      const NODE_RADIUS = { hub: HUB_RADIUS, skill: 0, weakskill: 0, role: 0, project: 0 };
+      function addEdge(a, b, color, opacity) {
+        const pa = a.mesh.position.clone();
+        const pb = b.mesh.position.clone();
+        const ra = NODE_RADIUS[a.type] ?? 0;
+        const rb = NODE_RADIUS[b.type] ?? 0;
+        const dir = pb.clone().sub(pa);
+        const len = dir.length();
+        if (len <= ra + rb + 0.001) return;
+        dir.normalize();
+        pa.addScaledVector(dir,  ra);
+        pb.addScaledVector(dir, -rb);
+        const geo = new THREE.BufferGeometry().setFromPoints([pa, pb]);
+        const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
+        const line = new THREE.Line(geo, mat);
+        line.renderOrder = 0;            // draw BEFORE skill sprites (which sit at 1)
+        SM.group.add(line);
+        SM.edges.push({ line, a, b, baseOpacity: opacity });
+      }
+      const hubNode = SM.nodes.find(n => n.type === 'hub');
+      SM.nodes.filter(n => n.type === 'role').forEach(r => {
+        const isLive = r.payload?.status === 'live';
+        // Ghost-faint by default — only wakes up when the role is hovered.
+        // (was 0.22 / 0.10, before that 0.32 / 0.14, originally 0.55 / 0.22)
+        addEdge(hubNode, r, 0x4ade80, isLive ? 0.12 : 0.06);
+      });
+      // role → its projects
+      PROJECTS.forEach(p => {
+        if (p.at === 'personal') return; // personal projects connect to hub instead
+        const role = SM.nodes.find(n => n.id === p.at);
+        const proj = SM.nodes.find(n => n.id === p.id);
+        if (role && proj) addEdge(role, proj, 0x60a5fa, 0.16);   // was 0.45
+      });
+      // hub → personal projects (anchor cluster)
+      PROJECTS.filter(p => p.at === 'personal').forEach(p => {
+        const proj = SM.nodes.find(n => n.id === p.id);
+        if (proj) addEdge(hubNode, proj, 0x60a5fa, 0.12);   // was 0.30
+      });
+      // role → its skills (faint — just for hover discovery)
+      ROLES.forEach(r => {
+        const role = SM.nodes.find(n => n.id === r.id);
+        if (!role) return;
+        r.skills.forEach(s => {
+          const sk = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+          if (sk) addEdge(role, sk, 0x4ade80, 0.025);   // was 0.04
+        });
+      });
+
+      // ============ GHOST NEURAL NETWORK ============
+      // Dim background nodes + faint edges fill the 3D space so the "active"
+      // (role / project / skill) nodes read as the firing neurons in a much
+      // larger dormant network. Pure decoration — not pickable.
+      (function buildGhostNetwork() {
+        const N = 160;
+        const activePositions = SM.nodes
+          .filter(n => n.type !== 'hub')
+          .map(n => [n.mesh.position.x, n.mesh.position.y, n.mesh.position.z]);
+
+        const positions = [];
+        const colors = [];
+        const sizes = [];
+        const baseR = 0.376, baseG = 0.647, baseB = 0.98; // #60a5fa
+
+        for (let i = 0; i < N; i++) {
+          let p, attempts = 0, tooClose;
+          do {
+            // Uniform-ish distribution in a spherical shell (radius 1.8 → 6.2)
+            const r = 1.8 + Math.pow(Math.random(), 0.7) * 4.4;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            p = [
+              r * Math.sin(phi) * Math.cos(theta),
+              r * Math.cos(phi) * 0.85,
+              r * Math.sin(phi) * Math.sin(theta),
+            ];
+            tooClose = activePositions.some(ap => {
+              const d = Math.hypot(p[0]-ap[0], p[1]-ap[1], p[2]-ap[2]);
+              return d < 0.5;
+            });
+            attempts++;
+          } while (tooClose && attempts < 6);
+
+          positions.push(...p);
+          // Brightness varies — most dim, a few brighter
+          const bright = Math.random() < 0.12
+            ? 0.55 + Math.random() * 0.25   // ~12% "bright" stragglers
+            : 0.18 + Math.random() * 0.20;  // dim majority
+          colors.push(baseR * bright, baseG * bright, baseB * bright);
+          sizes.push(bright);
+        }
+
+        const ghostGeo = new THREE.BufferGeometry();
+        ghostGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        ghostGeo.setAttribute('color',    new THREE.Float32BufferAttribute(colors, 3));
+        const ghostMat = new THREE.PointsMaterial({
+          size: 5.5,
+          sizeAttenuation: false,  // px-stable across zoom
+          transparent: true,
+          opacity: 0.85,
+          vertexColors: true,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        });
+        const ghosts = new THREE.Points(ghostGeo, ghostMat);
+        ghosts.renderOrder = -1;   // draw behind active nodes
+        SM.group.add(ghosts);
+        SM.ghostPoints = ghosts;
+
+        // Edges: each ghost connects to its 2 nearest ghost neighbors,
+        // plus a 12% chance of a tendril reaching an active node.
+        const edgePos = [];
+        for (let i = 0; i < N; i++) {
+          const ax = positions[i*3], ay = positions[i*3+1], az = positions[i*3+2];
+          const dists = [];
+          for (let j = 0; j < N; j++) {
+            if (j === i) continue;
+            const bx = positions[j*3], by = positions[j*3+1], bz = positions[j*3+2];
+            const d = (ax-bx)*(ax-bx) + (ay-by)*(ay-by) + (az-bz)*(az-bz);
+            dists.push([d, j]);
+          }
+          dists.sort((a, b) => a[0] - b[0]);
+          // Connect to 2 nearest (avoid duplicates: only if j > i)
+          for (let k = 0; k < 3 && k < dists.length; k++) {
+            const j = dists[k][1];
+            if (j > i) {
+              edgePos.push(ax, ay, az, positions[j*3], positions[j*3+1], positions[j*3+2]);
+            }
+          }
+          if (Math.random() < 0.12 && activePositions.length) {
+            const ap = activePositions[Math.floor(Math.random() * activePositions.length)];
+            edgePos.push(ax, ay, az, ap[0], ap[1], ap[2]);
+          }
+        }
+        const ghostEdgeGeo = new THREE.BufferGeometry();
+        ghostEdgeGeo.setAttribute('position', new THREE.Float32BufferAttribute(edgePos, 3));
+        const ghostEdgeMat = new THREE.LineBasicMaterial({
+          color: 0x4a6584,
+          transparent: true,
+          opacity: 0.10,
+          depthWrite: false,
+        });
+        const ghostLines = new THREE.LineSegments(ghostEdgeGeo, ghostEdgeMat);
+        ghostLines.renderOrder = -2;
+        SM.group.add(ghostLines);
+        SM.ghostLines = ghostLines;
+      })();
+
+      // ============ HTML LABEL OVERLAY ============
+      let labelLayer = document.getElementById('sm-labels');
+      if (!labelLayer) {
+        labelLayer = document.createElement('div');
+        labelLayer.id = 'sm-labels';
+        labelLayer.className = 'sm-labels';
+        vp.appendChild(labelLayer);
+      }
+      labelLayer.innerHTML = '';
+      SM.labels = {};
+      SM.nodes.forEach(n => {
+        if (n.type === 'hub') return;
+        const div = document.createElement('div');
+        div.className = `sm-label sm-label-${n.type}`;
+        const sub = n.type === 'role' ? `<span class="sub">${(n.period||'').split(' → ')[0]}</span>` : '';
+        div.innerHTML = `<span class="name">${n.name}</span>${sub}`;
+        // Role labels are pickable directly (CSS sets pointer-events:auto) —
+        // wire them to the same setHighlight flow as the canvas raycaster so
+        // hovering anywhere on the visible label box always lights up the role.
+        if (n.type === 'role') {
+          div.addEventListener('mouseenter', () => {
+            if (SM.selected) return;       // don't override an explicit lock
+            SM.hovered = n;
+            setHighlight(n);
+          });
+          div.addEventListener('mouseleave', () => {
+            if (SM.selected) return;
+            SM.hovered = null;
+            setHighlight(null);
+          });
+          div.addEventListener('click', e => {
+            e.stopPropagation();
+            if (SM.selected === n) { SM.selected = null; setHighlight(null); return; }
+            SM.selected = n;
+            setHighlight(n);
+          });
+        }
+        labelLayer.appendChild(div);
+        SM.labels[n.id] = div;
+      });
+
+      SM.raycaster = new THREE.Raycaster();
+      SM.mouse = new THREE.Vector2();
+
+      const onResize = () => {
+        const nw = vp.clientWidth, nh = vp.clientHeight;
+        if (nw === 0 || nh === 0) return;
+        SM.camera.aspect = nw / nh;
+        SM.camera.updateProjectionMatrix();
+        SM.renderer.setSize(nw, nh);
+        SM.renderer.render(SM.scene, SM.camera);
+      };
+      window.addEventListener('resize', onResize);
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver(onResize);
+        ro.observe(vp);
+      }
+
+      animateSystemMap();
+    }
+
+    /* Project a node's world position to screen space and update its HTML label */
+    function updateLabels() {
+      if (!SM.labels || !SM.renderer) return;
+      const canvas = SM.renderer.domElement;
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if (w === 0 || h === 0) return;
+      const v = new THREE.Vector3();
+      SM.nodes.forEach(n => {
+        if (n.type === 'hub') return;
+        const label = SM.labels[n.id];
+        if (!label) return;
+        if (!n.mesh.visible) { label.style.display = 'none'; return; }
+        v.setFromMatrixPosition(n.mesh.matrixWorld);
+        v.project(SM.camera);
+        if (v.z >= 1 || v.z <= -1) { label.style.display = 'none'; return; }
+        const x = (v.x + 1) * 0.5 * w;
+        const y = (1 - v.y) * 0.5 * h;
+        // Role/project labels CENTER on the anchor (label IS the node);
+        // skill labels sit BELOW the sprite icon; weak skills closer in
+        let offset;
+        if (n.type === 'role' || n.type === 'project') offset = ' translate(-50%, -50%)';
+        else if (n.type === 'skill')                   offset = ' translate(-50%, 22px)';
+        else if (n.type === 'weakskill')               offset = ' translate(-50%, 16px)';
+        else                                           offset = '';
+        label.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)${offset}`;
+        label.style.display = '';
+        const depthAlpha = Math.max(0.45, 1 - (v.z * 0.5 + 0.5));
+        label.style.opacity = depthAlpha;
+      });
+    }
+
+    let _lastT = 0;
+    function animateSystemMap() {
+      requestAnimationFrame(animateSystemMap);
+      if (!SM.scene) return;
+      const t = performance.now();
+      const dt = Math.min((t - _lastT) / 1000, 0.05); _lastT = t;
+
+      if (!SM.autoRotate && t > SM.autoRotateResumeAt) SM.autoRotate = true;
+      if (SM.autoRotate && !SM.reducedMotion) {
+        SM.group.rotation.y += dt * (Math.PI / 36);  // ~5 deg/sec, calmer
+      }
+
+      if (!SM.reducedMotion) {
+        SM.nodes.forEach((n, i) => {
+          if (n.type === 'hub') return;
+          const phase = (t / 1000 + i * 0.3) * (Math.PI * 2 / 3);
+          const baseS = n.baseScale || 1;
+          const k = baseS * (1 + Math.sin(phase) * 0.06);
+          if (n.mesh.isSprite) n.mesh.scale.set(k, k, 1);
+          else                 n.mesh.scale.set(k, k, k);
+        });
+      }
+
+      if (SM.controls) SM.controls.update();
+      SM.renderer.render(SM.scene, SM.camera);
+      updateLabels();
+    }
+
+    function isConnected(a, b) {
+      return SM.edges.some(e => (e.a === a && e.b === b) || (e.a === b && e.b === a));
+    }
+
+    /* Build the set of nodes related to a clicked/hovered node.
+       Click a role  → role + its skills + projects done there + those projects' skills + hub
+       Click a project → project + parent role + its skills + hub
+       Click a skill → skill + every role and project that uses it + hub */
+    function getRelatedNodes(node) {
+      const set = new Set();
+      if (!node) return set;
+      set.add(node);
+      const hub = SM.nodes.find(n => n.type === 'hub');
+      if (hub) set.add(hub);
+
+      if (node.type === 'role') {
+        const r = node.payload;
+        (r.skills || []).forEach(s => {
+          const sn = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+          if (sn) set.add(sn);
+        });
+        PROJECTS.filter(p => p.at === r.id).forEach(p => {
+          const pn = SM.nodes.find(n => n.type === 'project' && n.id === p.id);
+          if (pn) {
+            set.add(pn);
+            (p.skills || []).forEach(s => {
+              const sn = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+              if (sn) set.add(sn);
+            });
+          }
+        });
+      } else if (node.type === 'project') {
+        const p = node.payload;
+        if (p.at && p.at !== 'personal') {
+          const rn = SM.nodes.find(n => n.type === 'role' && n.id === p.at);
+          if (rn) set.add(rn);
+        }
+        (p.skills || []).forEach(s => {
+          const sn = SM.nodes.find(n => n.type === 'skill' && n.id === s);
+          if (sn) set.add(sn);
+        });
+      } else if (node.type === 'skill') {
+        ROLES.filter(r => (r.skills || []).includes(node.id)).forEach(r => {
+          const rn = SM.nodes.find(n => n.type === 'role' && n.id === r.id);
+          if (rn) set.add(rn);
+        });
+        PROJECTS.filter(p => (p.skills || []).includes(node.id)).forEach(p => {
+          const pn = SM.nodes.find(n => n.type === 'project' && n.id === p.id);
+          if (pn) set.add(pn);
+        });
+      }
+      return set;
+    }
+
+    function setHighlight(node) {
+      const related = node ? getRelatedNodes(node) : null;
+
+      SM.nodes.forEach(n => {
+        const isHi = !related || related.has(n);
+        const base = n.baseOpacity ?? 1;
+        n.mesh.material.opacity = base * (isHi ? 1 : 0.18);
+        const label = SM.labels?.[n.id];
+        if (label) {
+          label.classList.toggle('highlighted', !!(related && related.has(n) && n.type !== 'hub'));
+          label.classList.toggle('dimmed',      !!(related && !related.has(n)));
+        }
+      });
+
+      SM.edges.forEach(e => {
+        const isHi = !related || (related.has(e.a) && related.has(e.b));
+        // Softer highlight cap (was 0.75) so the green doesn't punch through
+        e.line.material.opacity = isHi ? Math.max(e.baseOpacity, 0.55) : 0.025;
+      });
+
+      // Dim the ghost network too so the path really pops
+      if (SM.ghostPoints) SM.ghostPoints.material.opacity = node ? 0.35 : 0.85;
+      if (SM.ghostLines)  SM.ghostLines.material.opacity  = node ? 0.04 : 0.10;
+    }
+
+    function flyTo(node) {
+      if (!SM.camera) return;
+      // Compute world position by accounting for group rotation
+      const worldPos = node.mesh.position.clone().applyMatrix4(SM.group.matrixWorld);
+      const dir = worldPos.clone().normalize();
+      const dist = 2.2 + node.mesh.geometry.parameters.radius * 4;
+      const target = dir.multiplyScalar(Math.max(3.2, dist));
+      const from = SM.camera.position.clone();
+      const start = performance.now(); const dur = 700;
+      function tick() {
+        const t = Math.min((performance.now() - start) / dur, 1);
+        const k = t < 0.5 ? 4 * t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+        SM.camera.position.lerpVectors(from, target, k);
+        SM.camera.lookAt(0, 0, 0);
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      tick();
+      SM.autoRotate = false;
+      SM.autoRotateResumeAt = performance.now() + 6000;
+      SM.selected = node;
+    }
+
+    function flashCardFor(node) {
+      let el = null;
+      if (node.type === 'role') el = document.querySelector(`.agent[data-id="${node.id}"]`);
+      else if (node.type === 'project') el = document.querySelector(`.svc[data-id="${node.id}"]`);
+      if (!el) return;
+      // Open the card if it's collapsed
+      if (node.type === 'role') el.classList.add('open');
+      el.classList.add('flash');
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => el.classList.remove('flash'), 2200);
+    }
+
+    function wireSystemMapInteractions() {
+      if (!SM.renderer) return;
+      const canvas = SM.renderer.domElement;
+      const tip = document.getElementById('sm-tooltip');
+      const vp = document.getElementById('sm-viewport');
+
+      function pickNode(e) {
+        const rect = canvas.getBoundingClientRect();
+        SM.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        SM.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        SM.raycaster.setFromCamera(SM.mouse, SM.camera);
+        const meshes = SM.nodes.map(n => n.mesh).filter(m => m.visible !== false);
+        const hits = SM.raycaster.intersectObjects(meshes);
+        return hits.length ? SM.nodes.find(n => n.mesh === hits[0].object) : null;
+      }
+
+      function showTip(node, e) {
+        const rect = vp.getBoundingClientRect();
+        tip.style.left = (e.clientX - rect.left) + 'px';
+        tip.style.top  = (e.clientY - rect.top) + 'px';
+        const typeLabel = node.type.toUpperCase();
+        const meta = node.period || '';
+        const desc = node.payload?.desc || node.payload?.title || '';
+        tip.innerHTML = `<h6>● ${node.name}</h6><div class="meta">${typeLabel}${meta ? ' · ' + meta : ''}</div>${desc ? `<div style="color:var(--ink); font-size:9px; line-height:1.5;">${desc}</div>` : ''}`;
+        tip.classList.add('show');
+      }
+      function hideTip() { tip.classList.remove('show'); }
+
+      canvas.addEventListener('mousemove', e => {
+        const node = pickNode(e);
+        canvas.style.cursor = (node && node.type !== 'hub') ? 'pointer' : 'grab';
+        // If something is locked-selected, keep its highlight; only update tooltip
+        if (SM.selected) {
+          if (node && node.type !== 'hub') showTip(node, e); else hideTip();
+          return;
+        }
+        if (node && node.type !== 'hub') {
+          if (SM.hovered !== node) { SM.hovered = node; setHighlight(node); }
+          showTip(node, e);
+        } else {
+          if (SM.hovered) { SM.hovered = null; setHighlight(null); }
+          hideTip();
+        }
+      });
+      canvas.addEventListener('mouseleave', () => {
+        SM.hovered = null;
+        if (!SM.selected) setHighlight(null);
+        hideTip();
+      });
+
+      // Click = lock current hover-highlight in place (so user can move the
+      // mouse away to read the card without losing the path). No more
+      // flashCardFor / scrollIntoView — hover alone gives full visual feedback.
+      canvas.addEventListener('click', e => {
+        const node = pickNode(e);
+        if (!node || node.type === 'hub') {
+          SM.selected = null;
+          SM.hovered = null;
+          setHighlight(null);
+          return;
+        }
+        if (SM.selected === node) {
+          SM.selected = null;
+          setHighlight(null);
+          return;
+        }
+        SM.selected = node;
+        setHighlight(node);
+      });
+
+      // Double-click still scrolls to the card for users who want to dive in.
+      canvas.addEventListener('dblclick', e => {
+        const node = pickNode(e);
+        if (!node || node.type === 'hub') return;
+        SM.selected = node;
+        setHighlight(node);
+        flashCardFor(node);
+      });
+
+      // ESC clears selection globally
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && SM.selected) {
+          SM.selected = null;
+          setHighlight(null);
+        }
+      });
+    }
+
+    function wireJumpPills() {
+      document.querySelectorAll('[data-jump]').forEach(el => {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          const id = el.dataset.jump;
+          const node = SM.nodes.find(n => n.id === id);
+          if (!node) return;
+          document.querySelector('.systemmap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => { SM.selected = node; setHighlight(node); }, 350);
+        });
+      });
+    }
+
+    function applyFilters() {
+      SM.nodes.forEach(n => {
+        if (n.type === 'hub') return;
+        // Weak skills ride the 'skill' filter — same family, same toggle.
+        const filterKey = n.type === 'weakskill' ? 'skill' : n.type;
+        const visible = !!SM.filters[filterKey];
+        n.mesh.visible = visible;
+        const label = SM.labels?.[n.id];
+        if (label) label.style.visibility = visible ? '' : 'hidden';
+      });
+      SM.edges.forEach(e => {
+        e.line.visible = e.a.mesh.visible && e.b.mesh.visible;
+      });
+    }
+
+    function setSearchHighlight(node) {
+      if (!node) {
+        // Restore each node to its baseline opacity (weak skills sit at ~0.5).
+        SM.nodes.forEach(n => { n.mesh.material.opacity = n.baseOpacity ?? 1; });
+        SM.edges.forEach(e => { e.line.material.opacity = e.baseOpacity; });
+        return;
+      }
+      SM.nodes.forEach(n => {
+        const base = n.baseOpacity ?? 1;
+        // Matched node always pops to full opacity (even weak skills' base 0.5).
+        n.mesh.material.opacity = (n === node) ? 1 : base * 0.20;
+      });
+      SM.edges.forEach(e => {
+        e.line.material.opacity = (e.a === node || e.b === node) ? 0.75 : 0.05;
+      });
+    }
+
+    function dolly(factor) {
+      if (!SM.camera) return;
+      const dir = SM.camera.position.clone().normalize();
+      const dist = SM.camera.position.length() * factor;
+      const clamped = Math.max(3, Math.min(12, dist));
+      SM.camera.position.copy(dir.multiplyScalar(clamped));
+    }
+
+    function wireSystemMapControls() {
+      if (!SM.renderer) return;
+
+      document.querySelectorAll('.sm-chip[data-filter]').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const f = chip.dataset.filter;
+          SM.filters[f] = !SM.filters[f];
+          chip.classList.toggle('on');
+          chip.classList.toggle('off');
+          applyFilters();
+        });
+      });
+
+      const search = document.getElementById('sm-search');
+      search.addEventListener('input', () => {
+        const q = search.value.trim().toLowerCase();
+        if (!q) { setSearchHighlight(null); return; }
+        if (q === 'matrix' || q === 'konami') return;
+        const match = SM.nodes.find(n => n.name && n.name.toLowerCase().includes(q));
+        setSearchHighlight(match || null);
+      });
+      search.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const q = search.value.trim().toLowerCase();
+          if (q === 'matrix' || q === 'konami') { triggerMatrix(); search.value = ''; return; }
+          if (q === 'help') {
+            alert('SYSTEM MAP commands:\n  help    — this list\n  reset   — clear search\n  matrix  — legacy mode rain\n  konami  — same as matrix');
+            return;
+          }
+          if (q === 'reset') { setSearchHighlight(null); search.value = ''; return; }
+          const match = SM.nodes.find(n => n.name && n.name.toLowerCase().includes(q));
+          if (match) { SM.selected = match; setHighlight(match); flashCardFor(match); }
+          search.blur();
+        }
+        if (e.key === 'Escape') { search.value = ''; setSearchHighlight(null); search.blur(); }
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+          e.preventDefault();
+          search.focus();
+        }
+      });
+
+      document.getElementById('sm-zoom-in').addEventListener('click', () => dolly(0.82));
+      document.getElementById('sm-zoom-out').addEventListener('click', () => dolly(1.22));
+    }
+
+    /* ─── Terminal stream + KPI count-up ─── */
+    /* No hardcoded timestamp — each line gets stamped with the visitor's
+       actual wall-clock time when it's appended, so it feels live. */
+    const TERM_LINES = [
+      { key: 'agent.parker',    status: 'ok',   tail: '· batch 482 · 12.4M embeddings' },
+      { key: 'finetune.v17',    status: 'key',  tail: '· step 1240/2000', statusLabel: 'LoRA' },
+      { key: 'scraper.adset',   status: 'ok',   tail: '· 87 sources synced' },
+      { key: 'dashboard.ttq',   status: '',     tail: '· 38ms p50 · 124ms p95' },
+      { key: '',                status: 'warn', tail: '[!] rate-limit · backoff 2s · retry · ok' },
+      { key: 'f1.score',        status: '',     tail: '= <span class="ok">0.794</span> ↑' },
+      { key: 'postgres.rollup', status: '',     tail: '· daily · 18.2M rows' },
+      { key: 'ingest.media',    status: '',     tail: '· 2.1TB queued' },
+      { key: 'gemini.batch',    status: 'ok',   tail: '· 1,248 jobs · 6m ETA' },
+      { key: 'embed.cosine',    status: '',     tail: '· top-50 · 0.92 sim' },
+      { key: 'agent.classify',  status: 'key',  tail: '· 482 ads · 96.4% acc', statusLabel: 'AGENT' },
+      { key: 'supabase.read',   status: '',     tail: '· replica-2 · 14ms' },
+    ];
+
+    function startTerminalLoop() {
+      const stream = document.getElementById('term-stream');
+      if (!stream) return;
+      let i = 0;
+      const MAX_LINES = 8;
+      const pad2 = n => String(n).padStart(2, '0');
+      const nowTs = () => {
+        const d = new Date();
+        return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+      };
+
+      function addLine() {
+        const L = TERM_LINES[i % TERM_LINES.length];
+        i++;
+        const line = document.createElement('div');
+        line.className = 'line';
+        let statusHtml = '';
+        if (L.status === 'ok')   statusHtml = '<span class="ok">ok</span>';
+        if (L.status === 'key')  statusHtml = '<span class="key">' + (L.statusLabel || '') + '</span>';
+        if (L.status === 'warn') statusHtml = '';
+        const keyHtml = L.key ? '<span class="key">' + L.key + '</span> ' : '';
+        const tailHtml = L.status === 'warn' ? `<span class="warn">${L.tail}</span>` : L.tail;
+        line.innerHTML = `<span class="dim">[${nowTs()}]</span> ${keyHtml}${statusHtml} ${tailHtml}`;
+        stream.appendChild(line);
+        requestAnimationFrame(() => line.classList.add('show'));
+        while (stream.children.length > MAX_LINES) stream.removeChild(stream.firstChild);
+      }
+
+      addLine();
+      setInterval(addLine, 500);   // 2 lines per second
+    }
+
+    /* ─── Fine-tune training monitor (faux LoRA run, fast ticks) ─── */
+    function startFinetuneLoop() {
+      const el = document.getElementById('finetune-panel');
+      if (!el) return;
+
+      const EPOCH_STEPS = 2000;
+      const LR = 2.4e-5;
+      let step = 1240, epoch = 12, loss = 0.341, valLoss = 0.298;
+      let lossDelta = -0.012, valDelta = -0.008;
+      const recentLogs = [
+        '[step 1238] loss 0.353  grad 0.42',
+        '[step 1239] loss 0.349  grad 0.39',
+      ];
+
+      function bar(pct, len = 14) {
+        const filled = Math.max(0, Math.min(len, Math.round(pct / 100 * len)));
+        return '▓'.repeat(filled) + '░'.repeat(len - filled);
+      }
+      function pad(v, n = 4) { return String(v).padStart(n, ' '); }
+
+      function tick() {
+        step += 1;
+        if (step > EPOCH_STEPS) { step = 1; epoch += 1; if (epoch > 16) epoch = 1; }
+
+        const prevLoss = loss;
+        loss += (Math.random() - 0.56) * 0.014;
+        loss = Math.max(0.18, Math.min(0.42, loss));
+        lossDelta = loss - prevLoss;
+
+        if (step % 20 === 0) {
+          const prevVal = valLoss;
+          valLoss += (Math.random() - 0.6) * 0.005;
+          valLoss = Math.max(0.15, Math.min(0.38, valLoss));
+          valDelta = valLoss - prevVal;
+        }
+
+        const now = Date.now();
+        const gpu  = Math.max(40, Math.min(95, Math.round(74 + Math.sin(now/2100) * 10 + (Math.random() - 0.5) * 6)));
+        const cpu  = Math.max(10, Math.min(70, Math.round(28 + Math.sin(now/3300) * 7 + (Math.random() - 0.5) * 5)));
+        const vram = (58 + Math.sin(now/5200) * 8 + Math.random() * 2).toFixed(1);
+        const ram  = (43.4 + Math.sin(now/4400) * 2.8).toFixed(1);
+        const temp = Math.max(60, Math.min(86, Math.round(75 + Math.sin(now/6700) * 7)));
+        const grad = (0.30 + Math.random() * 0.18).toFixed(2);
+
+        const progPct  = step / EPOCH_STEPS * 100;
+        const progBar  = bar(progPct, 16);
+        const gpuBar   = bar(gpu, 10);
+        const cpuBar   = bar(cpu, 10);
+
+        recentLogs.unshift(`[step ${pad(step)}] loss ${loss.toFixed(3)}  grad ${grad}`);
+        while (recentLogs.length > 3) recentLogs.pop();
+
+        const lossDStr = lossDelta < 0
+          ? `<span class="delta down">↓${Math.abs(lossDelta).toFixed(3)}</span>`
+          : `<span class="delta">↑${lossDelta.toFixed(3)}</span>`;
+        const valDStr = valDelta < 0
+          ? `<span class="delta down">↓${Math.abs(valDelta).toFixed(3)}</span>`
+          : `<span class="delta">↑${valDelta.toFixed(3)}</span>`;
+        const tempCls = temp > 82 ? 'warn' : 'ok';
+
+        el.innerHTML = `
+          <div class="ft-row">EPOCH <b>${epoch}/16</b> · STEP <b>${step}/${EPOCH_STEPS}</b>  <span class="bar prog">${progBar}</span> <b>${Math.round(progPct)}%</b></div>
+          <div class="ft-row">loss <b class="ok">${loss.toFixed(3)}</b>${lossDStr}  val <b class="ok">${valLoss.toFixed(3)}</b>${valDStr}  lr <span class="key">${LR.toExponential(1)}</span></div>
+          <div class="ft-divider"></div>
+          <div class="ft-row">GPU <span class="bar">${gpuBar}</span> <b>${pad(gpu, 2)}%</b>  VRAM <b>${vram}</b>/80GB  <span class="${tempCls}">${temp}°C</span></div>
+          <div class="ft-row">CPU <span class="bar cpu">${cpuBar}</span> <b>${pad(cpu, 2)}%</b>  RAM&nbsp; <b>${ram}</b>/64GB</div>
+          <div class="ft-divider"></div>
+          <div class="ft-recent">
+            ${recentLogs.map(l => `<div class="ft-log">${l}</div>`).join('')}
+          </div>
+        `;
+      }
+
+      tick();
+      setInterval(tick, 380);
+    }
+
+    /* ─── Boot sequence ─── */
+    function runBoot() {
+      const boot = document.getElementById('boot');
+      if (!boot) return;
+      const url = new URL(window.location);
+      const force = url.searchParams.get('boot') === '1';
+      const seen = localStorage.getItem('dalindev_booted');
+      if (seen && !force) { boot.remove(); return; }
+
+      const lines = boot.querySelectorAll('.line');
+      lines.forEach((line, i) => setTimeout(() => line.classList.add('show'), 200 + i * 280));
+      const total = 200 + lines.length * 280 + 500;
+      setTimeout(() => {
+        boot.classList.add('hide');
+        localStorage.setItem('dalindev_booted', '1');
+        setTimeout(() => boot.remove(), 320);
+      }, total);
+    }
+
+    /* ─── Matrix rain ─── */
+    function triggerMatrix() {
+      if (document.querySelector('.matrix-rain')) return;
+      const layer = document.createElement('div');
+      layer.className = 'matrix-rain';
+      const cols = Math.floor(window.innerWidth / 14);
+      const chars = 'アァカサタナハマヤラワABCDEF0123456789@#$%^&*<>{}[]/';
+      for (let i = 0; i < cols; i++) {
+        const col = document.createElement('div');
+        col.className = 'col';
+        col.style.left = (i * 14) + 'px';
+        col.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
+        col.style.animationDelay = (Math.random() * 0.8) + 's';
+        let text = '';
+        for (let j = 0; j < 30; j++) text += chars[Math.floor(Math.random() * chars.length)] + '\n';
+        col.textContent = text;
+        layer.appendChild(col);
+      }
+      const tag = document.createElement('div');
+      tag.className = 'tag'; tag.textContent = '// LEGACY MODE · 2024';
+      layer.appendChild(tag);
+      document.body.appendChild(layer);
+      setTimeout(() => layer.classList.add('hide'), 3600);
+      setTimeout(() => layer.remove(), 4100);
+    }
+
+    /* ─── Konami code ─── */
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let konamiIdx = 0;
+    document.addEventListener('keydown', e => {
+      const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (k === KONAMI[konamiIdx]) {
+        konamiIdx++;
+        if (konamiIdx === KONAMI.length) { triggerMatrix(); konamiIdx = 0; }
+      } else {
+        konamiIdx = (k === KONAMI[0]) ? 1 : 0;
+      }
+    });
+
+    /* ─── Status dot nudges ─── */
+    const STATUS_CYCLE = ['ONLINE · OTTAWA', 'BUILDING · OTTAWA', 'SHIPPING · OTTAWA', 'COFFEE · OTTAWA', 'ONLINE · OTTAWA'];
+    let dotClicks = 0; let dotClickTimer = null;
+    function wireStatusDot() {
+      const dot = document.getElementById('status-dot');
+      const txt = document.getElementById('status-text');
+      if (!dot || !txt) return;
+      dot.addEventListener('click', () => {
+        dotClicks++;
+        clearTimeout(dotClickTimer);
+        dotClickTimer = setTimeout(() => dotClicks = 0, 3000);
+        if (dotClicks >= 5) {
+          const cur = txt.textContent.trim();
+          const next = STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur) + 1) % STATUS_CYCLE.length];
+          txt.textContent = next;
+          dotClicks = 0;
+        }
+      });
+    }
+
+    /* ─── Version cycler ─── */
+    function wireVersionCycler() {
+      const cycle = () => {
+        if (document.querySelector('.vpop')) return;
+        const versions = [
+          { label: '2024', file: 'index_2024.html' },
+          { label: '2023', file: 'index_2023.html' },
+          { label: '2017', file: 'index_2017.html' },
+        ];
+        let idx = 0;
+        const pop = document.createElement('div');
+        pop.className = 'vpop';
+        pop.innerHTML = `<span class="label">PREVIOUS VERSION</span><span id="v-label" style="color:var(--ink);">·</span><a id="v-link" target="_blank" rel="noopener">→ open</a><span class="close" id="v-close">[esc]</span>`;
+        document.body.appendChild(pop);
+        const lbl = pop.querySelector('#v-label');
+        const lnk = pop.querySelector('#v-link');
+        const tick = () => {
+          const v = versions[idx % versions.length];
+          lbl.textContent = '· ' + v.label;
+          lnk.href = v.file;
+          idx++;
+        };
+        tick();
+        const intv = setInterval(tick, 3500);
+        const close = () => { clearInterval(intv); pop.remove(); document.removeEventListener('keydown', onEsc); };
+        pop.querySelector('#v-close').addEventListener('click', close);
+        function onEsc(e) { if (e.key === 'Escape') close(); }
+        document.addEventListener('keydown', onEsc);
+      };
+      document.getElementById('version-top')?.addEventListener('click', cycle);
+      document.getElementById('version-bottom')?.addEventListener('click', cycle);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      runBoot();
+      renderAgents();
+      renderServices();
+      renderCapabilities();
+      renderOffice();
+      startTerminalLoop();
+      startFinetuneLoop();
+      wireStatusDot();
+      wireVersionCycler();
+      window.addEventListener('load', () => setTimeout(() => {
+        buildSystemMap();
+        wireSystemMapInteractions();
+        wireSystemMapControls();
+        wireJumpPills();
+      }, 0));
+    });
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Person",
+    "name": "Dalin Huang",
+    "jobTitle": "Senior Full Stack / AI Developer",
+    "url": "https://dalin.dev",
+    "worksFor": { "@type": "Organization", "name": "Parker AI" },
+    "sameAs": [
+      "https://www.linkedin.com/in/dalinhuang/",
+      "https://github.com/dalindev"
+    ]
+  }
+  </script>
+</body>
+</html>
