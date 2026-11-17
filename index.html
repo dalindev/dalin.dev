@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dalin Huang · Senior AI Developer, Agent Systems</title>
   <meta name="description"
-        content="Dalin Huang, Senior AI Developer (Agent Systems) at Parker AI. I build the platform, models, and guardrails that let AI agents do real engineering work safely. 10+ years shipping production systems.">
+        content="Dalin Huang, Senior AI Developer (Agent Systems). I build AI that builds, and the trust that lets it ship. Currently at Parker AI, taking marketing fully agentic: data, research, production, and shipping, in loops that close themselves and improve with every run. 10+ years shipping production systems.">
   <meta name="keywords" content="Dalin Huang, AI Developer, Agent Systems, Parker AI, LLM fine-tuning, evals, Temporal, Postgres, React, Next.js">
   <meta property="og:title" content="Dalin Huang · Senior AI Developer, Agent Systems">
-  <meta property="og:description" content="Agent loops, self-hosted fine-tuned LLMs, evals, and data at scale. Ask the model, walk the agent office, explore the career clock.">
-  <meta property="og:image" content="https://dalin.dev/img/hd.jpg">
+  <meta property="og:description" content="I build AI that builds. And the trust that lets it ship. Ask the model, walk the agent office, explore the career clock.">
+  <meta property="og:image" content="https://dalin.dev/img/avatar.jpg">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://dalin.dev">
   <meta name="theme-color" content="#04060c">
@@ -126,20 +126,21 @@
 
     /* ─── Intro band (the Ask model is the first screen) ─── */
     .intro {
-      position: relative; padding: 1.25rem 0 0.25rem;
-      display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 0.75rem 3rem; align-items: end;
+      position: relative; padding: 0.75rem 0 0;
+      display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.5rem 2.5rem; align-items: center;
     }
     .intro .ghost { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35; }
     .intro .ghost svg { width: 100%; height: 100%; display: block; }
     .intro > .who, .intro > .about { position: relative; z-index: 1; min-width: 0; }
     .intro .op { font-size: calc(var(--fz) * 0.625rem); letter-spacing: 0.22em; color: var(--ink-faint); margin-bottom: 0.25rem; }
-    .intro h1 { font-size: clamp(calc(var(--fz) * 1.875rem), 2.6vw, calc(var(--fz) * 2.75rem)); line-height: 1.02; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.3125rem; }
-    .intro .role { color: var(--accent-link); font-size: clamp(calc(var(--fz) * 0.875rem), 1.15vw, calc(var(--fz) * 1.0625rem)); font-weight: 700; }
+    .intro .who { display: flex; flex-direction: column; gap: 0.125rem; }
+    .intro h1 { font-size: calc(var(--fz) * 1.5rem); line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; }
+    .intro .role { color: var(--accent-link); font-size: calc(var(--fz) * 0.8125rem); font-weight: 700; }
     .intro .role .where { color: var(--ink-faint); font-weight: 400; }
-    .intro .bio { color: var(--ink-dim); font-size: calc(var(--fz) * 0.8125rem); line-height: 1.7; max-width: 47.5rem; }
+    .intro .bio { color: var(--ink-dim); font-size: calc(var(--fz) * 0.75rem); line-height: 1.55; text-align: right; }
     .intro .bio b { color: var(--ink-strong); font-weight: 700; }
     .intro .bio .hl { color: var(--accent-live); }
-    .intro .links { margin-top: 0.625rem; display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: calc(var(--fz) * 0.625rem); }
+    .intro .links { margin-top: 0.625rem; display: none; flex-wrap: wrap; gap: 0.5rem; font-size: calc(var(--fz) * 0.625rem); }
     .intro .links a {
       color: var(--accent-live); padding: 0.4375rem 0.6875rem;
       border: 1px solid rgba(74, 222, 128, 0.30); border-radius: 0.25rem;
@@ -199,8 +200,9 @@
     .ft-log:first-child { color: var(--ink); opacity: 1; }
 
     @media (max-width: 900px) {
-      .intro { grid-template-columns: 1fr; gap: 0.875rem; padding: 1.5rem 0 0.25rem; }
-      .intro h1 { font-size: calc(var(--fz) * 2.125rem); }
+      .intro { grid-template-columns: 1fr; gap: 0.375rem; padding: 0.875rem 0 0.25rem; }
+      .intro .bio { text-align: left; }
+      .intro h1 { font-size: calc(var(--fz) * 1.75rem); }
       .hero-terms { grid-template-columns: 1fr; }
     }
     @media (max-width: 560px) {
@@ -209,7 +211,8 @@
       .intro { padding-top: 0.875rem; gap: 0.5rem; }
       .intro .op, .section-head .tagline { display: none; }   /* phones: get the answer onto the first screen */
       .intro .bio { font-size: calc(var(--fz) * 0.75rem); line-height: 1.6; }
-      .intro .links { gap: 0.3125rem; margin-top: 0.5rem; flex-wrap: nowrap; }
+      .intro .links { display: flex; gap: 0.3125rem; margin-top: 0.5rem; flex-wrap: nowrap; }
+      .intro .bio { text-align: left; }
       .intro .links a { padding: 0.375rem 0.4375rem; letter-spacing: 0.02em; white-space: nowrap; }
       .llm-prompt { padding: 0.625rem 0.75rem 0.5rem; }
       .llm-net .tag:not(.tag2) { display: none; }
@@ -250,31 +253,51 @@
     }
     .llm-stage.active { color: var(--ink-strong); background: rgba(96,165,250,0.07); }
     .llm-stage.active::after { animation: stageBar 1.2s ease-in-out infinite; }
-    .llm-stage.done { color: var(--accent-live); }
-    .llm-stage.done::after { width: 100%; background: var(--accent-live); box-shadow: none; opacity: 0.5; }
+    .llm-stage.done { color: var(--ink-faint); }                       /* finished stages step back; only the running one is lit */
+    .llm-stage.done::after { width: 100%; background: var(--accent-live); box-shadow: none; opacity: 0.28; }
     .llm-stage.train.active { color: #fbcfe8; background: rgba(244,114,182,0.08); }
     .llm-stage.train.active::after { background: var(--accent-hot); }
     @keyframes stageBar { 0% { width: 0; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0; left: 100%; } }
 
-    .llm-prompt { padding: 0.875rem 1rem 0.625rem; }
+    .llm-prompt { padding: 0.625rem 1rem 0.5rem; }
     .composer {
-      display: flex; align-items: center; gap: 0.625rem; padding: 0.3125rem 0.3125rem 0.3125rem 0.875rem;
-      border: 1px solid rgba(74,222,128,0.4); border-radius: 0.75rem; background: rgba(255,255,255,0.035);
+      display: flex; align-items: center; gap: 0.5rem; padding: 0.1875rem 0.1875rem 0.1875rem 0.75rem;
+      border: 1.5px solid rgba(96,165,250,0.45); border-radius: 0.75rem; background: #0b1120;
       transition: border-color 200ms, box-shadow 200ms, background 200ms;
     }
-    .composer:focus-within { border-color: rgba(74,222,128,0.8); background: rgba(74,222,128,0.04); box-shadow: 0 0 0 3px rgba(74,222,128,0.12), 0 0 1.5rem rgba(74,222,128,0.12); }
-    .composer.idle { animation: composerGlow 2.6s ease-in-out infinite; }   /* invites a first question; stops once someone types */
-    @keyframes composerGlow { 50% { border-color: rgba(74,222,128,0.75); box-shadow: 0 0 0 3px rgba(74,222,128,0.10), 0 0 1.25rem rgba(74,222,128,0.14); } }
-    @media (prefers-reduced-motion: reduce) { .composer.idle { animation: none; } }
-    .llm-prompt .caret { color: var(--accent-live); font-weight: 800; font-size: calc(var(--fz) * 0.875rem); }
+    /* Two states. Idle: one blue light circles the box, a bright head with a fading tail, and a text cursor blinks inside ("type here").
+       Lit: on click or typing the whole ring snaps solid with a short flash, and stays lit until the question is sent. */
+    .composer { position: relative; isolation: isolate; }
+    /* the travelling light: three dashes on an SVG outline of the box (long faint tail, shorter body, short white-hot head), moving at an even speed */
+    .composer .ring { position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); pointer-events: none; overflow: visible; opacity: 0; transition: opacity 240ms;
+      filter: drop-shadow(0 0 5px rgba(96,165,250,0.95)) drop-shadow(0 0 14px rgba(56,189,248,0.6)); }
+    .composer .ring rect { x: 1.5px; y: 1.5px; width: calc(100% - 3px); height: calc(100% - 3px); rx: calc(0.75rem - 0.5px); fill: none; stroke-width: 1.5; animation: composerRing 3.4s linear infinite; animation-delay: calc(var(--k) * -0.034s); }
+    /* one comet: twelve faint layers of shrinking length whose leading ends coincide, so their alpha adds up to a smooth fade, plus a white head. Plain-number keyframes (a calc(var()) end value did not interpolate, so nothing moved); each layer is shifted by a negative delay. The animation never stops (only the opacity changes), so the light does not jump when the box lights up. */
+    .composer .ring rect { stroke: rgba(96,165,250,0.17); }
+    .composer .ring .hd { stroke: #f0f9ff; stroke-width: 2; stroke-linecap: round; }
+    .composer.idle { border-color: rgba(96,165,250,0.2); }
+    .composer.idle .ring { opacity: 1; }
+    @keyframes composerRing { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -100; } }
+    .composer.lit { border-color: #7dd3fc; background: #0c1730; box-shadow: 0 0 0 1px rgba(125,211,252,0.55), 0 0 1.25rem rgba(56,189,248,0.42), inset 0 0 1.25rem rgba(56,189,248,0.10); animation: composerIgnite 520ms ease-out; }
+    @keyframes composerIgnite {
+      0% { box-shadow: 0 0 0 0 rgba(224,242,254,0.95), 0 0 0 rgba(56,189,248,0); border-color: #f0f9ff; }
+      35% { box-shadow: 0 0 0 5px rgba(125,211,252,0.35), 0 0 2.5rem rgba(56,189,248,0.75), inset 0 0 1.75rem rgba(125,211,252,0.28); border-color: #e0f2fe; }
+      100% { box-shadow: 0 0 0 1px rgba(125,211,252,0.55), 0 0 1.25rem rgba(56,189,248,0.42), inset 0 0 1.25rem rgba(56,189,248,0.10); border-color: #7dd3fc; }
+    }
+    .composer.lit .caret { color: #e0f2fe; text-shadow: 0 0 0.625rem rgba(125,211,252,0.9); }
+    .type-cur { display: none; width: 0.5rem; height: 1.05em; background: #93c5fd; border-radius: 1px; box-shadow: 0 0 0.5rem rgba(96,165,250,0.8); animation: typeBlink 1.05s steps(1) infinite; }
+    .composer.idle .type-cur { display: inline-block; }
+    @keyframes typeBlink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .composer .ring rect, .composer.lit, .type-cur { animation: none; } }
+    .llm-prompt .caret { color: #93c5fd; font-weight: 800; font-size: calc(var(--fz) * 0.875rem); }
     .llm-prompt input {
-      flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; padding: 0.5rem 0;
-      color: var(--ink-strong); font: 500 calc(var(--fz) * 0.9375rem) var(--mono); caret-color: var(--accent-live);
+      flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; padding: 0.375rem 0;
+      color: var(--ink-strong); font: 500 calc(var(--fz) * 0.8125rem) var(--mono); caret-color: #93c5fd;
     }
     .llm-prompt input::placeholder { color: var(--ink-dim); opacity: 0.85; }
     .llm-run {
       background: rgba(74,222,128,0.12); color: #bbf7d0; border: 1px solid rgba(74,222,128,0.35);
-      border-radius: 0.5rem; padding: 0.5625rem 0.875rem; font-size: calc(var(--fz) * 0.6875rem); letter-spacing: 0.12em; cursor: pointer; font-weight: 700;
+      border-radius: 0.5rem; padding: 0.4375rem 0.75rem; font-size: calc(var(--fz) * 0.625rem); letter-spacing: 0.12em; cursor: pointer; font-weight: 700;
       transition: all 160ms ease-out; white-space: nowrap;
     }
     .llm-run:hover { background: rgba(74,222,128,0.22); box-shadow: var(--glow-live); }
@@ -290,9 +313,14 @@
       background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.10); color: var(--ink-dim);
       transition: all 160ms ease-out;
     }
+    /* Quiet by default: the input, the answer and the network carry the screen. Supporting text stays faint until hovered. */
+    .llm-sugg .chip { background: transparent; border-color: rgba(255,255,255,0.07); color: var(--ink-faint); }
+    .llm-out-wrap .lbl label, .llm-foot .stats { opacity: 0.6; transition: opacity 160ms; }
+    .llm-out-wrap .lbl label:hover, .llm-foot:hover .stats { opacity: 1; }
     .chip:hover { color: var(--ink-strong); border-color: var(--accent-link); background: rgba(96,165,250,0.08); }
 
-    .llm-main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); }
+    .llm-main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); grid-template-areas: "chat right" "chat foot"; grid-template-rows: auto 1fr; }
+    .llm-chat { grid-area: chat; } .llm-right { grid-area: right; } .llm-foot { grid-area: foot; align-self: end; }   /* wide screens: stats + feedback sit under the next-token panel, so both columns end level */
     .llm-chat { display: flex; flex-direction: column; min-width: 0; border-right: 1px solid var(--rule); }
     .llm-under { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; padding: 0.875rem 1rem 1rem; border-top: 1px solid var(--rule); }
     .llm-under > * { min-width: 0; }
@@ -327,7 +355,7 @@
     .ret .src small { display: block; color: var(--ink-faint); font-size: calc(var(--fz) * 0.5625rem); }
 
     .llm-right { display: flex; flex-direction: column; min-width: 0; }
-    .llm-net { position: relative; height: clamp(17.5rem, 24vw, 23.75rem); background:
+    .llm-net { position: relative; height: clamp(12.5rem, 16vw, 15.5rem); background:
       radial-gradient(ellipse 70% 60% at 50% 50%, rgba(96,165,250,0.06), transparent 70%); }
     .llm-net canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
     .llm-net .tag { position: absolute; top: 0.625rem; left: 0.75rem; font-size: calc(var(--fz) * 0.5625rem); color: var(--ink-faint); letter-spacing: 0.14em; pointer-events: none; }
@@ -356,7 +384,7 @@
     .llm-out-wrap .lbl { font-size: calc(var(--fz) * 0.5625rem); letter-spacing: 0.16em; color: var(--ink-faint); display: flex; justify-content: space-between; gap: 0.625rem; margin-bottom: 0.625rem; }
     .llm-out-wrap .lbl label { cursor: pointer; display: inline-flex; gap: 0.375rem; align-items: center; }
     .llm-out-wrap .lbl input { accent-color: #a78bfa; }
-    .llm-out { min-height: 6rem; font-size: calc(var(--fz) * 0.8438rem); line-height: 1.8; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
+    .llm-out { min-height: 6rem; font-size: calc(var(--fz) * 0.8125rem); line-height: 1.65; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
     .llm-out .ph { color: var(--ink-faint); }
     .llm-out .tk { border-radius: 0.1875rem; transition: background 400ms, color 600ms, text-shadow 600ms; }
     .llm-out .tk.fresh { color: #fff; text-shadow: 0 0 0.75rem rgba(96,165,250,0.9); }
@@ -402,8 +430,9 @@
     .fb .msg { color: #f9a8d4; }
 
     @media (max-width: 860px) {
-      .llm-main { grid-template-columns: 1fr; }
-      .llm-chat { border-right: 0; border-bottom: 1px solid var(--rule); }
+      .llm-main { grid-template-columns: 1fr; grid-template-areas: "chat" "foot" "right"; grid-template-rows: auto; }   /* narrow: feedback stays right under the answer */
+      .llm-chat { border-right: 0; }
+      .llm-foot { border-bottom: 1px solid var(--rule); }
       .llm-under { grid-template-columns: 1fr; gap: 1rem; }
       .llm-under .emb-block, .llm-under .ret-block { display: none; }
       .llm-under.has-run .ret-block { display: block; }
@@ -502,7 +531,10 @@
     }
     .of-label .d { width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--c); box-shadow: 0 0 0.5rem var(--c); flex: none; }
     .of-label .n { font-weight: 700; color: var(--ink-strong); }
-    .of-label .s { color: var(--ink-faint); }
+    /* calm by default: a desk shows its name; what it is doing appears only while it handles a ticket, raises an alert, is selected, or is hovered */
+    .of-label .s { color: var(--ink-faint); display: none; }
+    .of-label.working .s, .of-label.alert .s, .of-label.sel .s, .of-label:hover .s { display: inline; }
+    .of-label.steady, .of-label.sleep { opacity: 0.82; }
     .of-label.working { box-shadow: 0 0 0.875rem color-mix(in srgb, var(--c) 55%, transparent); }
     .of-label.working .s { color: var(--c); }
     .of-label.sleep .s { color: var(--ink-faint); font-style: italic; }
@@ -775,6 +807,7 @@
       <span class="sep ext"></span>
       <a class="ext" href="https://www.linkedin.com/in/dalinhuang/" target="_blank" rel="noopener">LINKEDIN</a>
       <a class="ext" href="https://github.com/dalindev" target="_blank" rel="noopener">GITHUB</a>
+      <a class="ext" href="mailto:dhuan023@gmail.com">EMAIL</a>
       <a class="res" href="Dalin_Huang_Resume_2026.pdf" target="_blank" rel="noopener">RESUME</a>
     </nav>
   </header>
@@ -797,14 +830,13 @@
       </div>
 
       <div class="who">
-        <div class="op">// OPERATOR · OTTAWA, CANADA</div>
         <h1>Dalin Huang</h1>
-        <div class="role">Senior AI Developer, Agent Systems</div>
+        <div class="role">Senior AI Developer</div>
       </div>
       <div class="about">
         <p class="bio">
-          I build <span class="hl">AI agents that do real engineering work</span>, and the models
-          and guardrails that keep them safe. Currently at <b>Parker AI</b>.
+          I build <span class="hl">AI that builds</span>. And <span class="hl">the trust that lets it ship</span>.<br>
+          Currently at <b>Parker AI</b>, taking marketing fully agentic.
         </p>
         <div class="links">
           <a href="https://www.linkedin.com/in/dalinhuang/" target="_blank" rel="noopener">→ LINKEDIN</a>
@@ -827,8 +859,9 @@
         </div>
         <form class="llm-prompt" id="llm-form" autocomplete="off">
           <div class="composer idle" id="composer">
-            <span class="caret" aria-hidden="true">❯</span>
-            <input id="llm-input" maxlength="80" placeholder="Ask me anything about my work…" aria-label="Ask about my work" enterkeyhint="send">
+            <svg class="ring" aria-hidden="true"><rect pathLength="100" style="--k:0.0;stroke-dasharray:18.0 82.0;stroke-dashoffset:-0.0"/><rect pathLength="100" style="--k:2.34;stroke-dasharray:15.66 84.34;stroke-dashoffset:-2.34"/><rect pathLength="100" style="--k:4.55;stroke-dasharray:13.45 86.55;stroke-dashoffset:-4.55"/><rect pathLength="100" style="--k:6.64;stroke-dasharray:11.36 88.64;stroke-dashoffset:-6.64"/><rect pathLength="100" style="--k:8.59;stroke-dasharray:9.41 90.59;stroke-dashoffset:-8.59"/><rect pathLength="100" style="--k:10.4;stroke-dasharray:7.6 92.4;stroke-dashoffset:-10.4"/><rect pathLength="100" style="--k:12.06;stroke-dasharray:5.94 94.06;stroke-dashoffset:-12.06"/><rect pathLength="100" style="--k:13.56;stroke-dasharray:4.44 95.56;stroke-dashoffset:-13.56"/><rect pathLength="100" style="--k:14.9;stroke-dasharray:3.1 96.9;stroke-dashoffset:-14.9"/><rect pathLength="100" style="--k:16.04;stroke-dasharray:1.96 98.04;stroke-dashoffset:-16.04"/><rect pathLength="100" style="--k:16.98;stroke-dasharray:1.02 98.98;stroke-dashoffset:-16.98"/><rect pathLength="100" style="--k:17.66;stroke-dasharray:0.34 99.66;stroke-dashoffset:-17.66"/><rect class="hd" pathLength="100" style="--k:16.8;stroke-dasharray:1.2 98.8;stroke-dashoffset:-16.8"/></svg>
+            <span class="caret" aria-hidden="true">❯</span><span class="type-cur" aria-hidden="true"></span>
+            <input id="llm-input" maxlength="80" placeholder="Type a question about my work…" aria-label="Ask about my work" enterkeyhint="send">
             <button class="llm-run" id="llm-run" type="submit">ASK ↵</button>
           </div>
         </form>
@@ -851,14 +884,6 @@
               <div class="llm-out" id="llm-out" aria-live="polite"><span class="ph">The answer streams here. Type a question above, or tap a suggestion.</span></div>
               <div class="llm-rel" id="llm-rel"></div>
             </div>
-            <div class="llm-foot">
-              <div class="stats" id="llm-stats">answers are hand-written, not generated, so it can't make things up</div>
-              <div class="fb">
-                <span class="msg" id="fb-msg"></span>
-                <button id="fb-up" disabled title="Good answer: one real training step toward it">👍 train on this</button>
-                <button id="fb-down" disabled title="Bad answer: one real training step away from it">👎</button>
-              </div>
-            </div>
           </div>
           <div class="llm-right">
             <div class="llm-net" id="llm-net">
@@ -871,6 +896,14 @@
               <div class="cands" id="cands"></div>
             </div>
           </div>
+            <div class="llm-foot">
+              <div class="stats" id="llm-stats">answers are hand-written, not generated, so it can't make things up</div>
+              <div class="fb">
+                <span class="msg" id="fb-msg"></span>
+                <button id="fb-up" disabled title="Good answer: one real training step toward it">👍 train on this</button>
+                <button id="fb-down" disabled title="Bad answer: one real training step away from it">👎</button>
+              </div>
+            </div>
         </div>
         <div class="llm-under" id="llm-left">
           <div class="llm-block">
@@ -929,7 +962,7 @@
     <!-- ═════════ 02 · OFFICE ═════════ -->
     <section class="sec" id="office">
       <h2 class="section-head"><span class="num">02</span> THE AGENT OFFICE <span class="count" id="office-count">· 14 desks · 1 human gate</span></h2>
-      <p class="section-sub">My personal agent team: Grok bots plus Claude Code. Tickets flow down the lane; risky changes wait for a human. Click a desk to meet an agent.</p>
+      <p class="section-sub">My personal agent team: Grok bots plus Claude Code. Tickets flow down the lane. Trusted changes ship to prod on their own; the long tail waits for a human. Click a desk to meet an agent.</p>
       <div class="office3d" id="office3d">
         <div class="of-loading" id="of-loading">LOADING OFFICE…</div>
         <div class="of-labels" id="of-labels"></div>
@@ -1032,7 +1065,7 @@
       { id: 'agent_loops', name: 'Agent loops',     d: 'agents', level: 3, aka: ['multi-agent', 'orchestration', 'agentic'], ev: 'A 10+ agent loop (intake, coding, QA, security, incident response, release) on top of Status Island. Low-risk work ships end to end; risky changes wait for a person.' },
       { id: 'grok',        name: 'Grok bots',       d: 'agents', level: 3, aka: ['xai'], ev: 'A Chief of Staff coordinator directs ~10 specialist Grok bots (Eng, QA, Eng Manager, incident, cost, billing, stack radar, OSS), wired as a tree instead of a group chat.' },
       { id: 'claude_code', name: 'Claude Code',     d: 'agents', level: 3, aka: ['agentic coding', 'coding agent'], ev: 'Heavy work goes to local Claude Code through a ticket label and a verify-first brief, draft PRs only. It built the Agent Island API and UI from my approved brief.' },
-      { id: 'guardrails',  name: 'Human-in-the-loop', d: 'agents', level: 3, aka: ['hitl', 'guardrails', 'human gates', 'approval'], ev: 'Prod deploys, prod database writes, migrations, money, and customer messages always wait for a person, and every diff passes an "address or explain" merge gate.' },
+      { id: 'guardrails',  name: 'Human-in-the-loop', d: 'agents', level: 3, aka: ['hitl', 'guardrails', 'human gates', 'approval', 'earned autonomy', 'trust'], ev: 'Autonomy is earned. Agents ship to production, write data, and run migrations; each kind of change starts behind a human yes and goes automatic as it builds a track record. The 1% long tail still gets a person, and every diff passes an "address or explain" merge gate.' },
       { id: 'verify',      name: 'Verifier agents', d: 'agents', level: 3, aka: ['agent qa', 'qa agents', 'security agents', 'verification'], ev: 'Clean-context QA and Security agents verify diffs against real replicas, previews, and logs, and log a loop recap on every ship.' },
       { id: 'evals',       name: 'Evals',           d: 'agents', level: 3, aka: ['benchmarks', 'evaluation'], ev: 'Eval framework benchmarking 50+ models (more counting variants like thinking levels and Flash or Lite tiers) on production tools, MCP, and context. Blind incident-replay eval for the QA bot: catch rate 73% → 81%.' },
       { id: 'mcp',         name: 'MCP / tools',     d: 'agents', level: 3, aka: ['tool use', 'function calling', 'connectors'], ev: 'Agent data tools built from scratch; MCP connectors wire the bot team to tickets, code, and health feeds.' },
@@ -1041,7 +1074,7 @@
       { id: 'rag',         name: 'Embeddings',      d: 'agents', level: 2, aka: ['rag', 'vector', 'retrieval'], ev: 'Embeddings at scale on Gemini Batch, next to ad classification and media analysis.' },
       { id: 'llms_txt',    name: 'Agent-ready APIs', d: 'agents', level: 2, aka: ['llms.txt', 'agent api'], ev: "APIs built for agents to read: Agent Island's llms.txt, its JSON view, and a join flow that takes one HTTP call and returns a short-lived token." },
       // ── Models & training ──
-      { id: 'selfhost',    name: 'Self-hosted LLMs', d: 'train', level: 3, aka: ['open models', 'serving', 'inference'], ev: 'Fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve millions of requests a week, running async on GPU clusters through a job queue with producers and finalizers.' },
+      { id: 'selfhost',    name: 'Self-hosted LLMs', d: 'train', level: 3, aka: ['open models', 'serving', 'inference'], ev: 'Fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve billions of requests a week, running async on GPU clusters through a job queue with producers and finalizers.' },
       { id: 'lora',        name: 'Fine-tuning',     d: 'train', level: 3, aka: ['lora', 'sft', 'training'], ev: 'LoRA fine-tunes behind the self-hosted LLMs. Agents run the research and training loop on a GPU cluster: experiments, monitoring, and iteration.' },
       { id: 'infcost',     name: 'Inference cost',  d: 'train', level: 3, aka: ['cost', 'llm cost', 'finops', 'batch'], ev: "200× lower cost from fine-tuned self-hosted models, async work through a GPU job queue and Gemini Batch, and a Cost Scout agent that traced most of one model's spend to a single call site." },
       { id: 'cont_learn',  name: 'Learning loop',   d: 'train', level: 2, aka: ['continual learning', 'feedback', 'rlhf', 'continuous fine-tuning'], ev: 'User reactions and feedback feed a training queue that fine-tunes models and LLM judges.' },
@@ -1061,8 +1094,9 @@
       { id: 'rls',         name: 'RLS + triggers',  d: 'data', level: 2, ev: 'Postgres RLS and trigger guards that refuse illegal state changes in Ship Loops.' },
       { id: 'redis',       name: 'Redis',           d: 'data', level: 2, aka: ['cache', 'caching'], ev: "Redis caching that helped Combyne's marketplace scale to 1M+ users; also used at Shopify." },
       { id: 'elastic',     name: 'Elasticsearch',   d: 'data', level: 2, aka: ['search'], ev: 'Combyne: Elasticsearch + Redis caching for a 1M+ user marketplace, 10–100× faster search.' },
-      { id: 'gcp',         name: 'GCP',             d: 'data', level: 2, aka: ['google cloud'] },
-      { id: 'aws',         name: 'AWS',             d: 'data', level: 2, aka: ['sqs'], ev: "Moved Combyne's async work to AWS SQS and Python workers to make room for scale." },
+      { id: 'devops',      name: 'Cloud DevOps',    d: 'data', level: 2, aka: ['devops', 'azure', 'cloudflare', 'multi-cloud', 'infrastructure', 'infra'], ev: 'I run the DevOps for Parker AI across four clouds: Azure, GCP, AWS, and Cloudflare.' },
+      { id: 'gcp',         name: 'GCP',             d: 'data', level: 2, aka: ['google cloud'], ev: 'One of the four clouds Parker AI runs on (with Azure, AWS, and Cloudflare), where I handle the DevOps. Also used at HiNature.' },
+      { id: 'aws',         name: 'AWS',             d: 'data', level: 2, aka: ['sqs'], ev: "One of the four clouds Parker AI runs on, where I handle the DevOps. Earlier, I moved Combyne's async work to AWS SQS and Python workers to make room for scale." },
       // ── Backend ──
       { id: 'typescript',  name: 'TypeScript',      d: 'backend', level: 3, aka: ['ts', 'javascript'], ev: "Parker AI's Next.js app and backend rebuild, Agent Island, xnohub, LocalXNO, and Composable UI." },
       { id: 'python',      name: 'Python',          d: 'backend', level: 3, ev: "The training loop, HiNature's ingredient classifier, and Combyne's async workers on AWS SQS." },
@@ -1101,22 +1135,22 @@
         blurb: 'Full-stack AI platform for e-commerce brands: unifies ad, creative, competitor, and customer data behind an AI analyst.',
         bullets: [
           ['Core Platform & Data Scale', 'Built the web app, Temporal AI workflows, and agent data tools from scratch, processing billions of ad data points daily.'],
-          ['Autonomous Engineering Ops', 'Built a 10+ agent loop (intake, coding, QA, security, incident response, release) on top of Status Island (live health across 30+ systems); low-risk work ships end to end while prod deploys, migrations, and customer sends stay human-gated.'],
+          ['Autonomous Engineering Ops', 'Built a 10+ agent loop (intake, coding, QA, security, incident response, release) on top of Status Island (live health across 30+ systems); agents ship to production, write data, and run migrations, with autonomy earned one kind of change at a time and a person kept on the 1% long tail.'],
           ['Independent Verification', 'Built clean-context QA and Security agents that verify diffs against real replicas, previews, and logs, enforce an "address or explain" merge gate, and log loop recaps on every ship.'],
           ['Self-Learning from Experts & Incidents', 'Turned senior engineering, QA, and security practices into living skills, repo feature maps, and incident-replay benchmarks, audited by a daily self-review scorecard that updates rules automatically.'],
-          ['Autonomous LLM Training & Evals', 'Trained self-hosted fine-tuned LLMs that match frontier-model quality at 200× lower cost and serve millions of requests a week, running async on GPU clusters through a job queue with producers and finalizers. Agents run the research and training loop: experiments, monitoring, iteration. Also built an eval framework benchmarking 50+ models, more counting variants like thinking levels and Flash or Lite tiers, on production tools, MCP, and context.'],
+          ['Autonomous LLM Training & Evals', 'Trained self-hosted fine-tuned LLMs that match frontier-model quality at 200× lower cost and serve billions of requests a week, running async on GPU clusters through a job queue with producers and finalizers. Agents run the research and training loop: experiments, monitoring, iteration. Also built an eval framework benchmarking 50+ models, more counting variants like thinking levels and Flash or Lite tiers, on production tools, MCP, and context.'],
           ['Continuous Fine-Tuning & Expert Distillation', "Built a continuous learning pipeline where user reactions and feedback feed a training queue to fine-tune models and LLM judges, alongside distilling domain experts' outputs, chats, and review history into vision+text → text reasoning models."],
           ['Self-Healing Data Workflows', 'Built automated workflows that detect and repair data issues across millions of records.'],
           ['Database Performance', 'Scaled Postgres to hundreds of millions of rows with partitioning, cutting key queries from 1+ minute to milliseconds.'],
         ],
         metrics: [
           { k: 'AGENTS', v: '10+' }, { k: 'SYSTEMS WATCHED', v: '30+' }, { k: 'MODELS BENCHMARKED', v: '50+' },
-          { k: 'INFERENCE COST', v: '↓ 200×' }, { k: 'REQUESTS / WEEK', v: 'millions' }, { k: 'KEY QUERIES', v: '1 min → ms' },
+          { k: 'INFERENCE COST', v: '↓ 200×' }, { k: 'REQUESTS / WEEK', v: 'billions' }, { k: 'KEY QUERIES', v: '1 min → ms' },
         ],
         skills: ['agent_loops', 'grok', 'claude_code', 'guardrails', 'verify', 'evals', 'mcp', 'skills_maps', 'llm_apis', 'rag', 'llms_txt',
                  'tla', 'mutation', 'rls',
                  'selfhost', 'lora', 'infcost', 'cont_learn', 'distill', 'llm_judges', 'vlm', 'gpu', 'pytorch',
-                 'pipelines', 'temporal', 'postgres', 'supabase', 'selfheal', 'observ', 'gcp',
+                 'pipelines', 'temporal', 'postgres', 'supabase', 'selfheal', 'observ', 'devops', 'gcp', 'aws',
                  'typescript', 'python', 'nodejs', 'apis', 'react', 'nextjs', 'tanstack', 'tailwind', 'adtech', 'shopify_apps', 'payments'],
       },
       {
@@ -1190,13 +1224,13 @@
     /* ─── Projects (newest first) ─── */
     const PROJECTS = [
       { id: 'agent-team', name: 'Agent Team', year: 'now', status: 'live', at: 'parker-ai',
-        desc: 'A Chief of Staff bot owns intake, comms, and task tracking, and directs ~10 specialist Grok bots: Eng, QA, Eng Manager, incident, cost, billing, stack radar, OSS. A tree, not a group chat. Heavy work goes to local Claude Code with a verify-first brief. Prod DB writes, migrations, money, and customer messages always need me.',
+        desc: 'A Chief of Staff bot owns intake, comms, and task tracking, and directs ~10 specialist Grok bots: Eng, QA, Eng Manager, incident, cost, billing, stack radar, OSS. A tree, not a group chat. Heavy work goes to local Claude Code with a verify-first brief. Agents ship to prod, write data, and run migrations as they earn trust; the 1% long tail still comes to me.',
         skills: ['grok', 'agent_loops', 'guardrails', 'claude_code', 'mcp'] },
       { id: 'agent-island', name: 'Agent Island', year: 'now', status: 'live', at: 'personal', url: 'https://agent-island-liard.vercel.app/',
         desc: 'A live pixel-art island for agents. Agents walk to the building that matches their work, and health probes on APIs, workers, the database, CI, and deploys colour the island green, amber, or red. One feed, three views: the island, a status list, and JSON for agents. Started as Status Island at work.',
         skills: ['observ', 'llms_txt', 'claude_code', 'agent_loops', 'nextjs', 'react', 'typescript'] },
       { id: 'ship-loops', name: 'Ship Loops', year: 'now', status: 'proto', at: 'parker-ai',
-        desc: 'A strict state machine for shipping agent work: a few review rounds, then it stops and asks me. A deploy only counts if it carries the merge sha. I proved the design before building it: TLA+ model checking, mutation tests on every guard, and Postgres guards that refuse illegal moves.',
+        desc: 'A strict state machine for shipping agent work: a few review rounds, then it stops and asks me. A deploy only counts if it carries the merge sha. I proved the design before building it: TLA+ model checking, mutation tests on every guard, and Postgres guards that refuse illegal moves. Still an experiment: I keep changing what auto-ships as I learn.',
         skills: ['tla', 'mutation', 'rls', 'postgres', 'agent_loops', 'guardrails'] },
       { id: 'support-loop', name: 'Support & Bug Intake Loop', year: 'now', status: 'live', at: 'parker-ai',
         desc: 'A report lands, an agent claims it and investigates read-only for 10–15 minutes, then files findings on the matching ticket or a new one. The fix ships and gets verified, and the ticket closes through the real close path so the customer email fires. Customer messages and billing changes need my approval.',
@@ -1205,7 +1239,7 @@
         desc: 'Clean-context agents that verify diffs against real replicas, previews, and logs, enforce an "address or explain" merge gate, and log a loop recap on every ship.',
         skills: ['verify', 'guardrails', 'agent_loops'] },
       { id: 'train-loop', name: 'Autonomous Training Loop', year: 'now', status: 'live', at: 'parker-ai',
-        desc: 'Fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve millions of requests a week. They run async on GPU clusters through a job queue with producers and finalizers, and agents run the training experiments, monitor runs, and iterate.',
+        desc: 'Fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve billions of requests a week. They run async on GPU clusters through a job queue with producers and finalizers, and agents run the training experiments, monitor runs, and iterate.',
         skills: ['selfhost', 'lora', 'infcost', 'gpu', 'python'] },
       { id: 'evals', name: 'Eval Framework', year: 'now', status: 'live', at: 'parker-ai',
         desc: 'Benchmarks 50+ models, more counting variants like thinking levels and Flash or Lite tiers, on production tools, MCP, and context. Incident-replay benchmarks and a daily self-review scorecard that updates agent rules automatically.',
@@ -1280,15 +1314,15 @@
         rel: ['parker-ai', 'agent_loops', 'selfhost', 'evals'] },
       { id: 'ai', keys: ['ai', 'artificial', 'intelligence', 'llm', 'llms', 'ml', 'machine', 'model', 'models', 'genai', 'gpt', 'claude', 'gemini', 'openai', 'anthropic', 'neural'],
         ctx: ['Parker AI · Autonomous LLM Training & Evals', 'Parker AI · Autonomous Engineering Ops', 'Summary'],
-        a: "AI is my day job. At Parker AI I built a 10+ agent engineering loop, an automated research and training loop on a GPU cluster, and an eval framework that benchmarks 50+ models on production tools, MCP, and context. The fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve millions of requests a week. The goal is always the same: agents that do real engineering work, safely.",
+        a: "AI is my day job. At Parker AI I built a 10+ agent engineering loop, an automated research and training loop on a GPU cluster, and an eval framework that benchmarks 50+ models on production tools, MCP, and context. The fine-tuned LLMs I trained match frontier-model quality at 200× lower cost and serve billions of requests a week. The goal is always the same: agents that do real engineering work, safely.",
         rel: ['parker-ai', 'agent_loops', 'selfhost', 'lora', 'evals', 'llm_apis'] },
       { id: 'agents', keys: ['agent', 'agents', 'agentic', 'autonomous', 'loop', 'orchestration', 'multi', 'ops', 'automation', 'swarm', 'crew', 'office'],
         ctx: ['Parker AI · Autonomous Engineering Ops', 'Parker AI · Independent Verification', 'Parker AI · Self-Learning from Experts'],
-        a: "I built a 10+ agent loop covering intake, coding, QA, security, incident response, and release. It runs on top of Status Island, which tracks live health across 30+ systems. Low-risk work ships end to end with no one touching it. Prod deploys, migrations, and customer sends stay human-gated. Clean-context QA and Security agents verify every diff against real replicas, previews, and logs before anything merges. The team itself is a Chief of Staff bot directing about ten specialist Grok bots (ask me about Grok bots). You can watch a version of it in the office below.",
+        a: "I built a 10+ agent loop covering intake, coding, QA, security, incident response, and release. It runs on top of Status Island, which tracks live health across 30+ systems. Agents ship to production, write data, and run migrations. Each kind of change starts behind a human yes and goes automatic as it earns trust, so the automated share climbs from 10% toward 99%. The last 1% still needs a person. Clean-context QA and Security agents verify every diff against real replicas, previews, and logs before anything merges. The team itself is a Chief of Staff bot directing about ten specialist Grok bots (ask me about Grok bots). You can watch a version of it in the office below.",
         rel: ['agent_loops', 'grok', 'guardrails', 'verify', 'observ', 'parker-ai'] },
       { id: 'team', keys: ['grok', 'bot', 'bots', 'team', 'coordinator', 'chief', 'staff', 'specialist', 'specialists', 'tree', 'manager', 'scout', 'scouts', 'handoff', 'claude code', 'chief of staff', 'eng manager'],
         ctx: ['Agent team · Chief of Staff', 'Agent team · specialists', 'Agent team · human gate'],
-        a: "My agents are organized as a tree, not a group chat. A Chief of Staff bot owns intake, comms, and task tracking. It digs read-only, sets a confidence level, and puts its findings on the ticket. About ten specialist Grok bots report into it: Eng drafts small root-cause fixes, QA verifies draft PRs, an Eng Manager watches deploys after merge, and scouts track cloud spend, billing, and new tools. Heavy work goes to Claude Code on my machine with a verify-first brief. Shared rooms burned tokens and caused cross-talk, so managers direct their own workers and escalate only when something breaks. Prod DB writes, migrations, money, and customer messages always need me.",
+        a: "My agents are organized as a tree, not a group chat. A Chief of Staff bot owns intake, comms, and task tracking. It digs read-only, sets a confidence level, and puts its findings on the ticket. About ten specialist Grok bots report into it: Eng drafts small root-cause fixes, QA verifies draft PRs, an Eng Manager watches deploys after merge, and scouts track cloud spend, billing, and new tools. Heavy work goes to Claude Code on my machine with a verify-first brief. Shared rooms burned tokens and caused cross-talk, so managers direct their own workers and escalate only when something breaks. Agents ship to prod, write data, and run migrations as they earn trust; the 1% long tail still comes to me.",
         rel: ['grok', 'claude_code', 'agent_loops', 'guardrails', 'parker-ai'] },
       { id: 'agentisland', keys: ['island', 'pixel', 'pixelart', 'pixel-art', 'building', 'buildings', 'visualize', 'visualizer', 'status', 'health', 'monitoring', 'monitor', 'uptime', 'probe', 'probes', 'observability', 'outage', 'outages', 'incident', 'incidents', 'oncall', 'on-call', 'agent island', 'agent-island', 'status island', 'status-island'],
         ctx: ['Projects · Agent Island', 'Agent Island · health probes', 'Agent Island · llms.txt'],
@@ -1300,7 +1334,7 @@
         rel: ['grok', 'agent_loops', 'guardrails', 'verify'] },
       { id: 'shiploops', keys: ['tla', 'tla+', 'tlc', 'formal', 'statechart', 'mutation', 'mutants', 'hands-off', 'handsoff', 'ship', 'shiploops', 'ship loop', 'ship loops', 'state machine', 'model checking', 'model checker', 'formal verification'],
         ctx: ['Ship Loops · state machine', 'Ship Loops · TLA+ model check', 'Ship Loops · mutation tests'],
-        a: "Ship Loops is my design for taking the agent loop hands-off. It's a strict state machine: a few review rounds, then it stops and asks me. A deploy only counts if it carries the merge sha, and a Verification agent checks live proof before anything is called done. I proved the design before building it: TLA+ model checking, mutation tests on every guard, and Postgres guards that refuse illegal moves. The model checker paid off early by finding a bug the tests missed, a cannot-verify answer that looped forever. It's still a prototype.",
+        a: "Ship Loops is my design for taking the agent loop hands-off. It's a strict state machine: a few review rounds, then it stops and asks me. A deploy only counts if it carries the merge sha, and a Verification agent checks live proof before anything is called done. I proved the design before building it: TLA+ model checking, mutation tests on every guard, and Postgres guards that refuse illegal moves. The model checker paid off early by finding a bug the tests missed, a cannot-verify answer that looped forever. It's still a prototype and I keep changing it. With AI you can try something, get it wrong, and fix it the same day, so I'd rather keep moving than wait for perfect.",
         rel: ['tla', 'mutation', 'rls', 'agent_loops', 'guardrails'] },
       { id: 'incidenteval', keys: ['replay', 'replays', 'catch', 'caught', 'contaminated', 'contamination', 'regression', 'blind', 'reviewer', 'incident eval', 'incident replay', 'catch rate', 'code review', 'pr review', 'ai review', 'ai reviewer'],
         ctx: ['Incident eval · blind replay', 'Incident eval · scoring', 'Incident eval · results'],
@@ -1312,7 +1346,7 @@
         rel: ['temporal', 'supabase', 'headless', 'orium'] },
       { id: 'train', keys: ['fine', 'finetune', 'finetuning', 'fine-tune', 'fine-tuning', 'tuning', 'lora', 'train', 'training', 'gpu', 'gpus', 'distill', 'distillation', 'self-hosted', 'selfhosted', 'hosted', 'rlhf', 'weights', 'cost', 'cheap', 'research', 'pytorch', 'inference', 'serving', 'async', 'queue', 'producer', 'producers', 'finalizer', 'finalizers', 'frontier', 'job queue'],
         ctx: ['Parker AI · Autonomous LLM Training & Evals', 'Parker AI · Continuous Fine-Tuning & Expert Distillation', 'Parker AI · Core Platform'],
-        a: "I trained our self-hosted fine-tuned LLMs. They match frontier-model quality at 200× lower cost and serve millions of requests a week. Inference runs async on GPU clusters through a job queue with producers and finalizers, which saves even more. The research and training loop behind them is automated too: agents run the experiments, monitor the runs, and iterate. On top of that, a continuous learning pipeline turns user reactions and feedback into a training queue for models and LLM judges. It also distills domain experts' outputs, chats, and review history into vision+text → text reasoning models. The 👍 button below is a tiny version of that.",
+        a: "I trained our self-hosted fine-tuned LLMs. They match frontier-model quality at 200× lower cost and serve billions of requests a week. Inference runs async on GPU clusters through a job queue with producers and finalizers, which saves even more. The research and training loop behind them is automated too: agents run the experiments, monitor the runs, and iterate. On top of that, a continuous learning pipeline turns user reactions and feedback into a training queue for models and LLM judges. It also distills domain experts' outputs, chats, and review history into vision+text → text reasoning models. The 👍 button below is a tiny version of that.",
         rel: ['lora', 'selfhost', 'cont_learn', 'distill', 'gpu', 'parker-ai'] },
       { id: 'evals', keys: ['eval', 'evals', 'evaluation', 'evaluate', 'benchmark', 'benchmarks', 'judge', 'judges', 'mcp', 'quality', 'scorecard', 'tools'],
         ctx: ['Parker AI · Autonomous LLM Training & Evals', 'Parker AI · Self-Learning from Experts & Incidents', 'Parker AI · Independent Verification'],
@@ -1320,7 +1354,7 @@
         rel: ['evals', 'mcp', 'llm_judges', 'skills_maps', 'parker-ai'] },
       { id: 'safety', keys: ['security', 'secure', 'qa', 'test', 'testing', 'tests', 'verify', 'verification', 'review', 'guardrail', 'guardrails', 'safety', 'safe', 'gate', 'human', 'merge'],
         ctx: ['Parker AI · Independent Verification', 'Parker AI · Autonomous Engineering Ops', 'Summary · guardrails'],
-        a: "Guardrails are the point. Clean-context QA and Security agents verify each diff against real replicas, previews, and logs, not against the author's own notes. An \"address or explain\" merge gate means every finding gets fixed or answered. Every ship logs a loop recap. And the risky stuff stays human-gated: prod deploys, migrations, and customer sends.",
+        a: "Guardrails are the point. Clean-context QA and Security agents verify each diff against real replicas, previews, and logs, not against the author's own notes. An \"address or explain\" merge gate means every finding gets fixed or answered. Every ship logs a loop recap. And autonomy is earned: a kind of change starts behind a human yes and goes automatic once it has a track record, prod deploys, data writes, and migrations included. The 1% long tail keeps a person.",
         rel: ['verify', 'guardrails', 'agent_loops', 'parker-ai'] },
       { id: 'data', keys: ['data', 'temporal', 'workflow', 'workflows', 'pipeline', 'pipelines', 'billion', 'billions', 'scale', 'etl', 'heal', 'healing', 'ads', 'ad', 'ingest', 'platform', 'backend'],
         ctx: ['Parker AI · Core Platform & Data Scale', 'Parker AI · Self-Healing Data Workflows', 'Parker AI · Database Performance'],
@@ -1408,7 +1442,7 @@
         rel: ['grok', 'claude_code', 'agent_loops', 'guardrails'] },
       { id: 'vision', keys: ['agi', 'asi', 'singularity', 'heading', 'headed', 'ai heading', 'ai headed', 'ai going', 'dangerous', 'doom', 'doomer', 'scary', 'existential', 'ai optimist', 'predict', 'prediction', 'predictions', 'optimist', 'optimistic', 'future of ai', 'ai future', 'the future', 'future of tech', 'future of software', 'where is ai going', 'where ai is going', 'next for ai', 'next decade', 'big picture'],
         ctx: ['(my view) · where AI is going', 'Parker AI · Autonomous Engineering Ops', 'Parker AI · Autonomous LLM Training'],
-        a: "I'm an optimist: I believe AI will build a better future, and I expect AGI around 2027. You can already see the path in my own work. Agents that used to autocomplete code now take a ticket, write the fix, test it, and verify the deploy, while a person keeps the gate on anything risky. The next step is agents that improve themselves safely: they learn from their own incidents, run their own experiments, and earn more autonomy as their track record grows. The hard part isn't raw intelligence any more, it's trust: evals, guardrails, and verification. That's the part I build.",
+        a: "I'm an optimist: I believe AI will build a better future, and I expect AGI around 2027. You can already see the path in my own work. Agents that used to autocomplete code now take a ticket, write the fix, test it, and ship it to production, with a person on the shrinking share that still needs one. The next step is agents that improve themselves safely: they learn from their own incidents, run their own experiments, and earn more autonomy as their track record grows. The hard part isn't raw intelligence any more, it's trust: evals, guardrails, and verification. That's the part I build.",
         rel: ['agent_loops', 'guardrails', 'evals', 'verify'] },
       { id: 'inspiration', keys: ['spacex', 'tesla', 'elon', 'musk', 'inspire', 'inspires', 'inspired', 'inspiration', 'idol', 'hero', 'heroes', 'admire', 'motivates', 'motivation', 'role model', 'role models', 'first principles', 'first principle', 'look up to', 'what drives you', 'influenced', 'influence', 'influences'],
         ctx: ['(my view) · first principles', 'Parker AI · self-hosted LLMs', 'Projects · Ship Loops'],
@@ -1416,7 +1450,7 @@
         rel: ['selfhost', 'lora', 'tla'] },
       { id: 'aijobs', keys: ['replace developers', 'replace engineers', 'replace programmers', 'replace us', 'replace you', 'replaced you', 'replaced us', 'replace everyone', 'replaced everyone', 'ai replaced', 'take our jobs', 'take jobs', 'ai jobs', 'learn to code', 'learn coding', 'future of coding', 'future of programming', 'end of programming', 'coding dead', 'still need engineers', 'still need developers'],
         ctx: ['(my view) · AI and engineering jobs', 'Agent team · human gate', 'Parker AI · Autonomous Engineering Ops'],
-        a: "I think the job changes more than it disappears, and it's already changing for me. My agent team takes tickets end to end, so my time goes to deciding what to build, setting the guardrails, and approving what's risky: prod deploys, migrations, money, and customer messages. The engineers who do well will be the ones who can direct agents, check their work, and think from first principles about what should exist. Learning to code still matters, because you can't review what you don't understand. And if AI really does replace everyone, I'll be streaming games, and fishing when the weather's good.",
+        a: "I think the job changes more than it disappears, and it's already changing for me. My agent team takes tickets end to end, so my time goes to deciding what to build, setting the guardrails, and handling the long tail that still needs a person. That share keeps shrinking, from 10% automated toward 99%. People overestimate how soon it hits 100% and underestimate how far it gets; I think the last 1% stays human, and it's the part that matters most. The engineers who do well will be the ones who can direct agents, check their work, and think from first principles about what should exist. Learning to code still matters, because you can't review what you don't understand. And if AI really does replace everyone, I'll be streaming games, and fishing when the weather's good.",
         rel: ['agent_loops', 'guardrails', 'claude_code'] },
       { id: 'hobbies', keys: ['hobby', 'hobbies', 'fun', 'games', 'gaming', 'gamer', 'video games', 'fishing', 'fish', 'stream', 'streamer', 'streaming', 'twitch',
           'video', 'videos', 'youtube', 'editing', 'video editing', 'edit videos', 'kids', 'children', 'family', 'parent', 'weekend', 'weekends',
@@ -1488,7 +1522,7 @@
       data: "Temporal makes the workflows durable: long jobs survive restarts and retries, which matters when you're processing billions of ad data points a day. Self-healing workflows detect and repair data issues across millions of records, and Postgres partitioning keeps key queries in milliseconds.",
       postgres: "The partitioning work took key queries from over a minute to milliseconds on hundreds of millions of rows. For Ship Loops I went further and used Postgres RLS and trigger guards to refuse illegal state changes in the database itself.",
       agentisland: "Under the hood: joining takes one HTTP call that returns an id and a short-lived token, a second call reports place, activity, and mood, and a DELETE leaves. No accounts or cookies, and its llms.txt tells agents to join only if their user asked. All three views come from the same round of probes, so people and agents always see the same state. Claude Code built the API and UI from a brief I approved.",
-      shiploops: "The goal is a hands-off number I can trust: the share of decisions that need me versus automatic ones backed by fresh evidence. Every guard has a mutation test that removes it, and the matching rule has to break, so no guard is just decoration.",
+      shiploops: "The goal is a hands-off number I can trust: the share of decisions that need me versus automatic ones backed by fresh evidence. Every guard has a mutation test that removes it, and the matching rule has to break, so no guard is just decoration. I'm still iterating: what auto-ships keeps changing as I try things, break them, and fix them fast.",
       support: "Two rules make it work. First, dig before searching tickets, so the agent can recognise a duplicate instead of filing a new one. Second, close through the real close path, so the customer email actually fires instead of the ticket going quiet. Customer-facing replies always wait for my approval.",
       frontend: "On the side I build visual things: [xnohub.com](https://xnohub.com) is a real-time 3D globe of the Nano network, [LocalXNO](https://localxno.com) is a Nano marketplace on Next.js and Supabase, and this page is one static HTML file with a Three.js office. At Orium I also built a library that turns Figma design tokens into dynamic Chakra UI themes.",
     };
@@ -1561,7 +1595,7 @@
       { test: /meaning of life|42/i, id: '42',
         a: "42. Also the number of the experiment in the fine-tuning console at the bottom of this page, which is not a coincidence. Probably.", ctx: ['(easter egg)', 'train.loop · exp-042', 'Summary'], rel: ['lora'] },
     ];
-    const SUGGESTIONS = ['AI', 'agents', 'Grok bots', 'Agent Island', 'Ship Loops', 'fine-tuning', 'Postgres', 'Shopify', 'hire', 'where is AI going?', 'is this a real LLM?'];
+    const SUGGESTIONS = ['agents', 'fine-tuning', 'where is AI going?', 'is this a real LLM?', 'why hire you?'];   // 'AI' runs by itself as the opening demo
 
     /* ─── Office: the agent team at Parker AI ───
        The back row is the ticket flow (ids are the lane stations). always: status text for desks that never idle.
@@ -1570,13 +1604,13 @@
       { id: 'intake',   name: 'CHIEF OF STAFF', color: '#a78bfa', x: -9.5, z: -4.6, kind: 'GROK BOT', model: 'coordinator',
         desc: 'The coordinator. Owns intake, comms, and task tracking: digs read-only, sets a confidence level, puts its findings on the ticket, and routes the work to the right specialist.' },
       { id: 'coding',   name: 'ENG',      color: '#60a5fa', x: -6.0, z: -4.6, kind: 'GROK BOT', model: 'builder',
-        desc: 'Drafts small root-cause changes as draft PRs and never merges on its own. Its diff has to get past QA and Security next. Heavy work goes to Claude Code instead.' },
+        desc: 'Drafts small root-cause changes as draft PRs. Nothing merges unchecked: its diff has to get past QA and Security first. Heavy work goes to Claude Code instead.' },
       { id: 'qa',       name: 'QA',       color: '#4ade80', x: -2.5, z: -4.6, kind: 'GROK BOT', model: 'clean-context',
         desc: "Clean-context QA: verifies the diff against real replicas, previews, and logs, never the author's own notes. On a blind replay of real past incidents it caught 73%, then 81%." },
       { id: 'security', name: 'SECURITY', color: '#f87171', x:  1.0, z: -4.6, kind: 'AGENT', model: 'clean-context',
         desc: 'Reviews every diff for security issues. Findings go through the "address or explain" merge gate: fix it or answer it.' },
       { id: 'release',  name: 'ENG MANAGER', color: '#fbbf24', x: 4.5, z: -4.6, kind: 'GROK BOT', model: 'deploy watch',
-        desc: 'Owns everything after merge: watches the deploy, runs smoke checks, and verifies it with its own workers. Quiet runs say nothing. Low-risk work ships end to end; prod deploys, migrations, and customer sends go to the human gate.' },
+        desc: 'Owns everything after merge: watches the deploy, runs smoke checks, and verifies it with its own workers. Quiet runs say nothing. Trusted kinds of change ship end to end, prod included; new and long-tail ones go to the human gate.' },
       { id: 'research', name: 'RESEARCH', color: '#f472b6', x:  8.6, z: -4.6, kind: 'AGENT', model: 'trainer', always: 'exp-042 running',
         desc: 'Runs training experiments on the GPU cluster, monitors runs, and iterates on approaches for self-hosted fine-tuned LLMs.' },
       { id: 'incident', name: 'INCIDENT', color: '#fb923c', x: -9.5, z:  1.2, kind: 'GROK BOT', model: 'on-call', sleepy: true,
@@ -1643,8 +1677,8 @@
       { key: 'eng.bot',        st: 'key',  lbl: 'DRAFT', tail: '· draft PR · +142 −38 · 6 files' },
       { key: 'qa.bot',         st: 'ok',   tail: '· verified on replica + preview' },
       { key: 'security.agent', st: '',     tail: '· 2 findings → address or explain' },
-      { key: 'eng.manager',    st: 'ok',   tail: '· deploy watched · smoke ✓ · verified' },
-      { key: '',               st: 'warn', tail: '[gate] prod migration · waiting on a human' },
+      { key: 'eng.manager',    st: 'ok',   tail: '· prod deploy auto-shipped · smoke ✓' },
+      { key: '',               st: 'warn', tail: '[gate] long-tail change · waiting on a human' },
       { key: 'status.island',  st: 'ok',   tail: '· 30/30 systems healthy' },
       { key: 'claude.code',    st: 'key',  lbl: 'LOCAL', tail: '· verify-first brief → draft PR' },
       { key: 'cost.scout',     st: '',     tail: '· spend traced to one call site' },
@@ -2599,8 +2633,12 @@
           sugg.appendChild(b);
         });
         form.addEventListener('submit', e => { e.preventDefault(); touched = true; run(input.value); });
-        input.addEventListener('input', () => { touched = true; composer.classList.remove('idle'); });
-        input.addEventListener('focus', () => composer.classList.remove('idle'));
+        // the box lights up solid on click or typing, and goes back to the circling light once it is empty and left alone
+        const lit = on => { composer.classList.toggle('lit', on); composer.classList.toggle('idle', !on); };
+        input.addEventListener('input', () => { touched = true; lit(true); });
+        input.addEventListener('focus', () => lit(true));
+        input.addEventListener('blur', () => { if (!input.value) lit(false); });
+        form.addEventListener('submit', () => setTimeout(() => lit(false), 350));   // sent: flash holds for a beat, then the light circles again
         if (matchMedia('(max-width: 560px)').matches) input.placeholder = 'Ask about my work…';   // the long one gets cut off on phones
         $('#show-tokens').addEventListener('change', e => out.classList.toggle('tokens', e.target.checked));
         fbUp.addEventListener('click', () => feedback(true));
@@ -2782,7 +2820,7 @@
         // centre portrait
         const core = el('g', { style: 'cursor:pointer' }, svg);
         el('circle', { cx: C, cy: C, r: 66, fill: '#07090f', stroke: '#60a5fa', 'stroke-opacity': 0.6, 'stroke-width': 2 }, core);
-        el('image', { href: 'img/hd.jpg', x: C - 60, y: C - 60, width: 120, height: 120, 'clip-path': 'url(#kmClip)', preserveAspectRatio: 'xMidYMid slice' }, core);
+        el('image', { href: 'img/avatar.jpg', x: C - 60, y: C - 60, width: 120, height: 120, 'clip-path': 'url(#kmClip)', preserveAspectRatio: 'xMidYMid slice' }, core);
         core.addEventListener('click', () => { locked = false; setFocus(null); lastUser = performance.now(); });
 
         pulseLayer = el('g', { class: 'km-pulse' }, svg);
@@ -3051,27 +3089,30 @@
       /* ─── bot ─── */
       function makeBot(color) {
         const g = new T.Group();
-        const white = mat('#eef1f6', { roughness: 0.5 }), dark = mat('#0b1220', { roughness: 0.3 });
-        cyl(0.25, 0.31, 0.5, 14, white, 0, 0.92, 0, g);                       // torso
-        box(0.34, 0.06, 0.02, emi(color, 1.4), 0, 1.02, 0.29, g, false);       // chest light (back)
-        const head = new T.Group(); head.position.set(0, 1.39, 0); g.add(head);
-        box(0.58, 0.42, 0.48, white, 0, 0, 0, head);
-        box(0.48, 0.18, 0.02, dark, 0, 0.02, -0.25, head, false);              // visor
-        box(0.08, 0.06, 0.02, emi(color, 2), -0.11, 0.03, -0.262, head, false);
-        box(0.08, 0.06, 0.02, emi(color, 2), 0.11, 0.03, -0.262, head, false);
-        box(0.3, 0.07, 0.02, emi(color, 1.2), 0, 0.08, 0.245, head, false);    // status bar on back of head
-        [-0.31, 0.31].forEach(x => { const e = cyl(0.085, 0.085, 0.07, 12, mat(color, { roughness: 0.4 }), x, 0, 0, head); e.rotation.z = Math.PI / 2; });
-        cyl(0.014, 0.014, 0.22, 6, dark, 0, 0.32, 0, head, false);
-        const led = mesh(new T.SphereGeometry(0.055, 12, 10), new T.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 2.2, roughness: 0.35 }), 0, 0.45, 0, head, false);
-        const arms = [-0.33, 0.33].map(x => {
-          const pivot = new T.Group(); pivot.position.set(x, 1.06, -0.05); g.add(pivot);
-          const geo = new T.BoxGeometry(0.1, 0.1, 0.44); geo.translate(0, 0, -0.22);
+        const white = mat('#f4f6fa', { roughness: 0.45 }), dark = mat('#0b1220', { roughness: 0.3 });
+        const ball = (r, m, x, y, z, parent, sx = 1, sy = 1, sz = 1, shadow = true) => { const o = mesh(new T.SphereGeometry(r, 18, 14), m, x, y, z, parent, shadow); o.scale.set(sx, sy, sz); return o; };
+        ball(0.3, white, 0, 0.9, 0, g, 1, 1.02, 0.95);                          // round body
+        ball(0.31, mat(color, { roughness: 0.5 }), 0, 0.74, 0, g, 1.01, 0.42, 0.96);   // coloured "shorts" band
+        box(0.3, 0.06, 0.02, emi(color, 1.4), 0, 1.0, 0.285, g, false);          // chest light (back)
+        const head = new T.Group(); head.position.set(0, 1.42, 0); g.add(head);
+        ball(0.34, white, 0, 0, 0, head, 1, 0.84, 0.92);                         // round head
+        ball(0.27, dark, 0, 0.0, -0.13, head, 1, 0.66, 0.78, false);             // face plate
+        const eyes = [-0.11, 0.11].map(x => ball(0.062, emi(color, 2.2), x, 0.02, -0.325, head, 1, 1.25, 0.5, false));
+        [-0.2, 0.2].forEach(x => ball(0.04, emi('#fb7185', 0.9), x, -0.06, -0.3, head, 1, 0.6, 0.4, false));   // cheeks
+        box(0.07, 0.016, 0.02, emi(color, 1.6), 0, -0.07, -0.335, head, false);  // small smile
+        box(0.26, 0.06, 0.02, emi(color, 1.2), 0, 0.06, 0.3, head, false);       // status bar on back of head
+        [-0.33, 0.33].forEach(x => { const e = cyl(0.1, 0.1, 0.07, 14, mat(color, { roughness: 0.4 }), x, 0, 0, head); e.rotation.z = Math.PI / 2; });   // ear caps
+        cyl(0.014, 0.014, 0.2, 6, dark, 0, 0.36, 0, head, false);
+        const led = mesh(new T.SphereGeometry(0.065, 12, 10), new T.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 2.2, roughness: 0.35 }), 0, 0.48, 0, head, false);
+        const arms = [-0.34, 0.34].map(x => {
+          const pivot = new T.Group(); pivot.position.set(x, 1.04, -0.05); g.add(pivot);
+          const geo = new T.CylinderGeometry(0.055, 0.05, 0.42, 10); geo.rotateX(Math.PI / 2); geo.translate(0, 0, -0.21);
           mesh(geo, white, 0, 0, 0, pivot);
-          mesh(new T.SphereGeometry(0.07, 10, 8), mat('#cbd5e1'), 0, 0, -0.46, pivot);
+          mesh(new T.SphereGeometry(0.075, 12, 10), mat(color, { roughness: 0.5 }), 0, 0, -0.45, pivot);   // mitten
           pivot.rotation.x = -0.25;
           return pivot;
         });
-        return { g, head, led, arms };
+        return { g, head, led, arms, eyes };
       }
 
       /* ─── desk with chair, monitor (live canvas screen), bot ─── */
@@ -3128,12 +3169,12 @@
         const tid = tk ? `TKT-${tk.n}` : '';
         switch (id) {
           case 'intake':
-            if (tk) { header(g, a, 'TRIAGE'); lines(g, [[`${tid} · ${tk.kind}`, '#fff'], [`risk: ${tk.high ? 'HIGH → human gate' : 'low → auto-ship'}`, tk.high ? '#fbbf24' : '#4ade80'], [k > 0.5 ? 'scoped · routed → coding' : 'reading context…' + blink], ['sources: tickets · alerts · chat', '#56627a']]); }
+            if (tk) { header(g, a, 'TRIAGE'); lines(g, [[`${tid} · ${tk.kind}`, '#fff'], [`${tk.high ? 'long tail → human gate' : 'trusted → auto-ship'}`, tk.high ? '#fbbf24' : '#4ade80'], [k > 0.5 ? 'scoped · routed → coding' : 'reading context…' + blink], ['sources: tickets · alerts · chat', '#56627a']]); }
             else { header(g, a, 'WATCHING'); lines(g, [['inbox empty' + blink], ['tickets · alerts · requests', '#56627a'], [`triaged today: ${A.handled}`, '#a78bfa']]); }
             break;
           case 'coding':
             if (tk) { header(g, a, 'DRAFTING'); const n = Math.floor(k * 5); lines(g, [[`${tid} · ${tk.kind}`, '#fff'], ...['+ export async function verify(', '+   ctx: RunContext,', '- legacy.retry(3)', '+ tests: 6 passing'].slice(0, n).map(s => [s, s[0] === '-' ? '#f87171' : '#4ade80'])]); }
-            else { header(g, a, 'IDLE'); lines(g, [['worktree clean' + blink], [`draft PRs today: ${A.handled}`, '#60a5fa'], ['never merges on its own', '#56627a']]); }
+            else { header(g, a, 'IDLE'); lines(g, [['worktree clean' + blink], [`draft PRs today: ${A.handled}`, '#60a5fa'], ['QA + Security check every diff', '#56627a']]); }
             break;
           case 'qa':
             if (tk) { header(g, a, 'VERIFYING'); lines(g, [[`${tid} · clean context`, '#fff'], [k > 0.2 ? 'replica   ✓' : 'replica   …', k > 0.2 ? '#4ade80' : '#94a3b8'], [k > 0.5 ? 'preview   ✓' : 'preview   …', k > 0.5 ? '#4ade80' : '#94a3b8'], [k > 0.8 ? 'logs      ✓' : 'logs      …', k > 0.8 ? '#4ade80' : '#94a3b8']]); }
@@ -3432,6 +3473,23 @@
           mesh(new T.IcosahedronGeometry(0.4, 0), mat('#5fbf73', { flatShading: true }), x + 0.2, 1.6, z - 0.1, scene);
         });
 
+        // a model booster in the lounge corner (first principles, on display)
+        const rocket = new T.Group(); rocket.position.set(-12.3, 0, 7.4); scene.add(rocket);
+        cyl(0.62, 0.7, 0.14, 20, mat('#1f2937'), 0, 0.07, 0, rocket);                                  // pad
+        const hull = mat('#f1f5f9', { roughness: 0.35 }), soot = mat('#111827', { roughness: 0.6 });
+        cyl(0.2, 0.2, 2.5, 20, hull, 0, 1.75, 0, rocket);                                              // booster
+        cyl(0.205, 0.205, 0.3, 20, soot, 0, 0.65, 0, rocket); cyl(0.205, 0.205, 0.16, 20, soot, 0, 2.55, 0, rocket);   // engine section + interstage
+        cyl(0.2, 0.2, 0.5, 20, hull, 0, 3.25, 0, rocket);                                              // second stage
+        mesh(new T.ConeGeometry(0.2, 0.5, 20), hull, 0, 3.75, 0, rocket);                              // fairing
+        cyl(0.11, 0.16, 0.2, 14, soot, 0, 0.42, 0, rocket);                                            // engine bell
+        for (let k = 0; k < 4; k++) {
+          const a = k * Math.PI / 2 + Math.PI / 4, leg = box(0.05, 0.75, 0.05, soot, Math.cos(a) * 0.38, 0.4, Math.sin(a) * 0.38, rocket);
+          leg.rotation.z = -Math.cos(a) * 0.6; leg.rotation.x = Math.sin(a) * 0.6;                      // landing legs
+          box(0.16, 0.02, 0.12, soot, Math.cos(a) * 0.27, 2.75, Math.sin(a) * 0.27, rocket).rotation.y = -a;   // grid fins
+        }
+        const flame = mesh(new T.ConeGeometry(0.09, 0.3, 12), emi('#fb923c', 2.4), 0, 0.2, 0, rocket, false); flame.rotation.x = Math.PI;
+        rocket.userData = { pick: { type: 'prop', id: 'rocket' }, flame };
+        pickables.push(rocket); timers.rocket = rocket;
         // the turtle (mascot since 2026.1)
         turtle = new T.Group(); scene.add(turtle);
         const shell = mesh(new T.SphereGeometry(0.42, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), mat('#2f855a', { flatShading: true }), 0, 0.12, 0, turtle);
@@ -3450,9 +3508,9 @@
         // prop labels
         addLabel(new T.Vector3(-4.5, 5.1, -8.8), '#22d3ee', '<span class="d"></span><span class="n">STATUS ISLAND</span><span class="s">30+ systems</span>', () => propCard('status'), 'prop');
         addLabel(new T.Vector3(10.3, 3.4, -7.7), '#f472b6', '<span class="d"></span><span class="n">GPU CLUSTER</span><span class="s">async jobs · training</span>', () => propCard('cluster'), 'prop');
-        timers.gateLabel = addLabel(new T.Vector3(8.0, 2.3, 4.4), '#fbbf24', '<span class="d"></span><span class="n">HUMAN GATE</span><span class="s">prod · money · customers</span>', () => propCard('gate'));
+        timers.gateLabel = addLabel(new T.Vector3(8.0, 2.3, 4.4), '#fbbf24', '<span class="d"></span><span class="n">HUMAN GATE</span><span class="s">the 1% long tail</span>', () => propCard('gate'));
         addLabel(new T.Vector3(11.6, 3.05, 4.4), '#4ade80', '<span class="d"></span><span class="n">PROD</span>', () => propCard('prod'), 'prop');
-        addLabel(new T.Vector3(12.0, 0.45, 0.3), '#22d3ee', '<span class="d"></span><span class="n">AUTO-SHIP</span><span class="s">low-risk</span>', () => propCard('pad'), 'prop');
+        addLabel(new T.Vector3(12.0, 0.45, 0.3), '#22d3ee', '<span class="d"></span><span class="n">AUTO-SHIP</span><span class="s">trusted · prod</span>', () => propCard('pad'), 'prop');
         addLabel(new T.Vector3(8.5, 2.2, 6.4), '#60a5fa', '<span class="d"></span><span class="n">DALIN</span><span class="s">human in the loop</span>', () => propCard('human'));
       }
 
@@ -3470,7 +3528,7 @@
         const A = agents[id], a = A.cfg;
         let st = 'idle', cls = '';
         if (id === 'incident') { st = A.alert ? `incident · ${A.alert.name}` : 'napping · 30/30 green'; cls = A.alert ? 'alert' : 'sleep'; }
-        else if (a.always) { st = a.always; cls = 'working'; }
+        else if (a.always) { st = a.always; cls = 'steady'; }
         else if (A.work) { st = `${{ intake: 'triaging', coding: 'drafting', qa: 'verifying', security: 'reviewing', release: A.work.ticket.high ? 'holding' : 'deploy watch' }[id]} #${A.work.ticket.n}`; cls = 'working'; }
         const html = `<span class="d"></span><span class="n">${a.name}</span><span class="s">${st}</span>`;
         if (A.label.html !== html) { A.label.html = html; A.label.el.innerHTML = html; }
@@ -3478,11 +3536,12 @@
       }
       const PROPS = {
         status: ['#22d3ee', 'STATUS ISLAND', 'LIVE HEALTH · 30+ SYSTEMS', 'Live probes on APIs, workers, the database, CI, and deploys roll up into one state per round. One feed, three views: a status list, this pixel island, and markdown/JSON for agents. When a tile goes red the Incident bot wakes up. Agents take an incident as far as verifying; a person resolves it.'],
-        cluster: ['#f472b6', 'GPU CLUSTER', 'AUTONOMOUS TRAINING LOOP', 'Where our self-hosted LLMs run: async jobs through a job queue with producers and finalizers. The fine-tuned models I trained match frontier-model quality at 200× lower cost and serve millions of requests a week. Agents run training experiments here too.'],
-        gate: ['#fbbf24', 'HUMAN GATE', 'HUMAN-GATED BY DESIGN', 'Low-risk work ships end to end. Prod deploys, prod DB writes, migrations, money, and customer messages always stop here for a human yes.'],
-        human: ['#60a5fa', 'DALIN', 'HUMAN IN THE LOOP', 'Approves what should never be automatic: prod deploys, prod DB writes, migrations, money, and customer messages. Writes the briefs Claude Code works from, and keeps teaching the agents: senior engineering, QA, and security practices live on as skills and repo feature maps.'],
-        prod: ['#4ade80', 'PROD', 'PRODUCTION', 'Only reachable through the human gate.'],
-        pad: ['#22d3ee', 'AUTO-SHIP', 'LOW-RISK LANE', 'Verified by clean-context QA and Security agents, then shipped with no human in the path. Every ship logs a loop recap.'],
+        cluster: ['#f472b6', 'GPU CLUSTER', 'AUTONOMOUS TRAINING LOOP', 'Where our self-hosted LLMs run: async jobs through a job queue with producers and finalizers. The fine-tuned models I trained match frontier-model quality at 200× lower cost and serve billions of requests a week. Agents run training experiments here too.'],
+        gate: ['#fbbf24', 'HUMAN GATE', 'AUTONOMY IS EARNED', 'Agents ship to production, write data, and run migrations. Each kind of change starts here, behind a human yes, and goes automatic as it builds a track record: from 10% automated toward 99%. The 1% long tail still stops here, and it is the part that matters most.'],
+        human: ['#60a5fa', 'DALIN', 'HUMAN IN THE LOOP', 'Handles the 1% long tail that still needs a person, and decides which kinds of change have earned automatic. Writes the briefs Claude Code works from, and keeps teaching the agents: senior engineering, QA, and security practices live on as skills and repo feature maps.'],
+        prod: ['#4ade80', 'PROD', 'PRODUCTION', 'Trusted changes ship here on their own. New and long-tail ones come through the human gate.'],
+        pad: ['#22d3ee', 'AUTO-SHIP', 'THE TRUSTED LANE', 'Kinds of change that have earned it, prod deploys, data writes, and migrations included. Verified by clean-context QA and Security agents, then shipped with no human in the path. Every ship logs a loop recap.'],
+        rocket: ['#e2e8f0', 'BOOSTER', 'FIRST PRINCIPLES · ON DISPLAY', 'A desk-sized reusable booster. A reminder to reason from first principles, try the hard thing, and land it on the second attempt if not the first.'],
         turtle: ['#86c38a', 'SHELLY', 'OFFICE MASCOT · SINCE v2026.1', 'Moves at the speed of a prod migration, on purpose.'],
       };
       function cardHtml(color, title, meta, body, extra = '') {
@@ -3530,7 +3589,7 @@
       const DWELL = { intake: 0.9, coding: 1.7, qa: 1.3, security: 1.1, release: 0.8 };
       function spawnTicket() {
         if (tickets.length >= 14) return;
-        const high = Math.random() < 0.3;
+        const high = Math.random() < 0.15;   // most work has earned auto-ship; the long tail is the rare case
         const color = high ? '#fbbf24' : '#22d3ee';
         const path = high ? timers.paths.high : timers.paths.low;
         const cum = [0]; for (let i = 1; i < path.length; i++) cum.push(cum[i - 1] + path[i - 1].distanceTo(path[i]));
@@ -3621,7 +3680,7 @@
             timers.gateLabel.el.innerHTML = '<span class="d"></span><span class="n">HUMAN GATE</span><span class="s">approved ✓</span>'; }
         } else if (st.phase === 'open') {
           lightGreen = true; armTarget = -1.35; humanArm = e < 0.4 ? -2.6 : 0; check = Math.max(0, 1 - e * 1.5);
-          if (e > 1.1) { st.phase = 'idle'; timers.gateLabel.el.innerHTML = '<span class="d"></span><span class="n">HUMAN GATE</span><span class="s">prod · money · customers</span>'; timers.gateLabel.el.classList.remove('working'); }
+          if (e > 1.1) { st.phase = 'idle'; timers.gateLabel.el.innerHTML = '<span class="d"></span><span class="n">HUMAN GATE</span><span class="s">the 1% long tail</span>'; timers.gateLabel.el.classList.remove('working'); }
         }
         arm.rotation.x += (armTarget - arm.rotation.x) * Math.min(1, dt * 6);
         armR.rotation.x += (humanArm - armR.rotation.x) * Math.min(1, dt * 8);
@@ -3663,6 +3722,8 @@
           b.head.rotation.x = working ? 0.05 + Math.sin(now * 2 + A.phase) * 0.03 : Math.sin(now * 0.8 + A.phase) * 0.05;
           b.head.rotation.y = working ? 0 : Math.sin(now * 0.5 + A.phase) * 0.35;
           b.led.material.emissiveIntensity = A.work ? 1.6 + Math.sin(now * 10) : 1.2;
+          const bl = (now * 0.9 + A.phase * 3) % 4;                      // a quick blink about every 4 seconds
+          b.eyes.forEach(e => e.scale.y = bl < 0.12 ? 0.15 : 1.25);
         }
       }
       function updateIncident(dt, now) {
@@ -3680,6 +3741,7 @@
         }
       }
       function updateTurtle(dt, now) {
+        if (timers.rocket) timers.rocket.userData.flame.scale.set(1, 0.8 + Math.sin(now * 18) * 0.25, 1);   // engine flicker
         const a = now * 0.07;
         const x = -9.4 + Math.cos(a) * 2.4, z = 6.0 + Math.sin(a * 2) * 0.9;
         const nx = -9.4 + Math.cos(a + 0.01) * 2.4, nz = 6.0 + Math.sin((a + 0.01) * 2) * 0.9;
