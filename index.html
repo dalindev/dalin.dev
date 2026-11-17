@@ -849,12 +849,12 @@
 
     <!-- ═════════ 01 · ASK ═════════ -->
     <section class="sec first" id="ask">
-      <h2 class="section-head"><span class="num">01</span> ASK THE MODEL <span class="count"><span class="tagline">· a tiny model trained on my resume, in your browser </span>· <a href="#how">how it works ↓</a></span></h2>
+      <h2 class="section-head"><span class="num">01</span> ASK THE MODEL</h2>
 
       <div class="llm" id="llm">
         <div class="macterm-bar">
           <div class="dots3"><span class="r"></span><span class="y"></span><span class="g"></span></div>
-          <div class="title">dalin-lm · real router network · simulated decoder</div>
+          <div class="title" id="llm-title">dalin-lm · tiny classifier · training in your browser…</div>
           <div class="badge" id="llm-badge"><span class="ld"></span><span id="llm-badge-t">READY</span></div>
         </div>
         <form class="llm-prompt" id="llm-form" autocomplete="off">
@@ -888,7 +888,7 @@
           <div class="llm-right">
             <div class="llm-net" id="llm-net">
               <canvas id="llm-canvas" aria-hidden="true"></canvas>
-              <div class="tag" id="net-tag">ROUTER NETWORK · <b>real</b> · training…</div>
+              <div class="tag" id="net-tag">CLASSIFIER · <b>real</b> · training…</div>
               <div class="tag tag2" id="net-tag2">idle</div>
             </div>
             <div class="llm-next">
@@ -897,7 +897,7 @@
             </div>
           </div>
             <div class="llm-foot">
-              <div class="stats" id="llm-stats">answers are hand-written, not generated, so it can't make things up</div>
+              <div class="stats" id="llm-stats">answers are written ahead of time, not generated</div>
               <div class="fb">
                 <span class="msg" id="fb-msg"></span>
                 <button id="fb-up" disabled title="Good answer: one real training step toward it">👍 train on this</button>
@@ -918,7 +918,7 @@
             <div class="emb-grid" id="emb-grid"></div>
           </div>
           <div class="llm-block ret-block">
-            <div class="lbl"><span>RETRIEVED CONTEXT</span><b>top-3 · cosine</b></div>
+            <div class="lbl"><span>RETRIEVED CONTEXT</span><b>top-3 · simulated scores</b></div>
             <div id="ret-list"></div>
           </div>
         </div>
@@ -927,31 +927,31 @@
       <div class="how" id="how">
         <button class="how-head" id="how-toggle" type="button" aria-expanded="false" aria-controls="how-body">
           <h3>HOW THIS WORKS</h3>
-          <span class="how-tease">Is this a real LLM? See what's real and what's simulated.</span>
+          <span class="how-tease">A tiny classifier, trained in your browser. What's real, what's simulated.</span>
           <span class="how-chev" aria-hidden="true">▾</span>
         </button>
         <div class="how-body" id="how-body">
          <div class="how-inner"><div class="how-pad">
-        <p class="how-lead">No API calls and no large language model. The answers are written from my resume and played out step by step the way an LLM would produce them. One part is real: the small neural network in the picture, trained in your browser when the page loaded.</p>
+        <p class="how-lead">No API calls and no large language model. A tiny classifier (the network in the picture) trains in your browser when the page loads and helps pick one of my hand-written answers. The rest plays out, step by step, how an LLM would produce that answer.</p>
         <div class="how-steps">
           <div class="how-step" data-s="tok"><div class="hs-n"><span>01</span>TOKENIZE</div>
-            <p><b>LLM</b>Splits text into sub-word tokens from a vocabulary it learned (BPE) and adds a start token.</p>
-            <p class="here"><b>Here</b>Simulated. Words split on common endings like "-ing" or "-ation", and each piece gets an id from a hash. ⟨bos⟩ is the start token. The router network reads whole words instead.</p></div>
+            <p><b>LLM</b>Splits text into sub-word tokens from a learned vocabulary.</p>
+            <p class="here"><b>Here</b>Simulated. The classifier has no vocabulary: it hashes your words, word pairs and letter triples into 1,024 input slots.</p></div>
           <div class="how-step" data-s="emb"><div class="hs-n"><span>02</span>EMBED</div>
-            <p><b>LLM</b>Each token id looks up a learned vector of thousands of numbers that encodes its meaning.</p>
-            <p class="here"><b>Here</b>Real. The router network learned 64 numbers for each word (and its letter triples) when the page loaded. Each row is one of your words; the last row is the whole question after ReLU.</p></div>
+            <p><b>LLM</b>Each token looks up a learned vector that encodes its meaning.</p>
+            <p class="here"><b>Here</b>Real. Each row is the 64 numbers the classifier learned for one of your words; the last row is the whole question after ReLU.</p></div>
           <div class="how-step" data-s="ret"><div class="hs-n"><span>03</span>RETRIEVE</div>
-            <p><b>LLM</b>With RAG, the question is embedded and compared with document chunks by cosine similarity.</p>
-            <p class="here"><b>Here</b>Keywords and phrases pick the answer first ("agent island" beats "island"), then the closest example question. When neither finds anything solid, the router network decides, but only if it knows one of your words. The picture shows its guess either way.</p></div>
+            <p><b>LLM</b>With RAG, the question is compared with document chunks by cosine similarity.</p>
+            <p class="here"><b>Here</b>Keywords pick the answer first, then the closest example question, then the classifier, and only if it knows one of your words. The scores beside the resume sections are simulated.</p></div>
           <div class="how-step" data-s="pre"><div class="hs-n"><span>04</span>PREFILL</div>
-            <p><b>LLM</b>The prompt and retrieved chunks pass through every transformer block once, and attention decides which tokens look at which.</p>
-            <p class="here"><b>Here</b>Simulated. The arcs are attention, with most of it landing on ⟨bos⟩: the "attention sink" real models show too.</p></div>
+            <p><b>LLM</b>The prompt passes through every transformer block, and attention decides which tokens look at which.</p>
+            <p class="here"><b>Here</b>Simulated. The classifier has no attention; the arcs show what it looks like in a real model.</p></div>
           <div class="how-step" data-s="dec"><div class="hs-n"><span>05</span>DECODE</div>
-            <p><b>LLM</b>Each step scores every token in the vocabulary, softmax turns the scores into probabilities, and one token is sampled.</p>
-            <p class="here"><b>Here</b>The answer text is fixed, so it can't make things up. The top-5 list shows the chosen token next to plausible alternatives at temperature 0.7.</p></div>
+            <p><b>LLM</b>Scores every token, softmax turns the scores into probabilities, and one token is sampled.</p>
+            <p class="here"><b>Here</b>Simulated. The answer text is fixed, so it can't invent facts, though the wrong answer can get picked. The real softmax is in the picture: one probability per answer.</p></div>
           <div class="how-step train" data-s="bwd"><div class="hs-n"><span>06</span>BACKPROP · 👍 TRAIN ON THIS</div>
-            <p><b>LLM</b>Training measures how wrong the output was (the loss) and sends that error backwards through the network to nudge every weight.</p>
-            <p class="here"><b>Here</b>Real, on the router network. 👍 runs one gradient step that makes this answer more likely for your question, and 👎 makes it less likely. The weights change only in your browser, and your feedback is replayed when you come back. The big version is the pipeline I run at Parker AI, where user reactions feed a fine-tuning queue for our self-hosted models and LLM judges.</p></div>
+            <p><b>LLM</b>Training measures how wrong the output was and sends that error backwards to nudge every weight.</p>
+            <p class="here"><b>Here</b>Real, on the classifier. 👍 runs one gradient step that makes this answer more likely for your question; 👎 makes it less likely. The weights change only in your browser. The big version is what I run at Parker AI: user reactions feed a fine-tuning queue for our self-hosted models.</p></div>
         </div>
         <div class="how-data" id="how-data"></div>
          </div></div>
@@ -1390,7 +1390,7 @@
         rel: ['python', 'events'] },
       { id: 'contact', keys: ['contact', 'hire', 'hiring', 'email', 'reach', 'linkedin', 'github', 'recruit', 'recruiter', 'chat', 'call', 'meet', 'schedule a call', 'book a call', 'set up a call', 'hop on a call', 'get in touch', 'location', 'where', 'ottawa', 'canada'],
         ctx: ['Header · contact', 'Summary', 'Parker AI · overview'],
-        a: "The best way to reach me is email at [dhuan023@gmail.com](mailto:dhuan023@gmail.com) or [LinkedIn](https://www.linkedin.com/in/dalinhuang/). Code lives at [github.com/dalindev](https://github.com/dalindev). I'm based in Ottawa, Canada. If you're building agents that need to do real work safely, I'd like to hear about it.",
+        a: "The best way to reach me is email at [dhuan023@gmail.com](mailto:dhuan023@gmail.com) or [LinkedIn](https://www.linkedin.com/in/dalinhuang/). Code lives at [github.com/dalindev](https://github.com/dalindev). I'm based in Ottawa, Canada. If you're building agents that need to do real work safely, I'd like to hear about it: [email](mailto:dhuan023@gmail.com) or [LinkedIn](https://www.linkedin.com/in/dalinhuang/).",
         rel: ['parker-ai', 'agent_loops'] },
       { id: 'strengths', keys: ['strength', 'strengths', 'strongest', 'superpower', 'specialty', 'expertise', 'skills', 'best at', 'good at', 'why hire', 'why you', 'why should'],
         ctx: ['Summary', 'Parker AI · overview', 'Experience · all roles'],
@@ -1412,13 +1412,13 @@
         ctx: ['Parker AI · overview', 'Header · Senior AI Developer', 'Parker AI · Core Platform'],
         a: "Right now I'm a Senior Full Stack & AI Developer at Parker AI, where I've been since December 2023. Parker AI is an AI platform for e-commerce brands that brings ad, creative, competitor, and customer data together behind an AI analyst. I built the web app, the Temporal AI workflows, and the agent data tools from scratch, and these days most of my time goes into agents, fine-tuned models, and evals.",
         rel: ['parker-ai', 'agent_loops', 'selfhost', 'pipelines'] },
-      { id: 'direct', keys: ['salary', 'compensation', 'comp', 'pay', 'rate', 'rates', 'visa', 'sponsorship', 'sponsor', 'citizenship', 'citizen', 'permit', 'notice', 'relocate', 'relocation', 'remote', 'hybrid', 'onsite', 'on-site', 'availability', 'available', 'freelance', 'contract', 'contractor', 'full-time', 'fulltime', 'part-time', 'references', 'start date', 'open to work', 'looking for a job', 'job search', 'new job', 'why leave', 'leaving'],
+      { id: 'direct', keys: ['salary', 'compensation', 'comp', 'pay', 'rate', 'rates', 'visa', 'sponsorship', 'sponsor', 'citizenship', 'citizen', 'permit', 'notice', 'relocate', 'relocation', 'remote', 'hybrid', 'onsite', 'on-site', 'availability', 'available', 'freelance', 'contract', 'contractor', 'full-time', 'fulltime', 'part-time', 'references', 'start date', 'open to work', 'why leave', 'leaving'],
         ctx: ['Header · contact', '(not in the resume)', 'Summary'],
         a: "That one deserves a real conversation, not a lookup table. Email me at [dhuan023@gmail.com](mailto:dhuan023@gmail.com) or message me on [LinkedIn](https://www.linkedin.com/in/dalinhuang/), and I'll answer directly.",
         rel: [] },
-      { id: 'fit', keys: ['ideal', 'dream', 'next role', 'looking for', 'kind of role', 'type of role', 'what role'],
+      { id: 'fit', keys: ['ideal', 'dream', 'next role', 'looking for', 'looking for a job', 'looking for jobs', 'looking for work', 'job hunting', 'job hunt', 'on the market', 'new opportunities', 'open to offers', 'job search', 'new job', 'kind of role', 'type of role', 'what role'],
         ctx: ['Summary', 'Parker AI · overview', 'Header · Senior AI Developer'],
-        a: "I'm at my best where AI has to work in production: agent systems that do real engineering work, training and evaluating models, and the data platform underneath, full stack from the UI to the GPUs. If you're building agents that need to do real work safely, I'd like to hear about it.",
+        a: "I'm at my best where AI has to work in production: agent systems that do real engineering work, training and evaluating models, and the data platform underneath, full stack from the UI to the GPUs. If you're building agents that need to do real work safely, I'd like to hear about it: [email](mailto:dhuan023@gmail.com) or [LinkedIn](https://www.linkedin.com/in/dalinhuang/).",
         rel: ['agent_loops', 'selfhost', 'evals', 'pipelines'] },
       { id: 'weakness', keys: ['weakness', 'weaknesses', 'weak spot', 'blind spot'],
         ctx: ['(not in the resume)', 'Summary', 'Projects'],
@@ -1470,15 +1470,15 @@
         rel: ['parker-ai', 'agent_loops', 'selfhost'] },
       { id: 'meta_how', fx: 'how', keys: ['explainer', 'internals', 'mechanism', 'router', 'router network', 'how does this work', 'how do you work', 'how does it work', 'how it works', 'how this works', 'under the hood', 'behind the scenes', 'explain yourself'],
         ctx: ['(this page) · dalin-lm', 'How this works · stages', 'resume.pdf'],
-        a: "Short version: part real, part simulated. My answers were written ahead of time from Dalin's resume and project notes. Keywords and similar example questions pick which one to give, and a small neural network trained in your browser steps in when they find nothing. Then I play out each step a real LLM would take: tokenize, embed, retrieve, prefill, and decode one token at a time. I've opened the explainer below so you can see what's real and what's simulated at each step.",
+        a: "Short version: part real, part simulated. My answers were written ahead of time from Dalin's resume and project notes. Keywords and similar example questions pick which one to give, and a tiny classifier, a small neural network trained in your browser, steps in when they find nothing. Then I play out each step a real LLM would take: tokenize, embed, retrieve, prefill, and decode one token at a time. [How it works ↓](#how) shows what's real and what's simulated at each step.",
         rel: [] },
       { id: 'meta_real', fx: 'how', keys: ['fake', 'simulated', 'simulation', 'chatgpt', 'hallucinate', 'hallucination', 'hallucinations', 'real llm', 'real model', 'real ai', 'actual llm', 'is this real', 'is it real', 'are you real', 'what model', 'which model', 'are you an ai', 'are you ai', 'are you a bot', 'are you human', 'neural network', 'neural net'],
         ctx: ['(this page) · dalin-lm', 'How this works · decode', 'Parker AI · Autonomous LLM Training'],
-        a: "Partly, and I'd rather be upfront about it. The network in the picture is real: a small neural network trained in your browser when the page loaded, and the thumbs-up runs a real gradient step on it. The rest is a show of how an LLM works: there's no API call and no large language model, and nothing you type leaves your browser. Dalin wrote the answers from the resume, so I can't hallucinate. The real models are Dalin's day job: self-hosted fine-tuned LLMs that match frontier-model quality at 200× lower cost. I've opened the explainer below.",
+        a: "Partly, and I'd rather be upfront about it. The network in the picture is real: a tiny classifier trained in your browser when the page loaded, and the thumbs-up runs a real gradient step on it. The rest is a show of how an LLM works: there's no API call and no large language model, and nothing you type leaves your browser. The answers were written ahead of time from Dalin's resume and notes, so I can't invent facts, though I can still pick the wrong answer. The real models are Dalin's day job: self-hosted fine-tuned LLMs that match frontier-model quality at 200× lower cost. [How it works ↓](#how)",
         rel: ['selfhost', 'lora'] },
       { id: 'meta_train', fx: 'how', keys: ['dataset', 'thumbs', 'trained on', 'training data', 'train on this', 'thumbs up', 'how were you trained', 'what were you trained', 'your weights', 'your data', 'knowledge base'],
         ctx: ['(this page) · KB', 'How this works · backprop', 'Parker AI · Continuous Fine-Tuning'],
-        a: "Two kinds of training. The answers are Dalin's resume and project notes, written by hand, each with example questions and keywords that should lead to it. The small network that reads your question was trained on those examples right here in your browser when the page loaded, in plain JavaScript, in well under a second. Thumbs-up and thumbs-down run one more real gradient step on your question, kept only in this browser. The big version runs at Parker AI, where user reactions feed a fine-tuning queue for self-hosted models and LLM judges.",
+        a: "Two kinds of training. The answers are Dalin's resume and project notes, written by hand, each with example questions and keywords that should lead to it. The tiny classifier that reads your question was trained on those examples right here in your browser when the page loaded, in plain JavaScript, in well under a second. Thumbs-up and thumbs-down run one more real gradient step on your question, kept only in this browser. The big version runs at Parker AI, where user reactions feed a fine-tuning queue for self-hosted models and LLM judges.",
         rel: ['cont_learn', 'lora', 'llm_judges'] },
       { id: 'meta_site', keys: ['site', 'website', 'webpage', 'homepage', 'portfolio', 'source', 'this site', 'this website', 'this page', 'built this', 'made this', 'source code', 'how was this built', 'how is this built', 'how was this site built', 'how did you build this'],
         ctx: ['(this page) · index.html', 'Projects · xnohub.com', 'Skills · Three.js'],
@@ -1554,8 +1554,8 @@
       proud: ['what work are you proudest of', 'what is your biggest achievement', 'what are you most proud of', 'what is your best project', 'what impact have you had'],
       leadership: ['have you led a team', 'do you have leadership experience', 'have you mentored engineers', 'have you managed people', 'are you good at leading people'],
       direct: ['what are your salary expectations', 'how much do you charge', 'do you need visa sponsorship', 'what is your notice period', 'when can you start',
-               'are you open to relocation', 'are you open to remote work', 'are you looking for a new job', 'are you open to work', 'are you available', 'why are you leaving', 'do you do contract work'],
-      fit: ['what kind of role are you looking for', 'what is your ideal role', 'what are you looking for in your next role', 'what are your future plans', 'where do you see yourself in five years', 'what kind of team do you want to join'],
+               'are you open to relocation', 'are you open to remote work', 'are you open to work', 'are you available', 'why are you leaving', 'do you do contract work'],
+      fit: ['are you looking for a new job', 'are you looking for jobs', 'are you looking for work', 'are you job hunting', 'are you on the market', 'are you open to new opportunities', 'what kind of role are you looking for', 'what is your ideal role', 'what are you looking for in your next role', 'what are your future plans', 'where do you see yourself in five years', 'what kind of team do you want to join'],
       weakness: ['what is your biggest weakness', 'what are your weaknesses', 'what would you improve about yourself', 'what are you bad at'],
       resume: ['can i see your resume', 'where is your cv', 'do you have a resume', 'send me your cv'],
       zero: ['can you build an mvp', 'have you built something from scratch', 'can you build a product end to end', 'can you take a product from zero to one', 'can you work alone'],
@@ -1584,7 +1584,7 @@
     KB.forEach(it => { it.next = KB_NEXT[it.id] || []; it.q = KB_QUESTIONS[it.id] || []; if (KB_MORE[it.id]) it.more = KB_MORE[it.id]; });
     const KB_FALLBACK = {
       id: 'unknown', ctx: ['(no chunk above threshold 0.62)', 'Summary', 'Experience'],
-      a: "That isn't in my weights. I'm a tiny model trained only on Dalin's resume, and I'd rather say \"I don't know\" than make something up. Try one of the questions below, or ask what you can ask.",
+      a: "That isn't in my weights. I'm a tiny classifier that only knows questions about Dalin's resume, and I'd rather say \"I don't know\" than make something up. Try one of the questions below, or ask what you can ask.",
       rel: ['parker-ai', 'agent_loops', 'evals'], next: ['what can I ask?', 'AI', 'agents'] };
     const KB_SPECIAL = [
       { test: /ignore (all |the )?(previous|prior|above)|system prompt|jailbreak/i, id: 'inject',
@@ -1931,10 +1931,10 @@
         gr.addColorStop(0, `rgba(${COL[k]},1)`); gr.addColorStop(0.22, `rgba(${COL[k]},0.6)`); gr.addColorStop(1, `rgba(${COL[k]},0)`);
         g.fillStyle = gr; g.fillRect(0, 0, 64, 64); glow[k] = c;
       }
-      const OUT = 7, SUB = 4;   // answers shown · hidden units drawn as 4 columns
+      const OUT = 7, SUB = 4;   // answers shown · the one hidden layer of 64 is drawn 4 wide; the label under it says it is one layer
       let W = 0, H = 0, dpr = 1, last = performance.now(), small = false;
       let ins = [], hid = [], outs = [], snap = null, pick = null, shown = [];
-      let events = [], pulses = [], flashes = [], raf = 0, visible = false, idleAt = 0, busyUntil = 0;
+      let events = [], pulses = [], flashes = [], raf = 0, visible = false, busyUntil = 0, lit = false;
       const stat = document.createElement('canvas');
       const node = (x, y) => ({ x, y, a: 0, base: 0, c: 'blue' });
 
@@ -1955,6 +1955,7 @@
         const ys = col(rows, 0, 24).map(n => n.y);
         hid = Array.from({ length: nn.H }, (_, j) => node(xm + (j % SUB - (SUB - 1) / 2) * sx, ys[Math.floor(j / SUB)]));
         outs = col(OUT, x2, 30);
+        if (lit) rest();
         prerender();
         return true;
       }
@@ -1991,10 +1992,20 @@
         });
         g.textBaseline = 'alphabetic'; g.textAlign = 'center'; g.fillStyle = '#56627a';
         g.fillText(small ? 'words' : 'your words', ins[0].x, H - 9);
-        g.fillText(`${nn.H} hidden · relu`, hid[0].x + (hid[SUB - 1].x - hid[0].x) / 2, H - 9);
+        g.fillText(small ? `${nn.H} hidden · 1 layer` : `1 hidden layer · ${nn.H} units · relu`, hid[0].x + (hid[SUB - 1].x - hid[0].x) / 2, H - 9);
         g.fillText(small ? `top ${OUT}/${nn.C}` : `softmax · top ${OUT} of ${nn.C}`, outs[0].x + (small ? 20 : 34), H - 9);
       }
-      function set(s, p = null) {
+      // The resting glow after a forward pass: each dot sits at its real activation (or probability). layout() rebuilds the dots,
+      // so this is re-applied after a resize and after a feedback step redraws from the new weights.
+      function rest() {
+        const mh = Math.max(1e-6, ...snap.h), tgt = pick != null ? pick : snap.top[0];
+        ins.forEach((n, i) => { n.base = snap.words[i] ? 0.3 : 0; n.a = Math.max(n.a, n.base); });
+        hid.forEach((n, j) => { const v = snap.h[j] / mh; n.base = v > 0.02 ? v * 0.3 : 0; n.c = 'cyan'; n.a = Math.max(n.a, n.base); });
+        outs.forEach((n, k) => { const c = shown[k]; n.base = c === tgt ? 0.55 : snap.p[c] * 0.3; n.c = c === tgt ? 'green' : 'blue'; n.a = Math.max(n.a, n.base); });
+        ins.forEach(n => { n.c = 'violet'; });
+      }
+      function set(s, p = null, keep = false) {
+        if (!keep) lit = false;   // a new question starts dark and lights up as the forward pass arrives
         snap = s; pick = p;
         shown = s.top.slice(0, OUT);
         if (p != null && !shown.includes(p)) shown[OUT - 1] = p;
@@ -2005,6 +2016,7 @@
       function forward({ dur = 1100 } = {}) {
         if (!W && !layout()) return;
         const now = performance.now(), mh = Math.max(1e-6, ...snap.h);
+        lit = true;
         busyUntil = Math.max(busyUntil, now + dur + 300);
         hid.forEach(n => { n.base = 0; }); outs.forEach(n => { n.base = 0; });
         ins.forEach((n, i) => { if (snap.words[i]) { events.push({ t: now + i * 40, n, v: 1, c: 'violet' }); n.base = 0.3; } });
@@ -2040,18 +2052,14 @@
         });
         ins.forEach((n, i) => { if (snap.words[i]) events.push({ t: now + dur * 0.9, n, v: 0.9, c: 'orange' }); });
         const was = snap;
-        setTimeout(() => { if (snap === was) set(next, pick); }, dur + 100);   // the weights really changed: redraw from them
+        setTimeout(() => { if (snap === was) set(next, pick, true); }, dur + 100);   // the weights really changed: redraw from them, dots lit at their new activations
         kick();
       }
       function frame(t) {
         raf = 0;
         const dt = Math.min(0.05, (t - last) / 1000); last = t;
         if (!W) return;
-        if (t > busyUntil && t > idleAt && hid.length) {        // idle shimmer on the hidden layer
-          idleAt = t + 140;
-          const n = hid[Math.floor(Math.random() * hid.length)];
-          n.a = Math.max(n.a, 0.15 + Math.random() * 0.2); n.c = 'blue';
-        }
+        // no idle shimmer: a unit lights up only when a real activation or gradient put it there
         if (events.length) {
           const keep = [];
           for (const e of events) { if (e.t <= t) { e.n.a = Math.max(e.n.a, e.v); e.n.c = e.c; } else keep.push(e); }
@@ -2473,14 +2481,14 @@
         reset(); left.classList.add('has-run');
         qEl.hidden = false; qEl.textContent = q; input.value = '';   // chat style: the question moves into the answer card
         setBadge('busy', 'RUNNING'); runBtn.disabled = true;
-        let it, kw = null, isMore = false, faq = null, by = null, nnr = null;
+        let it, kw = null, isMore = false, faq = null, by = null, nnr = null, rscore = 0;
         if (MORE_RE.test(q) && last) {
           const p = last.it.base || last.it;
           isMore = true;
           it = p.more && !last.isMore
             ? { ...p, base: p, fx: null, a: p.more, ctx: [...p.ctx.slice(1), p.ctx[0]] }
             : { id: 'nomore', base: p, a: "That's everything I have on that one. Here are a few related questions to try.", ctx: p.ctx, rel: p.rel || [], next: p.next?.length ? p.next : KB_NEXT.unknown };
-        } else ({ it, kw, faq, by, nn: nnr } = route(q));
+        } else ({ it, kw, faq, by, nn: nnr, score: rscore } = route(q));
         const src = isMore ? last.src : q;   // the question the router network reads
         const snap = NN.explain(src), pick = NN.IDX.has((it.base || it).id) ? NN.IDX.get((it.base || it).id) : null;
         const toks = ['⟨bos⟩', ...tokenize(q).slice(0, 18)];
@@ -2524,11 +2532,12 @@
         stage('ret');
         const rr = rng(hash32(q));
         const base = it === KB_FALLBACK ? 0.43 : 0.9 + rr() * 0.06;
-        const lead = by === 'router' ? `router network · picked “${ANS_LABEL(it.id)}”` : faq ? `similar question · “${faq}”` : null;
+        const lead = by === 'router' ? `classifier · picked “${ANS_LABEL(it.id)}”` : faq ? `similar question · “${faq}”` : null;
         (lead ? [lead, ...it.ctx].slice(0, 3) : it.ctx).forEach((c, i) => {
           const [a, b] = c.split(' · ');
           const el = document.createElement('div'); el.className = 'ret';
-          const sc = i === 0 && by === 'router' ? nnr.conf : base - i * (0.05 + rr() * 0.04);
+          // the lead row carries a real number (the network's confidence, or the cosine to the matched example question); the resume rows are illustrative
+          const sc = i === 0 && by === 'router' ? nnr.conf : i === 0 && by === 'similar' ? Math.min(1, rscore / 12) : base - i * (0.05 + rr() * 0.04);
           el.innerHTML = `<span class="score">${sc.toFixed(2)}</span><span class="src">${esc(b ? b : a)}<small>${esc(b ? a : 'resume.pdf')}</small></span>`;
           retList.appendChild(el);
         });
@@ -2557,7 +2566,7 @@
             if (L !== curL) {   // first token of a link: the space before it stays outside the underline
               if (core !== tok) out.insertBefore(document.createTextNode(' '), cursor);
               curA = document.createElement('a'); curA.href = L.url; curL = L;
-              if (!L.url.startsWith('mailto:')) { curA.target = '_blank'; curA.rel = 'noopener'; }
+              if (!L.url.startsWith('mailto:') && !L.url.startsWith('#')) { curA.target = '_blank'; curA.rel = 'noopener'; }
               if (/^https?:/.test(L.url)) curA.className = 'ext';
               out.insertBefore(curA, cursor);
               sp.textContent = core;
@@ -2570,9 +2579,9 @@
         const dt = (performance.now() - t0) / 1000;
         cursor.remove();
         stage('done'); setBadge('', 'DONE'); runBtn.disabled = false;
-        const BY = { keywords: 'keywords', similar: 'similar question', router: `router network · p=${nnr ? nnr.conf.toFixed(2) : ''}`, none: 'nothing matched' };
+        const BY = { keywords: 'keywords', similar: 'similar question', router: `classifier · p=${nnr ? nnr.conf.toFixed(2) : ''}`, none: 'nothing matched' };
         const picked = isMore ? 'follow-up' : BY[by] || 'easter egg';
-        stats.innerHTML = `<b>${toks.length}</b> in · <b>${outToks.length}</b> out · <b>${Math.round(outToks.length / dt)}</b> tok/s · <b>${dt.toFixed(1)}s</b> · picked by <b>${esc(picked)}</b> · answers are hand-written, not generated`;
+        stats.innerHTML = `<b>${toks.length}</b> in · <b>${outToks.length}</b> out · <b>${Math.round(outToks.length / dt)}</b> tok/s · <b>${dt.toFixed(1)}s</b> · picked by <b>${esc(picked)}</b> · answers are written ahead of time, not generated`;
         const nexts = [...(it.more && !isMore ? ['tell me more'] : []), ...(it.next || [])].slice(0, 4);
         let html = '';
         if (it.rel?.length) html += '<span class="lbl2">OPEN IN MAP →</span>' + it.rel.map(id =>
@@ -2606,7 +2615,7 @@
       function init() {
         buildCands();
         $('#how-toggle')?.addEventListener('click', () => setHow(!$('#how').classList.contains('open')));
-        document.querySelectorAll('a[href="#how"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openHow('start'); }));
+        document.addEventListener('click', e => { if (e.target.closest && e.target.closest('a[href="#how"]')) { e.preventDefault(); openHow('start'); } });   // links inside answers are created later, so listen on the document
         if (location.hash === '#how') history.replaceState(null, '', location.pathname + location.search);   // never open it on load
         const hd = $('#how-data');
         const howData = () => {
@@ -2620,7 +2629,8 @@
         // Train the router network in small slices so scrolling never stutters, then draw it.
         net = NetViz($('#llm-canvas'), NN);
         const trained = () => {
-          $('#net-tag').innerHTML = `ROUTER NETWORK · <b>real</b> · ${NN.st.params.toLocaleString()} params`;
+          $('#net-tag').innerHTML = `CLASSIFIER · <b>real</b> · ${NN.st.params.toLocaleString()} params`;
+          $('#llm-title').textContent = `dalin-lm · tiny classifier · trained in your browser in ${Math.round(NN.st.ms)} ms`;
           if (!runId) { net.set(NN.explain('')); tag2.textContent = `trained here in ${Math.round(NN.st.ms)}ms`; }
           howData();
         };
